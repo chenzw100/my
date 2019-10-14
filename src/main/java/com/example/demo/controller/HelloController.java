@@ -67,7 +67,7 @@ public class HelloController {
         List<StockTemperature> temperaturesOpen=stockTemperatureRepository.open(start,queryEnd);
         List<StockTemperature> temperatures=stockTemperatureRepository.current(start,queryEnd);
 
-        return desc+queryEnd+"<br>最近5天市场情况<br>"+temperaturesClose+"<br>"+temperaturesOpen+"<br>"+temperatures+"<br>【相信数据，相信市场】:"+stockInfos;
+        return desc+queryEnd+"<br>最近5天市场情况<br>"+temperaturesClose+"<br>"+temperaturesOpen+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+stockInfos;
     }
     public boolean isWorkday(){
         ChineseWorkDay chineseWorkDay = new ChineseWorkDay(MyUtils.getCurrentDate());
