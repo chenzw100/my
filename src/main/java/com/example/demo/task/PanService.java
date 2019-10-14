@@ -21,7 +21,7 @@ public class PanService {
     private static final String tgbCron = "50 10 6 ? * MON-FRI";
     private static final String openCron = "49 25 9 ? * MON-FRI";
     private static final String closeCron ="40 5 15 ? * MON-FRI";
-    private static final String choiceMy="1 1 9 ? * MON-FRI";
+    private static final String choiceMy="1 5 7 ? * MON-FRI";
     private static final String currentTimeCron="1 55 0/2 ? * MON-FRI";
     private static final String temperatureCron="10 45 9,10,11,13,14 ? * MON-FRI";
     private static final String temperatureOpenCron="42 33 9 ? * MON-FRI";
@@ -46,7 +46,7 @@ public class PanService {
     public void preOpen(){
         //获取数据
         if(isWorkday()){
-            log.info("preOne-ready data");
+            log.info("preCurrent-ready data");
             tgbService.currentDate();
             tgbService.currentFive();
         }
