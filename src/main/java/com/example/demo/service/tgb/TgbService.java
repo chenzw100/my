@@ -1,0 +1,214 @@
+package com.example.demo.service.tgb;
+
+import com.example.demo.dao.StockCurrentRepository;
+import com.example.demo.dao.StockLimitUpRepository;
+import com.example.demo.domain.MyTotalStock;
+import com.example.demo.domain.table.StockCurrent;
+import com.example.demo.domain.table.StockInfo;
+import com.example.demo.domain.table.StockLimitUp;
+import com.example.demo.enums.NumberEnum;
+import com.example.demo.service.StockInfoService;
+import com.example.demo.service.qt.QtService;
+import com.example.demo.utils.MyChineseWorkDay;
+import com.example.demo.utils.MyUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.List;
+
+/**
+ * Created by laikui on 2019/9/2.
+ * 此乃题材挖掘利器
+ */
+@Component
+public class TgbService extends QtService {
+    @Autowired
+    StockInfoService stockInfoService;
+    @Autowired
+    StockCurrentRepository stockCurrentRepository;
+    @Autowired
+    StockLimitUpRepository stockLimitUpRepository;
+
+
+    //获取24小时的热搜数据
+    public void dayDate(){
+        try {
+            Document doc = Jsoup.connect("https://www.taoguba.com.cn/hotPop").get();
+            Elements elements = doc.getElementsByClass("tbleft");
+            for(int i=10;i<20;i++){
+                Element element = elements.get(i);
+                Element parent =element.parent();
+                Elements tds =parent.siblingElements();
+                String stockName = element.text();
+                String url = element.getElementsByAttribute("href").attr("href");
+                int length = url.length();
+                String code = url.substring(length-9,length-1);
+                String currentPrice = getCurrentPrice(code);
+                if(currentPrice == "-1"){
+                    continue;
+                }
+                StockInfo tgbStock = new StockInfo(code,stockName,NumberEnum.StockType.STOCK_DAY.getCode());
+                tgbStock.setYesterdayClosePrice(MyUtils.getCentBySinaPriceStr(currentPrice));
+                tgbStock.setHotSort(i - 9);
+                tgbStock.setHotValue(Integer.parseInt(tds.get(2).text()));
+                tgbStock.setHotSeven(Integer.parseInt(tds.get(3).text()));
+                log.info("==>WORKDAY:"+code);
+                List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(code,MyUtils.getDayFormat(MyUtils.getYesterdayDate()));
+                if(xgbStocks!=null && xgbStocks.size()>0){
+                    StockLimitUp xgbStock =xgbStocks.get(0);
+                    tgbStock.setPlateName(xgbStock.getPlateName());
+                    tgbStock.setOneFlag(xgbStock.getOpenCount());
+                    tgbStock.setContinuous(xgbStock.getContinueBoardCount());
+                    tgbStock.setLimitUp(1);
+                }else {
+                    xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(code);
+                    if(xgbStocks!=null && xgbStocks.size()>0){
+                        tgbStock.setPlateName(xgbStocks.get(0).getPlateName());
+                    }else {
+                        tgbStock.setPlateName("");
+                    }
+                    tgbStock.setOneFlag(1);
+                    tgbStock.setContinuous(0);
+                    tgbStock.setLimitUp(0);
+                }
+                StockInfo StockInfo = stockInfoService.findStockDaysByCodeYesterdayFormat(tgbStock.getCode());
+                if(StockInfo!=null){
+                    tgbStock.setShowCount(StockInfo.getShowCount()+1);
+                }else {
+                    tgbStock.setShowCount(1);
+                }
+                stockInfoService.save(tgbStock);
+
+            }
+        } catch (IOException e) {
+            log.error("==>WORKDAY fail "+e.getMessage());
+            /*try {
+                Thread.sleep(500000);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+            dayDate();
+            log.info("==>重新执行");*/
+        }
+    }
+    //获取实时的数据
+    public void currentDate(){
+        try {
+            log.info("==>currentDate start:");
+            Document doc = Jsoup.connect("https://www.taoguba.com.cn/hotPop").get();
+            Elements elements = doc.getElementsByClass("tbleft");
+            for(int i=0;i<10;i++){
+                Element element = elements.get(i);
+                Element parent =element.parent();
+                Elements tds =parent.siblingElements();
+                String stockName = element.text();
+                String url = element.getElementsByAttribute("href").attr("href");
+                int length = url.length();
+                String code = url.substring(length-9,length-1);
+                String currentPrice = getCurrentPrice(code);
+                if(currentPrice == null){
+                    continue;
+                }
+                StockCurrent currentStock = new StockCurrent(code,stockName,MyUtils.getCurrentDate());
+                currentStock.setHotSort(i +1);
+                currentStock.setHotValue(Integer.parseInt(tds.get(2).text()));
+                currentStock.setHotSeven(Integer.parseInt(tds.get(3).text()));
+                stockCurrentRepository.save(currentStock);
+            }
+            log.info("==>currentDate end:");
+        } catch (IOException e) {
+            log.error("==>current fail "+e.getMessage());
+        }
+    }
+
+    public void dayFive(){
+        String end = MyUtils.getDayFormat();
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(4, MyUtils.getCurrentDate()));
+        List<MyTotalStock> totalStocks =  stockInfoService.fiveDayInfo(start, end);
+        log.info("dayFive size:"+totalStocks.size());
+        for(MyTotalStock myTotalStock : totalStocks){
+            StockInfo fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
+            fiveTgbStock.setHotSort(myTotalStock.getTotalCount());
+            fiveTgbStock.setHotValue(myTotalStock.getHotValue());
+            fiveTgbStock.setHotSeven(myTotalStock.getHotSeven());
+            String currentPrice = getCurrentPrice(myTotalStock.getCode());
+            fiveTgbStock.setYesterdayClosePrice(MyUtils.getCentBySinaPriceStr(currentPrice));
+            List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myTotalStock.getCode(),MyUtils.getDayFormat(MyUtils.getYesterdayDate()));
+            if(xgbStocks!=null && xgbStocks.size()>0){
+                StockLimitUp xgbStock =xgbStocks.get(0);
+                fiveTgbStock.setPlateName(xgbStock.getPlateName());
+                fiveTgbStock.setOneFlag(xgbStock.getOpenCount());
+                fiveTgbStock.setContinuous(xgbStock.getContinueBoardCount());
+                fiveTgbStock.setLimitUp(1);
+            }else {
+                xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(myTotalStock.getCode());
+                if(xgbStocks!=null && xgbStocks.size()>0){
+                    fiveTgbStock.setPlateName(xgbStocks.get(0).getPlateName());
+                }else {
+                    fiveTgbStock.setPlateName("");
+                }
+                fiveTgbStock.setOneFlag(1);
+                fiveTgbStock.setContinuous(0);
+                fiveTgbStock.setLimitUp(0);
+            }
+            fiveTgbStock.setDayFormat(MyUtils.getDayFormat());
+            StockInfo fiveTgbStockTemp =stockInfoService.findStockDayFiveByCodeAndYesterdayFormat(myTotalStock.getCode());
+            if(fiveTgbStockTemp!=null){
+                fiveTgbStock.setShowCount(fiveTgbStockTemp.getShowCount() + 1);
+            }else {
+                fiveTgbStock.setShowCount(1);
+            }
+            stockInfoService.save(fiveTgbStock);
+            log.info("dayFive end size:"+totalStocks.size());
+        }
+    }
+
+
+    public void currentFive(){
+        String end = MyUtils.getDayFormat();
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(4, MyUtils.getCurrentDate()));
+        List<MyTotalStock> totalStocks =  stockCurrentRepository.fiveInfo(start, end);
+        log.info("currentFive size:"+totalStocks.size());
+        for(MyTotalStock myTotalStock : totalStocks){
+            StockInfo fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_CURRENT_FIVE.getCode());
+            fiveTgbStock.setHotSort(myTotalStock.getTotalCount());
+            fiveTgbStock.setHotValue(myTotalStock.getHotValue());
+            fiveTgbStock.setHotSeven(myTotalStock.getHotSeven());
+            String currentPrice = getCurrentPrice(myTotalStock.getCode());
+            fiveTgbStock.setYesterdayClosePrice(MyUtils.getCentBySinaPriceStr(currentPrice));
+            List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myTotalStock.getCode(),MyUtils.getDayFormat(MyUtils.getYesterdayDate()));
+            if(xgbStocks!=null && xgbStocks.size()>0){
+                StockLimitUp xgbStock =xgbStocks.get(0);
+                fiveTgbStock.setPlateName(xgbStock.getPlateName());
+                fiveTgbStock.setOneFlag(xgbStock.getOpenCount());
+                fiveTgbStock.setContinuous(xgbStock.getContinueBoardCount());
+                fiveTgbStock.setLimitUp(1);
+            }else {
+                xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(myTotalStock.getCode());
+                if(xgbStocks!=null && xgbStocks.size()>0){
+                    fiveTgbStock.setPlateName(xgbStocks.get(0).getPlateName());
+                }else {
+                    fiveTgbStock.setPlateName("");
+                }
+                fiveTgbStock.setOneFlag(1);
+                fiveTgbStock.setContinuous(0);
+                fiveTgbStock.setLimitUp(0);
+            }
+            fiveTgbStock.setDayFormat(MyUtils.getDayFormat());
+            StockInfo fiveTgbStockTemp =stockInfoService.findStockCurrentFiveByCodeAndYesterdayFormat(fiveTgbStock.getCode());
+            if(fiveTgbStockTemp!=null){
+                fiveTgbStock.setShowCount(fiveTgbStockTemp.getShowCount() + 1);
+            }else {
+                fiveTgbStock.setShowCount(1);
+            }
+            stockInfoService.save(fiveTgbStock);
+            log.info("currentFive end:"+totalStocks.size());
+        }
+    }
+
+}
