@@ -18,13 +18,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class PanService {
     Log log = LogFactory.getLog(PanService.class);
-    private static final String tgbCron = "50 35 6 ? * MON-FRI";
-    private static final String openCron = "59 25 9 ? * MON-FRI";
-    private static final String closeCron ="40 3 15 ? * MON-FRI";
-    private static final String choiceMy="0 1 9 ? * MON-FRI";
-    private static final String currentTimeCron="1 50 0/2 ? * MON-FRI";
-    private static final String temperatureCron="0 46 9,10,11,13,14 ? * MON-FRI";
-    private static final String temperatureOpenCron="40 33 9 ? * MON-FRI";
+    private static final String tgbCron = "50 10 6 ? * MON-FRI";
+    private static final String openCron = "49 25 9 ? * MON-FRI";
+    private static final String closeCron ="40 5 15 ? * MON-FRI";
+    private static final String choiceMy="1 1 9 ? * MON-FRI";
+    private static final String currentTimeCron="1 55 0/2 ? * MON-FRI";
+    private static final String temperatureCron="10 45 9,10,11,13,14 ? * MON-FRI";
+    private static final String temperatureOpenCron="42 33 9 ? * MON-FRI";
     @Autowired
     DealPanDataService dealPanDataService;
     @Autowired
