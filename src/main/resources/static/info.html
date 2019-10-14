@@ -1,0 +1,68 @@
+<head>
+    <meta charset="UTF-8">
+    <title>for me</title>
+    <script type="text/javascript" src="jquery-2.2.4.min.js"></script>
+</head>
+
+<style>
+    .mychart{
+        width: 950px;height:200px;
+    }
+</style>
+<div class="container">
+    <div class="">
+        <input type="text" value="1" id="dateEnd" onkeyup="onKeyUpEnter(event)">
+        <input type="button" value="确定" id="search" onclick="getSelect()"  />
+    </div>
+    <div>
+        <div id="main" ></div>
+    </div>
+
+
+</div>
+
+<script type="application/javascript">
+    $(function(){
+        getSelect();
+    })
+    function onKeyUpEnter(e) {
+        if (e.keyCode == 13) {
+            getSelect();
+        }else if(e.keyCode == 37){
+            //pre
+            $("#dateEnd").val(2);
+            getSelect();
+        }
+        else if(e.keyCode == 39){
+            //next
+            $("#dateEnd").val(3);
+            getSelect();
+        }
+    }
+    function getSelect(){
+        getViewData();
+    }
+    function getViewData(){
+        var end = $("#dateEnd").val();
+        if(end==undefined || end==""){
+            end="1";
+        }
+        $.ajax({
+            url : 'info/'+end,
+            dataType : 'json',
+            type : 'get',
+            async : false,
+            success : function(ret){
+                //console.log("success"+ret);
+                $("#main").html(ret.responseText);
+            },
+            error:function(ret){
+                //这里走的是error?
+                $("#main").html(ret.responseText);
+                //console.log("fail："+ret);
+            }
+        });
+    }
+
+
+</script>
