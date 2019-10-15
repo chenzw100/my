@@ -59,7 +59,7 @@ public class HelloController {
         }
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         PRE_END=queryEnd;
-        String desc ="坚持模式！！<br>查询日期20191015";
+        String desc ="注意[核心股的大低开，连板指数上6+]；查询日期20191015";
         List<StockInfo> stockInfos = stockInfoService.findStockInfosByDayFormatOrderByStockType(queryEnd);
 
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5,endDate));
