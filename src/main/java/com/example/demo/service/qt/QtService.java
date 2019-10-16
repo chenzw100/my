@@ -30,7 +30,7 @@ public class QtService extends BaseService{
         if(StringUtils.isEmpty(price)){
             String[] stockObj = getStock(code);
             if(stockObj.length<3){
-                return "-1";
+                return "0";
             }
             price = stockObj[3];
             PRICE_CACHE.put(code,price);
@@ -45,7 +45,7 @@ public class QtService extends BaseService{
         String[] stockObj = getStock("sh000001");
         if(stockObj.length<7){
             log.error( ":err=qt");
-            return -1;
+            return 0;
         }
         String str =stockObj[7];
         str = str.substring(0,str.length()-4);

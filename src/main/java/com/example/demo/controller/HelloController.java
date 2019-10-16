@@ -65,7 +65,7 @@ public class HelloController {
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5,endDate));
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
         List<StockTemperature> temperaturesOpen=stockTemperatureRepository.open(start,queryEnd);
-        List<StockTemperature> temperatures=stockTemperatureRepository.current(start,queryEnd);
+        List<StockTemperature> temperatures=stockTemperatureRepository.findByDayFormat(queryEnd);
 
         return desc+queryEnd+"<br>最近5天市场情况<br>"+temperaturesClose+"<br>"+temperaturesOpen+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+stockInfos;
     }

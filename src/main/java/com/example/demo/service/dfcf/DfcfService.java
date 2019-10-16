@@ -14,13 +14,13 @@ public class DfcfService extends BaseService {
     public String currentContinueVal() {
         Object response =  getRequest(current_Continue);
         if(response==null){
-            return "-1";
+            return "0";
         }
         String str = response.toString();
         String[] stockObj = str.split(",");
         if(stockObj.length<7){
             log.error( ":err=" + str);
-            return "-1";
+            return "0";
         }
         str =stockObj[5];
         return str;
@@ -28,13 +28,13 @@ public class DfcfService extends BaseService {
     public String currentYesterdayVal() {
         Object response =  getRequest(current_Yesterday);
         if(response==null){
-            return "-1";
+            return "0";
         }
         String str = response.toString();
         String[] stockObj = str.split(",");
         if(stockObj.length<7){
             log.error( ":err=" + str);
-            return "-1";
+            return "0";
         }
         str =stockObj[5];
         return str;
