@@ -179,7 +179,12 @@ public class TgbService extends QtService {
 
         List<MyTotalStock> totalStocks =  getCurrentData(type);
         for(MyTotalStock myTotalStock : totalStocks){
-            StockInfo fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_CURRENT_FIVE.getCode());
+            StockInfo fiveTgbStock;
+            if(type == NumberEnum.StockCurrentType.ONE_DAY.getCode()){
+                fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_CURRENT.getCode());
+            }else {
+                fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_CURRENT_FIVE.getCode());
+            }
             fiveTgbStock.setHotSort(myTotalStock.getTotalCount());
             fiveTgbStock.setHotValue(myTotalStock.getHotValue());
             fiveTgbStock.setHotSeven(myTotalStock.getHotSeven());
