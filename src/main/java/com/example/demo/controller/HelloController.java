@@ -61,13 +61,13 @@ public class HelloController {
         PRE_END=queryEnd;
         String desc ="注意[核心股的大低开，连板指数上6+]；查询日期20191015";
         List<StockInfo> stockInfos = stockInfoService.findStockInfosByDayFormatOrderByStockType(queryEnd);
-
+        List<StockInfo> downs =stockInfoService.findStockInfosByDayFormatOrderByOpenBidRate(queryEnd);
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5,endDate));
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
         List<StockTemperature> temperaturesOpen=stockTemperatureRepository.open(start,queryEnd);
         List<StockTemperature> temperatures=stockTemperatureRepository.findByDayFormat(queryEnd);
 
-        return desc+queryEnd+"<br>最近5天市场情况<br>"+temperaturesClose+"<br>"+temperaturesOpen+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+stockInfos;
+        return desc+queryEnd+"<br>最近5天市场情况<br>"+temperaturesClose+"<br>"+temperaturesOpen+"大低开:<br>"+downs+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+stockInfos;
     }
     public boolean isWorkday(){
         ChineseWorkDay chineseWorkDay = new ChineseWorkDay(MyUtils.getCurrentDate());

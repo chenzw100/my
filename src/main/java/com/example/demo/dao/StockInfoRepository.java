@@ -22,6 +22,7 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     List<StockInfo> findAll();
     StockInfo findByCodeAndDayFormatAndStockType(String code, String dayFormat,Integer stockType);
     List<StockInfo> findByDayFormatAndStockTypeOrderByOpenBidRate(String dayFormat,Integer stockType);
+    List<StockInfo> findByDayFormatAndOpenBidRateLessThanOrderByOpenBidRateDesc(String dayFormat,int max);
     List<StockInfo> findByDayFormatOrderByStockType(String dayFormat);
     StockInfo save(StockInfo tgbStock);
     @Query(value="SELECT * from stock_info WHERE day_format BETWEEN ?1 AND ?2", nativeQuery = true)
