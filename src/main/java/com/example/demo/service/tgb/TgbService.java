@@ -170,7 +170,12 @@ public class TgbService extends QtService {
     }
 
 
-    public void currentDealData(int type){
+    public void currentDataDeal(){
+        for(NumberEnum.StockCurrentType s:NumberEnum.StockCurrentType.values()){
+            currentDealData(s.getCode());
+        }
+    }
+    private void currentDealData(int type){
 
         List<MyTotalStock> totalStocks =  getCurrentData(type);
         for(MyTotalStock myTotalStock : totalStocks){

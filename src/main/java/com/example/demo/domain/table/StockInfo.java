@@ -219,6 +219,9 @@ public class StockInfo implements Serializable {
     }
 
     public Integer getHotSeven() {
+        if(hotSeven == null){
+            hotSeven =0;
+        }
         return hotSeven;
     }
 

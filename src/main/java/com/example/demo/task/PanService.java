@@ -36,7 +36,6 @@ public class PanService {
     public void preTgb(){
         //获取数据
         if(isWorkday()){
-            log.info("tgb-ready data");
             tgbService.dayDate();
             tgbService.dayFive();
         }
@@ -46,18 +45,13 @@ public class PanService {
     public void preOpen(){
         //获取数据
         if(isWorkday()){
-            log.info("preCurrent-ready data");
-            tgbService.currentDate();
-            for(NumberEnum.StockCurrentType s:NumberEnum.StockCurrentType.values()){
-                tgbService.currentDealData(s.getCode());
-            }
+            tgbService.currentDataDeal();
         }
     }
     //9:26处理数据
     @Scheduled(cron = openCron)
     public void openPan(){
         if(isWorkday()){
-            log.info("openPan-ready data");
             dealPanDataService.open();
 
         }
