@@ -80,7 +80,7 @@ public class XgbService extends QtService {
         temperature.setTradeVal(currentTradeVal());
 
         if(type==NumberEnum.TemperatureType.CLOSE.getCode()){
-            List<StockInfo> downStocks =stockInfoService.findStockDownsByTodayFormat();
+            List<StockInfo> downStocks =stockInfoService.findStockDownsByTomorrowFormat();
             temperature.setStrongDowns(downStocks.size());
             List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByDayFormatAndContinueBoardCountGreaterThan(MyUtils.getDayFormat(),1);
             if(xgbStocks!=null){

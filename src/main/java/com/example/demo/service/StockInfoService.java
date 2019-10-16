@@ -13,12 +13,13 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- STOCK_DOWN(1,"弱势"),
- STOCK_SPACE_HEIGHT(2,"空间"),
- STOCK_LIMIT_UP_FIVE(3,"五版"),
- STOCK_DAY(4,"当天"),
- STOCK_CURRENT_FIVE(11,"五日实时"),
- STOCK_DAY_FIVE(12,"五日当天"),
+ STOCK_DAY(10,"当天"),
+ STOCK_CURRENT(20,"当天实时"),
+ STOCK_DOWN(30,"弱势"),
+ STOCK_SPACE_HEIGHT(40,"空间"),
+ STOCK_LIMIT_UP_FIVE(50,"五版"),
+ STOCK_CURRENT_FIVE(60,"五日实时"),
+ STOCK_DAY_FIVE(70,"五日当天"),
  */
 @Component
 public class StockInfoService {
@@ -49,6 +50,9 @@ public class StockInfoService {
     //---STOCK_DOWN---start ---
     public List<StockInfo> findStockDownsByTodayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DOWN.getCode());
+    }
+    public List<StockInfo> findStockDownsByTomorrowFormat(){
+        return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getTomorrowDayFormat(), NumberEnum.StockType.STOCK_DOWN.getCode());
     }
     public StockInfo findStockDownsByCodeTodayFormat(String code){
         return stockInfoRepository.findByCodeAndDayFormatAndStockType(code,MyUtils.getYesterdayDayFormat(), NumberEnum.StockType.STOCK_DOWN.getCode());

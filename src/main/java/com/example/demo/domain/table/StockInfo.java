@@ -89,7 +89,11 @@ public class StockInfo implements Serializable {
         this.code =code;
         this.name = name;
         this.stockType = stockType;
-        this.dayFormat = MyUtils.getDayFormat();
+        if(stockType== NumberEnum.StockType.STOCK_DOWN.getCode()||stockType== NumberEnum.StockType.STOCK_SPACE_HEIGHT.getCode()||stockType== NumberEnum.StockType.STOCK_LIMIT_UP_FIVE.getCode()){
+            this.dayFormat = MyUtils.getTomorrowDayFormat();
+        }else {
+            this.dayFormat = MyUtils.getDayFormat();
+        }
         this.yesterdayClosePrice=10;
         this.todayOpenPrice=10;
         this.todayClosePrice=10;
