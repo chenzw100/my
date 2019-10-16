@@ -130,7 +130,7 @@ public class TgbService extends QtService {
         String end = MyUtils.getDayFormat();
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(4, MyUtils.getCurrentDate()));
         List<MyTotalStock> totalStocks =  stockInfoService.fiveDayInfo(start, end);
-        log.info("dayFive size:"+totalStocks.size());
+        log.info(start+"-"+end+",dayFive size:"+totalStocks.size());
         for(MyTotalStock myTotalStock : totalStocks){
             StockInfo fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
             fiveTgbStock.setHotSort(myTotalStock.getTotalCount());
@@ -173,7 +173,7 @@ public class TgbService extends QtService {
         String end = MyUtils.getDayFormat();
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(4, MyUtils.getCurrentDate()));
         List<MyTotalStock> totalStocks =  stockCurrentRepository.fiveInfo(start, end);
-        log.info("currentFive size:"+totalStocks.size());
+        log.info(start+"-"+end+",currentFive size:"+totalStocks.size());
         for(MyTotalStock myTotalStock : totalStocks){
             StockInfo fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_CURRENT_FIVE.getCode());
             fiveTgbStock.setHotSort(myTotalStock.getTotalCount());
