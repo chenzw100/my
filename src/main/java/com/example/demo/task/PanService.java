@@ -22,7 +22,7 @@ public class PanService {
     private static final String openCron = "49 25 9 ? * MON-FRI";
     private static final String closeCron ="40 5 15 ? * MON-FRI";
     private static final String choiceMy="1 5 7 ? * MON-FRI";
-    private static final String currentTimeCron="1 55 0/2 ? * MON-FRI";
+    private static final String currentTimeCron="1 55 0/1 ? * MON-FRI";
     private static final String temperatureCron="10 45 9,10,11,13,14 ? * MON-FRI";
     private static final String temperatureOpenCron="42 33 9 ? * MON-FRI";
     @Autowired
@@ -48,7 +48,9 @@ public class PanService {
         if(isWorkday()){
             log.info("preCurrent-ready data");
             tgbService.currentDate();
-            tgbService.currentFive();
+            for(NumberEnum.StockCurrentType s:NumberEnum.StockCurrentType.values()){
+                tgbService.currentDealData(s.getCode());
+            }
         }
     }
     //9:26处理数据

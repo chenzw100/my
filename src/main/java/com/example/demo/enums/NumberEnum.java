@@ -40,11 +40,12 @@ public class NumberEnum {
     //stock_down，stock_space_height,stock_limit_up_five,stock_day，stock_current_five，stock_day_five
     public enum StockType{
         STOCK_DAY(1,"当天"),
-        STOCK_DOWN(2,"弱势"),
-        STOCK_SPACE_HEIGHT(3,"空间"),
-        STOCK_LIMIT_UP_FIVE(4,"五版"),
-        STOCK_CURRENT_FIVE(5,"五日实时"),
-        STOCK_DAY_FIVE(6,"五日当天"),
+        STOCK_CURRENT(2,"当天实时"),
+        STOCK_DOWN(3,"弱势"),
+        STOCK_SPACE_HEIGHT(4,"空间"),
+        STOCK_LIMIT_UP_FIVE(5,"五版"),
+        STOCK_CURRENT_FIVE(6,"五日实时"),
+        STOCK_DAY_FIVE(7,"五日当天"),
         ;
 
         private StockType(int code, String desc) {
@@ -75,12 +76,12 @@ public class NumberEnum {
             return "";
         }
     }
-    public enum StrongOpenType{
-        STRONG(1,"强势"),
-        OPEN(2,"开板"),
+    public enum StockCurrentType{
+        ONE_DAY(1,"一天"),
+        FIVE_DAY(2,"五天"),
         ;
 
-        private StrongOpenType(int code, String desc) {
+        private StockCurrentType(int code, String desc) {
             this.code = code;
             this.desc = desc;
         }
@@ -99,8 +100,8 @@ public class NumberEnum {
             this.desc = desc;
         }
 
-        public static String getStrongOpenType(int code){
-            for(StrongOpenType d : StrongOpenType.values()){
+        public static String getStockCurrentType(int code){
+            for(StockCurrentType d : StockCurrentType.values()){
                 if(d.getCode()==code){
                     return d.getDesc();
                 }

@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -169,11 +170,9 @@ public class TgbService extends QtService {
     }
 
 
-    public void currentFive(){
-        String end = MyUtils.getDayFormat();
-        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(4, MyUtils.getCurrentDate()));
-        List<MyTotalStock> totalStocks =  stockCurrentRepository.fiveInfo(start, end);
-        log.info(start+"-"+end+",currentFive size:"+totalStocks.size());
+    public void currentDealData(int type){
+
+        List<MyTotalStock> totalStocks =  getCurrentData(type);
         for(MyTotalStock myTotalStock : totalStocks){
             StockInfo fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_CURRENT_FIVE.getCode());
             fiveTgbStock.setHotSort(myTotalStock.getTotalCount());
@@ -209,6 +208,21 @@ public class TgbService extends QtService {
             stockInfoService.save(fiveTgbStock);
             log.info("currentFive end:"+totalStocks.size());
         }
+    }
+    List<MyTotalStock> getCurrentData(int type){
+        String end = MyUtils.getDayFormat();
+        String start ="";
+        List<MyTotalStock> totalStocks= new ArrayList<>();
+        if(type == NumberEnum.StockCurrentType.ONE_DAY.getCode()){
+            start =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay());
+            totalStocks =  stockCurrentRepository.oneInfo(start, end);
+        }else {
+
+            start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(4, MyUtils.getCurrentDate()));
+            totalStocks =  stockCurrentRepository.fiveInfo(start, end);
+        }
+        log.info(NumberEnum.StockCurrentType.getStockCurrentType(type)+"==>"+start+"-"+end+",currentData size:"+totalStocks.size());
+        return totalStocks;
     }
 
 }
