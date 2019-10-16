@@ -39,13 +39,13 @@ public class NumberEnum {
     }
     //stock_down，stock_space_height,stock_limit_up_five,stock_day，stock_current_five，stock_day_five
     public enum StockType{
-        STOCK_DAY(1,"当天"),
-        STOCK_CURRENT(2,"当天实时"),
-        STOCK_DOWN(3,"弱势"),
-        STOCK_SPACE_HEIGHT(4,"空间"),
-        STOCK_LIMIT_UP_FIVE(5,"五版"),
-        STOCK_CURRENT_FIVE(6,"五日实时"),
-        STOCK_DAY_FIVE(7,"五日当天"),
+        STOCK_DAY(10,"当天"),
+        STOCK_CURRENT(20,"当天实时"),
+        STOCK_DOWN(30,"弱势"),
+        STOCK_SPACE_HEIGHT(40,"空间"),
+        STOCK_LIMIT_UP_FIVE(50,"五版"),
+        STOCK_CURRENT_FIVE(60,"五日实时"),
+        STOCK_DAY_FIVE(70,"五日当天"),
         ;
 
         private StockType(int code, String desc) {
