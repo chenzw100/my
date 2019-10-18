@@ -149,8 +149,6 @@ public class XgbService extends QtService {
         spaceHeight.setOneFlag(hstock.getOpenCount());
         spaceHeight.setContinuous(hstock.getContinueBoardCount());
         spaceHeight.setPlateName(hstock.getPlateName());
-        spaceHeight.setDayFormat(MyUtils.getDayFormat());
-        spaceHeight.setDayFormat(hstock.getDayFormat());
         spaceHeight.setYesterdayClosePrice(hstock.getYesterdayClosePrice());
         stockInfoService.save(spaceHeight);
     }
