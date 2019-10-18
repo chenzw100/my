@@ -100,7 +100,7 @@ public class TgbService extends QtService {
     //获取实时的数据
     public void currentDate(){
         try {
-            log.info("==>currentDate start:");
+            //log.info("==>currentDate start:");
             Document doc = Jsoup.connect("https://www.taoguba.com.cn/hotPop").get();
             Elements elements = doc.getElementsByClass("tbleft");
             for(int i=0;i<10;i++){
@@ -121,7 +121,7 @@ public class TgbService extends QtService {
                 currentStock.setHotSeven(Integer.parseInt(tds.get(3).text()));
                 stockCurrentRepository.save(currentStock);
             }
-            log.info("==>currentDate end:");
+            log.info("==>currentDate end.");
         } catch (IOException e) {
             log.error("==>current fail "+e.getMessage());
         }
@@ -129,7 +129,7 @@ public class TgbService extends QtService {
 
     public void dayFive(){
         String end = MyUtils.getDayFormat();
-        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(4, MyUtils.getCurrentDate()));
+        String start =MyUtils.getPreFiveDayFormat();
         List<MyTotalStock> totalStocks =  stockInfoService.fiveDayInfo(start, end);
         log.info(start+"-"+end+",dayFive size:"+totalStocks.size());
         for(MyTotalStock myTotalStock : totalStocks){
@@ -222,13 +222,13 @@ public class TgbService extends QtService {
     List<MyTotalStock> getCurrentData(int type){
         String end = MyUtils.getDayFormat();
         String start ="";
-        List<MyTotalStock> totalStocks= new ArrayList<>();
+        List<MyTotalStock> totalStocks= null;
         if(type == NumberEnum.StockCurrentType.ONE_DAY.getCode()){
             start =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay());
             totalStocks =  stockCurrentRepository.oneInfo(start, end);
         }else {
 
-            start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(4, MyUtils.getCurrentDate()));
+            start =MyUtils.getPreFiveDayFormat();
             totalStocks =  stockCurrentRepository.fiveInfo(start, end);
         }
         log.info(NumberEnum.StockCurrentType.getStockCurrentType(type)+"==>"+start+"-"+end+",currentData size:"+totalStocks.size());

@@ -76,9 +76,9 @@ public class DealPanDataService extends QtService {
 
     private void fiveStatistic(){
         String end=MyUtils.getDayFormat();
-        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(3,MyUtils.getCurrentDate()));
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(3,MyUtils.getYesterdayDate()));
         List<StockInfo> xgbFiveUpStocks = stockInfoService.fiveStatistic(start, end);
-        log.info(start+"-"+end+",--->fiveStatistic count:"+xgbFiveUpStocks.size());
+        log.info(start+"-"+end+",--->fourStatistic count:"+xgbFiveUpStocks.size());
         if(xgbFiveUpStocks.size()>0){
             for (StockInfo xgbFiveUpStock : xgbFiveUpStocks){
                 SinaTinyInfoStock tinyInfoStock = sinaService.getTiny(xgbFiveUpStock.getCode());

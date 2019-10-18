@@ -50,6 +50,9 @@ public class MyUtils {
     public static String getDayFormat(Date date){
         return DateFormatUtils.format(date, "yyyyMMdd");
     }
+    public static String getPreFiveDayFormat(){
+        return getDayFormat(MyChineseWorkDay.preDaysWorkDay(4, MyUtils.getCurrentDate()));
+    }
     public static int getCentBySinaPriceStr(String sinaPriceStr){
         return new BigDecimal(Double.parseDouble(sinaPriceStr)).multiply(new BigDecimal(100)).setScale(2, RoundingMode.HALF_UP).intValue();
     }
