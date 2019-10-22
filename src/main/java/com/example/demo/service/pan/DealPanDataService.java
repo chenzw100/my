@@ -33,11 +33,13 @@ public class DealPanDataService extends QtService {
     }
     public void close(){
         SINA_CACHE.clear();
+        PRICE_CACHE.clear();
         log.info("data close start");
         fiveStatistic();
         closeStockInfo();
         log.info("data close end");
         SINA_CACHE.clear();
+        PRICE_CACHE.clear();
     }
     private void openStockInfo(){
         List<StockInfo> todayStocks = stockInfoService.findStockInfosByTodayFormat();

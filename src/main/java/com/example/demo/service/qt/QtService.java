@@ -34,6 +34,9 @@ public class QtService extends BaseService{
             }
             price = stockObj[3];
             PRICE_CACHE.put(code,price);
+            log.info(code+"-PRICE_CACHE-"+price);
+        }else {
+            log.info(code+"-PRICE_no_CACHE-"+price);
         }
         return price;
     }

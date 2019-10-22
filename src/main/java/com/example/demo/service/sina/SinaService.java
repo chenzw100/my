@@ -60,6 +60,9 @@ public class SinaService extends BaseService {
             tiny.setLowPrice(MyUtils.getCentBySinaPriceStr(stockObj[5]));
             tiny.setCode(code);
             SINA_CACHE.put(code,tiny);
+            log.info(code+"-SINA_CACHE-"+tiny.toString());
+        }else {
+            log.info(code+"-SINA_no_CACHE-"+tiny.toString());
         }
         return tiny;
     }

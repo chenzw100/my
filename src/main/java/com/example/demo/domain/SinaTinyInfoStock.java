@@ -49,4 +49,15 @@ public class SinaTinyInfoStock {
     public void setLowPrice(int lowPrice) {
         this.lowPrice = lowPrice;
     }
+
+    @Override
+    public String toString() {
+        return "SinaTiny{" +
+                "code='" + code + '\'' +
+                ", highPrice=" + highPrice +
+                ", lowPrice=" + lowPrice +
+                ", openPrice=" + openPrice +
+                ", currentPrice=" + currentPrice +
+                '}';
+    }
 }
