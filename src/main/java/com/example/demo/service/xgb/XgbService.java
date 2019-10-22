@@ -2,8 +2,11 @@ package com.example.demo.service.xgb;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.demo.dao.*;
-import com.example.demo.domain.table.*;
+import com.example.demo.dao.StockLimitUpRepository;
+import com.example.demo.dao.StockTemperatureRepository;
+import com.example.demo.domain.table.StockInfo;
+import com.example.demo.domain.table.StockLimitUp;
+import com.example.demo.domain.table.StockTemperature;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.dfcf.DfcfService;
@@ -24,7 +27,7 @@ public class XgbService extends QtService {
     private static String limit_up="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=limit_up";
     private static String limit_up_broken ="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=limit_up_broken";
     private static String super_stock ="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=super_stock";
-    private static String market_temperature="https://flash-api.xuangubao.cn/api/market_indicator/line?fields=market_temperature,limit_up_broken_count,limit_up_broken_ratio,rise_count,fall_count,limit_down_count,limit_up_count";
+    private static String market_temperature="https://flash-api.xuangubao.cn/api/market_indicator/line?fields=market_temperature,limit_up_broken_count,limit_up_broken_ratio,rise_count,fall_count,limit_down_count,limit_up_count,yesterday_limit_up_avg_pcp";
 
    // private static String limit_down="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=limit_down";
     //private static String yesterday_limit_up="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=yesterday_limit_up";yesterday_limit_up_avg_pcp
@@ -69,14 +72,22 @@ public class XgbService extends QtService {
             temperature.setBrokenRatio(MyUtils.getCentBySinaPriceStr(decimalFormat.format(limitUpBrokenCount)));
             temperature.setOpen(jsonDataLast.getInteger("limit_up_broken_count"));
 
+            Double yesterday_limit_up_avg_pcp = jsonDataLast.getDouble("yesterday_limit_up_avg_pcp")*100;
+            temperature.setYesterdayShow(MyUtils.getCentBySinaPriceStr(decimalFormat.format(yesterday_limit_up_avg_pcp)));
+
             array = JSONObject.parseObject(response.toString()).getJSONArray("data");
             jsonDataLast = array.getJSONObject(array.size() - 1);
             String temperatureNum = jsonDataLast.getString("market_temperature");
             temperature.setNowTemperature(MyUtils.getCentBySinaPriceStr(temperatureNum));
         }
 
-        temperature.setContinueVal(dfcfService.currentContinueVal());
-        temperature.setYesterdayShow(MyUtils.getCentByYuanStr(dfcfService.currentYesterdayVal()));
+        if(type==NumberEnum.TemperatureType.OPEN.getCode()){
+            temperature.setContinueVal("0");
+            //temperature.setYesterdayShow(0);
+        }else {
+            temperature.setContinueVal(dfcfService.currentContinueVal());
+            //temperature.setYesterdayShow(MyUtils.getCentByYuanStr(dfcfService.currentYesterdayVal()));
+        }
         temperature.setTradeVal(currentTradeVal());
 
         if(type==NumberEnum.TemperatureType.CLOSE.getCode()){
