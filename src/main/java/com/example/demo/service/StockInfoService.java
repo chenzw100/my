@@ -33,7 +33,7 @@ public class StockInfoService {
         return stockInfoRepository.findByDayFormatAndOpenBidRateLessThanOrderByOpenBidRateDesc(dayFormat,-698);
     }
     public List<StockInfo> findStockInfosByDayFormatOrderByStockType(String dayFormat){
-        return stockInfoRepository.findByDayFormatOrderByStockType(dayFormat);
+        return stockInfoRepository.findByDayFormatOrderByStockTypeDesc(dayFormat);
     }
     public List<StockInfo> fiveStatistic(String start, String end){
         return stockInfoRepository.fiveStatistic(start,end);
@@ -42,10 +42,10 @@ public class StockInfoService {
         return stockInfoRepository.fiveDayInfo(start,end);
     }
     public List<StockInfo> findStockInfosByTodayFormat(){
-        return stockInfoRepository.findByDayFormatOrderByStockType(MyUtils.getDayFormat());
+        return stockInfoRepository.findByDayFormatOrderByStockTypeDesc(MyUtils.getDayFormat());
     }
     public List<StockInfo> findStockInfosByYesterdayFormat(){
-        return stockInfoRepository.findByDayFormatOrderByStockType(MyUtils.getYesterdayDayFormat());
+        return stockInfoRepository.findByDayFormatOrderByStockTypeDesc(MyUtils.getYesterdayDayFormat());
     }
     //---STOCK_DOWN---start ---
     public List<StockInfo> findStockDownsByTodayFormat(){
