@@ -173,7 +173,7 @@ public class XgbService extends QtService {
         // 先强势，后炸板
         Object response = getRequest(limit_up_broken);
         JSONArray array = JSONObject.parseObject(response.toString()).getJSONArray("data");
-        log.info("-broken---->"+array.size());
+        log.info("-broken---->" + array.size());
         for(int i=0;i<array.size();i++){
             JSONObject jsonStock =  array.getJSONObject(i);
             String name = jsonStock.getString("stock_chi_name");
@@ -221,7 +221,7 @@ public class XgbService extends QtService {
                 }
                 StockInfo downStock = new StockInfo(code,name, NumberEnum.StockType.STOCK_DOWN.getCode());
                 downStock.setYesterdayClosePrice(MyUtils.getCentByYuanStr(jsonStock.getString("price")));
-                log.info("super down rate:"+cp);
+                log.info("super down rate:" + cp);
                 stockInfoService.save(downStock);
 
             }
@@ -245,10 +245,14 @@ public class XgbService extends QtService {
                 stockPlate = new StockPlate();
                 String name = jsonStock.getString("name");
                 stockPlate.setPlateName(name);
+                stockPlate.setPlateCode(code);
                 stockPlate.setContinuousCount(1);
             }else {
                 stockPlate.setId(null);
                 stockPlate.setContinuousCount(stockPlate.getContinuousCount()+1);
+            }
+            if(desc==null){
+                desc="";
             }
             stockPlate.setDescription(desc);
             stockPlate.setDayFormat(MyUtils.getDayFormat());
