@@ -6,9 +6,11 @@ import com.example.demo.dao.StockLimitUpRepository;
 import com.example.demo.dao.StockTemperatureRepository;
 import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockLimitUp;
+import com.example.demo.domain.table.StockPlate;
 import com.example.demo.domain.table.StockTemperature;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.StockInfoService;
+import com.example.demo.service.StockPlateService;
 import com.example.demo.service.dfcf.DfcfService;
 import com.example.demo.service.qt.QtService;
 import com.example.demo.utils.MyUtils;
@@ -24,6 +26,7 @@ import java.util.List;
 
 @Component
 public class XgbService extends QtService {
+    private static String plates_url = "https://flash-api.xuangubao.cn/api/surge_stock/plates";
     private static String limit_up="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=limit_up";
     private static String limit_up_broken ="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=limit_up_broken";
     private static String super_stock ="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=super_stock";
@@ -42,12 +45,15 @@ public class XgbService extends QtService {
     StockLimitUpRepository stockLimitUpRepository;
     @Autowired
     StockInfoService stockInfoService;
+    @Autowired
+    StockPlateService stockPlateService;
     public void closePan(){
         log.info("xgb==>start closePan");
         limitUp();
         superStockBefore();
         limitUpBrokenAfter();
         temperature(NumberEnum.TemperatureType.CLOSE.getCode());
+        platesClose();
         log.info("xgb===>end closePan");
     }
 
@@ -220,6 +226,34 @@ public class XgbService extends QtService {
 
             }
 
+        }
+    }
+    public void platesClose(){
+        Object response = getRequest(plates_url);
+        JSONArray array = JSONObject.parseObject(response.toString()).getJSONObject("data").getJSONArray("items");
+        log.info("-->plates："+array.size());
+        int length = 5;
+        if(array.size()<5){
+            length = array.size();
+        }
+        for(int i=0;i<length;i++){
+            JSONObject jsonStock =  array.getJSONObject(i);
+            String code = jsonStock.getString("id");
+            StockPlate stockPlate = stockPlateService.findByPlateCodeByYesterday(code);
+            String desc = jsonStock.getString("description");
+            if(stockPlate == null){
+                stockPlate = new StockPlate();
+                String name = jsonStock.getString("name");
+                stockPlate.setPlateName(name);
+                stockPlate.setContinuousCount(1);
+            }else {
+                stockPlate.setId(null);
+                stockPlate.setContinuousCount(stockPlate.getContinuousCount()+1);
+            }
+            stockPlate.setDescription(desc);
+            stockPlate.setDayFormat(MyUtils.getDayFormat());
+            stockPlate.setHotSort(i+1);
+            stockPlateService.save(stockPlate);
         }
     }
 

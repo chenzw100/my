@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.dao.*;
+import com.example.demo.domain.StaStockPlate;
 import com.example.demo.domain.table.*;
 import com.example.demo.service.StockInfoService;
+import com.example.demo.service.StockPlateService;
+import com.example.demo.service.xgb.XgbService;
 import com.example.demo.task.PanService;
 import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyChineseWorkDay;
@@ -21,9 +24,18 @@ public class HelloController {
     @Autowired
     StockInfoService stockInfoService;
     @Autowired
+    StockPlateService stockPlateService;
+    @Autowired
     StockTemperatureRepository stockTemperatureRepository;
     @Autowired
     PanService panService;
+    @Autowired
+    XgbService xgbService;
+    @RequestMapping("/p")
+    public String plate(){
+        xgbService.platesClose();
+        return "close success";
+    }
     @RequestMapping("/hello")
     public String hello(){
         panService.currentPan();
@@ -59,15 +71,18 @@ public class HelloController {
         }
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         PRE_END=queryEnd;
-        String desc ="注意[核心股的大低开，连板指数上6+]；查询日期20191015";
+        String desc ="【主流板块 大科技】注意[核心股的大低开，连板指数上6+]；查询日期20191015";
         List<StockInfo> stockInfos = stockInfoService.findStockInfosByDayFormatOrderByStockType(queryEnd);
         List<StockInfo> downs =stockInfoService.findStockInfosByDayFormatOrderByOpenBidRate(queryEnd);
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5,endDate));
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
         List<StockTemperature> temperaturesOpen=stockTemperatureRepository.open(start,queryEnd);
         List<StockTemperature> temperatures=stockTemperatureRepository.findByDayFormat(queryEnd);
+        List<StaStockPlate> staStockPlatesWeek = stockPlateService.weekStatistic();
+        List<StaStockPlate> staStockPlatesWeek2 = stockPlateService.week2Statistic();
+        List<StaStockPlate> staStockPlatesMonth = stockPlateService.monthStatistic();
 
-        return desc+queryEnd+"<br>最近5天市场情况<br>"+temperaturesClose+"<br>"+temperaturesOpen+"大低开:<br>"+downs+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+stockInfos;
+        return desc+queryEnd+"<br>月:"+staStockPlatesMonth+"半月:"+staStockPlatesWeek2+"周:"+staStockPlatesWeek+"<br>最近5天市场情况<br>"+temperaturesClose+"<br>"+temperaturesOpen+"大低开:<br>"+downs+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+stockInfos;
     }
     public boolean isWorkday(){
         ChineseWorkDay chineseWorkDay = new ChineseWorkDay(MyUtils.getCurrentDate());

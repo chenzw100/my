@@ -53,6 +53,12 @@ public class MyUtils {
     public static String getPreFiveDayFormat(){
         return getDayFormat(MyChineseWorkDay.preDaysWorkDay(4, MyUtils.getCurrentDate()));
     }
+    public static String getPre2WeekDayFormat(){
+        return getDayFormat(MyChineseWorkDay.preDaysWorkDay(8, MyUtils.getCurrentDate()));
+    }
+    public static String getPreMonthDayFormat(){
+        return getDayFormat(MyChineseWorkDay.preDaysWorkDay(16, MyUtils.getCurrentDate()));
+    }
     public static int getCentBySinaPriceStr(String sinaPriceStr){
         return new BigDecimal(Double.parseDouble(sinaPriceStr)).multiply(new BigDecimal(100)).setScale(2, RoundingMode.HALF_UP).intValue();
     }
