@@ -27,7 +27,7 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     StockInfo save(StockInfo tgbStock);
     @Query(value="SELECT * from stock_info WHERE day_format BETWEEN ?1 AND ?2", nativeQuery = true)
     public List<StockInfo> fiveStatistic(String start, String end);
-    @Query(value="SELECT * FROM ( SELECT code, name,sum(hot_seven) as hot_seven,sum(hot_value)as hot_value, COUNT(id) as total_count from stock_info WHERE stock_type =1 and day_format BETWEEN ?1 AND ?2  GROUP BY code) as temp WHERE temp.total_count>2 ORDER BY total_count DESC ", nativeQuery = true)
+    @Query(value="SELECT * FROM ( SELECT code, name,sum(hot_seven) as hot_seven,sum(hot_value)as hot_value, COUNT(id) as total_count from stock_info WHERE stock_type =10 and day_format BETWEEN ?1 AND ?2  GROUP BY code) as temp WHERE temp.total_count>2 ORDER BY total_count DESC ", nativeQuery = true)
     public List<MyTotalStock> fiveDayInfo(String start, String end);
 
 
