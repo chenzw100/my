@@ -194,7 +194,15 @@ public class XgbService extends QtService {
                 }
                 downStock.setYesterdayClosePrice(MyUtils.getCentByYuanStr(jsonStock.getString("price")));
                 log.info("open limit up rate:"+cp);
-                //downStock.setDownRate(cp*100);
+                List<StockLimitUp> xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(downStock.getCode());
+                if(xgbStocks!=null && xgbStocks.size()>0){
+                    downStock.setPlateName(xgbStocks.get(0).getPlateName());
+                }else {
+                    downStock.setPlateName("");
+                }
+                downStock.setOneFlag(1);
+                downStock.setContinuous(0);
+                downStock.setLimitUp(0);
                 stockInfoService.save(downStock);
 
             }
