@@ -47,6 +47,9 @@ public class StockInfoService {
     public List<StockInfo> findStockInfosByYesterdayFormat(){
         return stockInfoRepository.findByDayFormatOrderByStockTypeDesc(MyUtils.getYesterdayDayFormat());
     }
+    public List<StockInfo> findByDayFormatAndStockTypeOrderByOpenBidRate(String dayFormat,int type){
+        return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(dayFormat, type);
+    }
     //---STOCK_DOWN---start ---
     public List<StockInfo> findStockDownsByTodayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DOWN.getCode());
