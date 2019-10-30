@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dao.*;
 import com.example.demo.domain.StaStockPlate;
+import com.example.demo.domain.StaStockPlateImpl;
 import com.example.demo.domain.table.*;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.StockInfoService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -79,10 +81,28 @@ public class HelloController {
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5,endDate));
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
         List<StaStockPlate> staStockPlatesWeek = stockPlateService.weekStatistic();
+        List<StaStockPlateImpl> staStockPlatesWeekImpl = new ArrayList<>();
+        if(staStockPlatesWeek.size()>0){
+            for(StaStockPlate s: staStockPlatesWeek){
+                staStockPlatesWeekImpl.add(new StaStockPlateImpl(s));
+            }
+        }
         List<StaStockPlate> staStockPlatesWeek2 = stockPlateService.week2Statistic();
+        List<StaStockPlateImpl> staStockPlatesWeek2Impl = new ArrayList<>();
+        if(staStockPlatesWeek.size()>0){
+            for(StaStockPlate s: staStockPlatesWeek2){
+                staStockPlatesWeek2Impl.add(new StaStockPlateImpl(s));
+            }
+        }
         List<StaStockPlate> staStockPlatesMonth = stockPlateService.monthStatistic();
+        List<StaStockPlateImpl> staStockPlatesMonthImpl = new ArrayList<>();
+        if(staStockPlatesWeek.size()>0){
+            for(StaStockPlate s: staStockPlatesMonth){
+                staStockPlatesMonthImpl.add(new StaStockPlateImpl(s));
+            }
+        }
 
-        return desc+queryEnd+"<br>月:"+staStockPlatesMonth+"半月:"+staStockPlatesWeek2+"周:"+staStockPlatesWeek+"<br>最近5天市场情况<br>"+temperaturesClose+"【连板指数上6+】<br>【核心股的大低开】:<br>"+downs+"<br>【相信数据，相信市场】:<br>"+stockCurrentFives+"【不参与竞价,大题材让20%又何妨】<br>"+stockDayFives;
+        return desc+queryEnd+"<br>月:"+staStockPlatesWeekImpl+"半月:"+staStockPlatesWeek2Impl+"周:"+staStockPlatesMonthImpl+"<br>最近5天市场情况<br>"+temperaturesClose+"【连板指数上6+】<br>【核心股的大低开】:<br>"+downs+"<br>【相信数据，相信市场】:<br>"+stockCurrentFives+"【不参与竞价,大题材让20%又何妨】<br>"+stockDayFives;
     }
     @RequestMapping("/info/{end}")
     String info(@PathVariable("end")String end) {
