@@ -23,7 +23,7 @@ public class StockPlate implements Serializable {
     private String plateCode;
     @Column(nullable = false,columnDefinition="varchar(20)")
     private String plateName;
-    @Column(nullable = false,columnDefinition="varchar(50) COMMENT '描述'")
+    @Column(nullable = true,columnDefinition="varchar(50) COMMENT '描述'")
     private String description;
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '连续出现次数'")
     private Integer continuousCount;

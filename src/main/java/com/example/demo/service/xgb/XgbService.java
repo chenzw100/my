@@ -173,7 +173,7 @@ public class XgbService extends QtService {
         // 先强势，后炸板
         Object response = getRequest(limit_up_broken);
         JSONArray array = JSONObject.parseObject(response.toString()).getJSONArray("data");
-        log.info("-broken---->"+array.size());
+        log.info("-broken---->" + array.size());
         for(int i=0;i<array.size();i++){
             JSONObject jsonStock =  array.getJSONObject(i);
             String name = jsonStock.getString("stock_chi_name");
@@ -194,15 +194,7 @@ public class XgbService extends QtService {
                 }
                 downStock.setYesterdayClosePrice(MyUtils.getCentByYuanStr(jsonStock.getString("price")));
                 log.info("open limit up rate:"+cp);
-                List<StockLimitUp> xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(downStock.getCode());
-                if(xgbStocks!=null && xgbStocks.size()>0){
-                    downStock.setPlateName(xgbStocks.get(0).getPlateName());
-                }else {
-                    downStock.setPlateName("");
-                }
-                downStock.setOneFlag(1);
-                downStock.setContinuous(0);
-                downStock.setLimitUp(0);
+                //downStock.setDownRate(cp*100);
                 stockInfoService.save(downStock);
 
             }
@@ -262,10 +254,14 @@ public class XgbService extends QtService {
                 stockPlate = new StockPlate();
                 String name = jsonStock.getString("name");
                 stockPlate.setPlateName(name);
+                stockPlate.setPlateCode(code);
                 stockPlate.setContinuousCount(1);
             }else {
                 stockPlate.setId(null);
                 stockPlate.setContinuousCount(stockPlate.getContinuousCount()+1);
+            }
+            if(desc==null){
+                desc="";
             }
             stockPlate.setDescription(desc);
             stockPlate.setDayFormat(MyUtils.getDayFormat());

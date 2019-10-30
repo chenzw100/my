@@ -25,7 +25,7 @@ public interface StockPlateRepository extends JpaRepository<StockPlate,Long> {
     StockPlate save(StockPlate stockPlate);
     @Query(value="SELECT * from stock_info WHERE day_format BETWEEN ?1 AND ?2", nativeQuery = true)
     public List<StockPlate> statistic(String start, String end);
-    @Query(value="SELECT * FROM ( SELECT description,plate_name,sum(continuous_count) as continuous_count,sum(hot_sort) as hot_sort, COUNT(id) as total_count from stock_plate WHERE day_format BETWEEN ?1 AND ?2  GROUP BY code) as temp  ORDER BY total_count DESC  LIMIT 3", nativeQuery = true)
+    @Query(value="SELECT * FROM ( SELECT description,plate_name,sum(continuous_count) as continuous_count,sum(hot_sort) as hot_sort, COUNT(id) as total_count from stock_plate WHERE day_format BETWEEN ?1 AND ?2  GROUP BY plate_name) as temp  ORDER BY total_count DESC  LIMIT 3", nativeQuery = true)
     public List<StaStockPlate> limit3(String start, String end);
 
 
