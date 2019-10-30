@@ -8,6 +8,8 @@ import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockPlate;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.utils.MyUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +26,7 @@ import java.util.List;
  */
 @Component
 public class StockPlateService {
-
+    public Log log = LogFactory.getLog(StockPlateService.class);
     @Autowired
     StockPlateRepository stockPlateRepository;
     public StockPlate save(StockPlate stockPlate){
@@ -34,13 +36,22 @@ public class StockPlateService {
         return stockPlateRepository.findByPlateCodeAndDayFormat(code,MyUtils.getYesterdayDayFormat());
     }
     public List<StaStockPlate>  weekStatistic(){
-        return stockPlateRepository.limit3(MyUtils.getDayFormat(),MyUtils.getPreFiveDayFormat());
+        String start = MyUtils.getPreFiveDayFormat();
+        String end = MyUtils.getDayFormat();
+        log.info("weekStatistic:"+start+"-"+end);
+        return stockPlateRepository.limit3(start,end);
     }
     public List<StaStockPlate>  week2Statistic(){
-        return stockPlateRepository.limit3(MyUtils.getDayFormat(),MyUtils.getPre2WeekDayFormat());
+        String end = MyUtils.getDayFormat();
+        String start = MyUtils.getPre2WeekDayFormat();
+        log.info("week2Statistic:"+start+"-"+end);
+        return stockPlateRepository.limit3(start,end);
     }
     public List<StaStockPlate>  monthStatistic(){
-        return stockPlateRepository.limit3(MyUtils.getDayFormat(),MyUtils.getPreMonthDayFormat());
+        String end = MyUtils.getDayFormat();
+        String start = MyUtils.getPreMonthDayFormat();
+        log.info("monthStatistic:"+start+"-"+end);
+        return stockPlateRepository.limit3(start,end);
     }
 
 }
