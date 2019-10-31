@@ -73,7 +73,7 @@ public class HelloController {
         }
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         PRE_END=queryEnd;
-        String desc ="【主流板块】注意[不参与竞价，核心股的大低开，连板指数上6+，大题材让20%又何妨。还有一些莫名的反常！！！]<br>查询日期20191015以后的 ";
+        String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]<br>查询日期20191015以后的 ";
         List<StockInfo> stockCurrentFives = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_CURRENT_FIVE.getCode());
         List<StockInfo> stockDayFives = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
         List<StockInfo> stockCurrents = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_CURRENT.getCode());
