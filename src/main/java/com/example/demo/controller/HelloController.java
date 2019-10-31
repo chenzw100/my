@@ -94,15 +94,9 @@ public class HelloController {
                 staStockPlatesWeek2Impl.add(new StaStockPlateImpl(s));
             }
         }
-        List<StaStockPlate> staStockPlatesMonth = stockPlateService.monthStatistic();
-        List<StaStockPlateImpl> staStockPlatesMonthImpl = new ArrayList<>();
-        if(staStockPlatesWeek.size()>0){
-            for(StaStockPlate s: staStockPlatesMonth){
-                staStockPlatesMonthImpl.add(new StaStockPlateImpl(s));
-            }
-        }
 
-        return desc+queryEnd+"<br>月:"+staStockPlatesWeekImpl+"半月:"+staStockPlatesWeek2Impl+"周:"+staStockPlatesMonthImpl+"<br>最近5天市场情况<br>"+temperaturesClose+"【连板指数上6+】<br>【核心股的大低开】:<br>"+downs+"<br>【相信数据，相信市场】:<br>"+stockCurrentFives+"【不参与竞价,大题材让20%又何妨】<br>"+stockDayFives;
+
+        return desc+queryEnd+"<br>【半月】<br>:"+staStockPlatesWeek2Impl+"【周】<br>:"+staStockPlatesWeekImpl+"<br>最近5天市场情况<br>"+temperaturesClose+"【连板指数上6+】<br>【核心股的大低开】:<br>"+downs+"<br>【相信数据，相信市场】:<br>"+stockCurrentFives+"【不参与竞价,大题材让20%又何妨】<br>"+stockDayFives;
     }
     @RequestMapping("/info/{end}")
     String info(@PathVariable("end")String end) {
@@ -130,10 +124,28 @@ public class HelloController {
         List<StockTemperature> temperaturesOpen=stockTemperatureRepository.open(start,queryEnd);
         List<StockTemperature> temperatures=stockTemperatureRepository.findByDayFormat(queryEnd);
         List<StaStockPlate> staStockPlatesWeek = stockPlateService.weekStatistic();
+        List<StaStockPlateImpl> staStockPlatesWeekImpl = new ArrayList<>();
+        if(staStockPlatesWeek.size()>0){
+            for(StaStockPlate s: staStockPlatesWeek){
+                staStockPlatesWeekImpl.add(new StaStockPlateImpl(s));
+            }
+        }
         List<StaStockPlate> staStockPlatesWeek2 = stockPlateService.week2Statistic();
+        List<StaStockPlateImpl> staStockPlatesWeek2Impl = new ArrayList<>();
+        if(staStockPlatesWeek.size()>0){
+            for(StaStockPlate s: staStockPlatesWeek2){
+                staStockPlatesWeek2Impl.add(new StaStockPlateImpl(s));
+            }
+        }
         List<StaStockPlate> staStockPlatesMonth = stockPlateService.monthStatistic();
+        List<StaStockPlateImpl> staStockPlatesMonthImpl = new ArrayList<>();
+        if(staStockPlatesWeek.size()>0){
+            for(StaStockPlate s: staStockPlatesMonth){
+                staStockPlatesMonthImpl.add(new StaStockPlateImpl(s));
+            }
+        }
 
-        return desc+queryEnd+"<br>月:"+staStockPlatesMonth+"半月:"+staStockPlatesWeek2+"周:"+staStockPlatesWeek+"<br>最近5天市场情况<br>"+temperaturesClose+"<br>"+temperaturesOpen+"大低开:<br>"+downs+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+stockInfos;
+        return desc+queryEnd+"<br>月:"+staStockPlatesMonthImpl+"<br>半月:"+staStockPlatesWeek2Impl+"周:"+staStockPlatesWeekImpl+"<br>最近5天市场情况<br>"+temperaturesClose+"<br>"+temperaturesOpen+"大低开:<br>"+downs+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+stockInfos;
     }
     public boolean isWorkday(){
         ChineseWorkDay chineseWorkDay = new ChineseWorkDay(MyUtils.getCurrentDate());

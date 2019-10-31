@@ -11,6 +11,6 @@ public class StaStockPlateImpl {
 
     @Override
     public String toString() {
-        return staStockPlate.getPlateName()+","+staStockPlate.getTotalCount()+",ContinuousCount:"+staStockPlate.getContinuousCount()+",hot:"+staStockPlate.getHotSort()+","+staStockPlate.getDescription()+"<br>";
+        return staStockPlate.getPlateName()+":"+staStockPlate.getTotalCount()+",count:"+staStockPlate.getContinuousCount()+",hot:"+staStockPlate.getHotSort()+","+staStockPlate.getDescription()+"<br>";
     }
 }
