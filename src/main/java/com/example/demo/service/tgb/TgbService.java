@@ -180,10 +180,13 @@ public class TgbService extends QtService {
         List<MyTotalStock> totalStocks =  getCurrentData(type);
         for(MyTotalStock myTotalStock : totalStocks){
             StockInfo fiveTgbStock;
+            StockInfo fiveTgbStockTemp;
             if(type == NumberEnum.StockCurrentType.ONE_DAY.getCode()){
                 fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_CURRENT.getCode());
+                fiveTgbStockTemp =stockInfoService.findStockCurrentByCodeAndYesterdayFormat(fiveTgbStock.getCode());
             }else {
                 fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_CURRENT_FIVE.getCode());
+                fiveTgbStockTemp =stockInfoService.findStockCurrentFiveByCodeAndYesterdayFormat(fiveTgbStock.getCode());
             }
             fiveTgbStock.setHotSort(myTotalStock.getTotalCount());
             fiveTgbStock.setHotValue(myTotalStock.getHotValue());
@@ -209,7 +212,7 @@ public class TgbService extends QtService {
                 fiveTgbStock.setLimitUp(0);
             }
             fiveTgbStock.setDayFormat(MyUtils.getDayFormat());
-            StockInfo fiveTgbStockTemp =stockInfoService.findStockCurrentFiveByCodeAndYesterdayFormat(fiveTgbStock.getCode());
+
             if(fiveTgbStockTemp!=null){
                 fiveTgbStock.setShowCount(fiveTgbStockTemp.getShowCount() + 1);
             }else {

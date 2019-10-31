@@ -21,7 +21,7 @@ public class PanService {
     private static final String tgbCron = "50 10 6 ? * MON-FRI";
     private static final String openCron = "49 25 9 ? * MON-FRI";
     private static final String closeCron ="40 3 15 ? * MON-FRI";
-    private static final String choiceMy="1 5 9 ? * MON-FRI";
+    private static final String choiceMy="1 1 9 ? * MON-FRI";
     private static final String currentTimeCron="1 55 0/1 ? * MON-FRI";
     private static final String temperatureCron="10 33 9,10,11,13,14 ? * MON-FRI";
     private static final String temperatureOpenCron="1 26 9 ? * MON-FRI";
