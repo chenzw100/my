@@ -167,6 +167,12 @@ public class XgbService extends QtService {
         spaceHeight.setContinuous(hstock.getContinueBoardCount());
         spaceHeight.setPlateName(hstock.getPlateName());
         spaceHeight.setYesterdayClosePrice(hstock.getYesterdayClosePrice());
+        StockInfo stockTemp =stockInfoService.findStockSpaceHeightByCodeAndYesterdayFormat(spaceHeight.getCode());
+        if(stockTemp!=null){
+            spaceHeight.setShowCount(stockTemp.getShowCount() + 1);
+        }else {
+            spaceHeight.setShowCount(1);
+        }
         stockInfoService.save(spaceHeight);
     }
     public void limitUpBrokenAfter(){
