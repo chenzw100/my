@@ -114,7 +114,7 @@ public class XgbService extends QtService {
 
     public void limitUp(){
         StockLimitUp spaceHeightStock=null;
-        int spaceHeight = 1;
+        int spaceHeight = 2;
         Object response = getRequest(limit_up);
         JSONArray array = JSONObject.parseObject(response.toString()).getJSONArray("data");
         log.info(":zt==================>"+array.size());
@@ -136,14 +136,16 @@ public class XgbService extends QtService {
                 xgbStock.setYesterdayClosePrice(MyUtils.getCentByYuanStr(jsonStock.getString("price")));
 
                 JSONObject jsonReason = jsonStock.getJSONObject("surge_reason");
-                JSONArray jsonPlateArray = jsonReason.getJSONArray("related_plates");
-                int length = jsonPlateArray.size();
                 String plateName="";
-                for (int j = 0; j < length; j++) {
-                    JSONObject jsonPalte = (JSONObject) jsonPlateArray.get(j);
-                    plateName+=jsonPalte.getString("plate_name");
+                if(jsonReason !=  null){
+                    JSONArray jsonPlateArray = jsonReason.getJSONArray("related_plates");
+                    int length = jsonPlateArray.size();
+                    for (int j = 0; j < length; j++) {
+                        JSONObject jsonPalte = (JSONObject) jsonPlateArray.get(j);
+                        plateName+=jsonPalte.getString("plate_name");
+                    }
+                   // xgbStock.setPlateName(jsonReason.getString("stock_reason"));
                 }
-               // xgbStock.setPlateName(jsonReason.getString("stock_reason"));
                 xgbStock.setPlateName(plateName);
                 stockLimitUpRepository.save(xgbStock);
                 if (xgbStock.getContinueBoardCount() > spaceHeight) {
@@ -168,6 +170,7 @@ public class XgbService extends QtService {
         spaceHeight.setPlateName(hstock.getPlateName());
         spaceHeight.setYesterdayClosePrice(hstock.getYesterdayClosePrice());
         StockInfo stockTemp =stockInfoService.findStockSpaceHeightByCodeAndYesterdayFormat(spaceHeight.getCode());
+        log.info("pre space:"+stockTemp.getName()+",Continuous:"+stockTemp.getContinuous());
         if(stockTemp!=null){
             spaceHeight.setShowCount(stockTemp.getShowCount() + 1);
         }else {
