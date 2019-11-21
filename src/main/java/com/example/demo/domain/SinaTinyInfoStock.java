@@ -5,10 +5,19 @@ package com.example.demo.domain;
  */
 public class SinaTinyInfoStock {
     private String code;
+    private String name;
     private int highPrice;
     private int lowPrice;
     private int openPrice;
     private int currentPrice;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getCurrentPrice() {
         return currentPrice;

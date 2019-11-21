@@ -1,12 +1,15 @@
 package com.example.demo.controller;
 
 import com.example.demo.dao.*;
+import com.example.demo.domain.SinaTinyInfoStock;
 import com.example.demo.domain.StaStockPlate;
 import com.example.demo.domain.StaStockPlateImpl;
 import com.example.demo.domain.table.*;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockPlateService;
+import com.example.demo.service.kpl.KplService;
+import com.example.demo.service.sina.SinaService;
 import com.example.demo.service.xgb.XgbService;
 import com.example.demo.task.PanService;
 import com.example.demo.utils.ChineseWorkDay;
@@ -25,6 +28,8 @@ import java.util.List;
 public class HelloController {
     private static String PRE_END="";
     @Autowired
+    SinaService sinaService;
+    @Autowired
     StockInfoService stockInfoService;
     @Autowired
     StockPlateService stockPlateService;
@@ -34,6 +39,59 @@ public class HelloController {
     PanService panService;
     @Autowired
     XgbService xgbService;
+
+    @Autowired
+    StockInfoRepository stockInfoRepository;
+    @Autowired
+    StockLimitUpRepository stockLimitUpRepository;
+    @RequestMapping("/add/{code}")
+    public String add(@PathVariable("code")String code) {
+        if ("1".equals(code)) {
+            return "success";
+        }
+        if (code.indexOf("6") == 0) {
+            code = "sh" + code;
+        } else {
+            code = "sz" + code;
+        }
+        SinaTinyInfoStock sinaStock = sinaService.getTiny(code);
+        if (sinaStock == null) {
+            return "fail";
+        }
+        StockInfo myStock = new StockInfo(code, sinaStock.getName(), NumberEnum.StockType.STOCK_KPL.getCode());
+        myStock.setYesterdayClosePrice(sinaStock.getCurrentPrice());
+        myStock.setContinuous(1);
+        myStock.setOpenCount(-1);
+        myStock.setHotSort(-1);
+        myStock.setOneFlag(-1);
+        StockInfo fiveTgbStockTemp =stockInfoService.findStockDayFiveByCodeAndYesterdayFormat(myStock.getCode());
+        if(fiveTgbStockTemp!=null){
+            myStock.setShowCount(fiveTgbStockTemp.getShowCount() + 1);
+        }else {
+            myStock.setShowCount(1);
+        }
+        List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myStock.getCode(),MyUtils.getDayFormat(MyUtils.getYesterdayDate()));
+        if(xgbStocks!=null && xgbStocks.size()>0){
+            StockLimitUp xgbStock =xgbStocks.get(0);
+            myStock.setPlateName(xgbStock.getPlateName());
+            myStock.setOneFlag(xgbStock.getOpenCount());
+            myStock.setContinuous(xgbStock.getContinueBoardCount());
+            myStock.setLimitUp(1);
+        }else {
+            xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(myStock.getCode());
+            if(xgbStocks!=null && xgbStocks.size()>0){
+                myStock.setPlateName(xgbStocks.get(0).getPlateName());
+            }else {
+                myStock.setPlateName("");
+            }
+            myStock.setOneFlag(1);
+            myStock.setContinuous(0);
+            myStock.setLimitUp(0);
+        }
+        stockInfoRepository.save(myStock);
+        return myStock.toString();
+    }
+
     @RequestMapping("/p")
     public String plate(){
         xgbService.platesClose();
@@ -102,6 +160,55 @@ public class HelloController {
     }
     @RequestMapping("/info/{end}")
     String info(@PathVariable("end")String end) {
+        String queryEnd = end;
+        if("1".equals(end)){
+            if(isWorkday()){
+                queryEnd= MyUtils.getDayFormat();
+            }else {
+                queryEnd=MyUtils.getYesterdayDayFormat();
+            }
+        }else if("2".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+        }else if("3".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        }
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        PRE_END=queryEnd;
+        String desc ="【主流板块 大科技】注意[不参与竞价，核心股的大低开，连板指数上6+]；查询日期20191015";
+        List<StockInfo> stockInfos = stockInfoService.findStockInfosByDayFormatOrderByStockType(queryEnd);
+        List<StockInfo> downs =stockInfoService.findStockInfosByDayFormatOrderByOpenBidRate(queryEnd);
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5,endDate));
+        List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
+        List<StockTemperature> temperaturesOpen=stockTemperatureRepository.open(start,queryEnd);
+        List<StockTemperature> temperatures=stockTemperatureRepository.findByDayFormat(queryEnd);
+        List<StaStockPlate> staStockPlatesWeek = stockPlateService.weekStatistic();
+        List<StaStockPlateImpl> staStockPlatesWeekImpl = new ArrayList<>();
+        if(staStockPlatesWeek.size()>0){
+            for(StaStockPlate s: staStockPlatesWeek){
+                staStockPlatesWeekImpl.add(new StaStockPlateImpl(s));
+            }
+        }
+        List<StaStockPlate> staStockPlatesWeek2 = stockPlateService.week2Statistic();
+        List<StaStockPlateImpl> staStockPlatesWeek2Impl = new ArrayList<>();
+        if(staStockPlatesWeek.size()>0){
+            for(StaStockPlate s: staStockPlatesWeek2){
+                staStockPlatesWeek2Impl.add(new StaStockPlateImpl(s));
+            }
+        }
+        List<StaStockPlate> staStockPlatesMonth = stockPlateService.monthStatistic();
+        List<StaStockPlateImpl> staStockPlatesMonthImpl = new ArrayList<>();
+        if(staStockPlatesWeek.size()>0){
+            for(StaStockPlate s: staStockPlatesMonth){
+                staStockPlatesMonthImpl.add(new StaStockPlateImpl(s));
+            }
+        }
+
+        return desc+queryEnd+"<br>月:"+staStockPlatesMonthImpl+"<br>半月:"+staStockPlatesWeek2Impl+"周:"+staStockPlatesWeekImpl+"<br>最近5天市场情况<br>"+temperaturesClose+"<br>"+temperaturesOpen+"大低开:<br>"+downs+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+stockInfos;
+    }
+    @RequestMapping("/info2/{end}")
+    String info2(@PathVariable("end")String end) {
         String queryEnd = end;
         if("1".equals(end)){
             if(isWorkday()){

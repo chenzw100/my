@@ -56,6 +56,7 @@ public class SinaService extends BaseService {
             if(stockObj.length<3){
                 return tiny;
             }
+            tiny.setName(stockObj[0].split("=")[1]);
             tiny.setOpenPrice(MyUtils.getCentBySinaPriceStr(stockObj[1]));
             tiny.setCurrentPrice(MyUtils.getCentBySinaPriceStr(stockObj[3]));
             tiny.setHighPrice(MyUtils.getCentBySinaPriceStr(stockObj[4]));
