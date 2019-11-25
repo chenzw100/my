@@ -59,12 +59,12 @@ public class HelloController {
             return "fail";
         }
         StockInfo myStock = new StockInfo(code, sinaStock.getName(), NumberEnum.StockType.STOCK_KPL.getCode());
-        myStock.setYesterdayClosePrice(sinaStock.getCurrentPrice());
+        myStock.setYesterdayClosePrice(sinaStock.getYesterdayPrice());
         myStock.setContinuous(1);
         myStock.setOpenCount(-1);
         myStock.setHotSort(-1);
         myStock.setOneFlag(-1);
-        StockInfo fiveTgbStockTemp =stockInfoService.findStockDayFiveByCodeAndYesterdayFormat(myStock.getCode());
+        StockInfo fiveTgbStockTemp =stockInfoService.findStockKplByCodeAndYesterdayFormat(myStock.getCode());
         if(fiveTgbStockTemp!=null){
             myStock.setShowCount(fiveTgbStockTemp.getShowCount() + 1);
         }else {

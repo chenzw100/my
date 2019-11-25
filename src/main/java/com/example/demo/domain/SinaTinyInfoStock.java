@@ -10,6 +10,15 @@ public class SinaTinyInfoStock {
     private int lowPrice;
     private int openPrice;
     private int currentPrice;
+    private int yesterdayPrice;
+
+    public int getYesterdayPrice() {
+        return yesterdayPrice;
+    }
+
+    public void setYesterdayPrice(int yesterdayPrice) {
+        this.yesterdayPrice = yesterdayPrice;
+    }
 
     public String getName() {
         return name;

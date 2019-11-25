@@ -117,4 +117,8 @@ public class StockInfoService {
         return stockInfoRepository.findByCodeAndDayFormatAndStockType(code,MyUtils.getYesterdayDayFormat(), NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
     }
 
+    public StockInfo findStockKplByCodeAndYesterdayFormat(String code){
+        return stockInfoRepository.findByCodeAndDayFormatAndStockType(code,MyUtils.getYesterdayDayFormat(), NumberEnum.StockType.STOCK_KPL.getCode());
+    }
+
 }
