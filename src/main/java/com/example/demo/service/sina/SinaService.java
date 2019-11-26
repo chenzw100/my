@@ -50,6 +50,7 @@ public class SinaService extends BaseService {
         SinaTinyInfoStock tiny = SINA_CACHE.get(code);
 
         if(tiny==null){
+            log.info(code+"-SINA_CACHE-"+tiny.toString());
             tiny= new SinaTinyInfoStock();
             tiny.setCode(code);
             String[] stockObj = getStock(code);
@@ -63,7 +64,7 @@ public class SinaService extends BaseService {
             tiny.setHighPrice(MyUtils.getCentBySinaPriceStr(stockObj[4]));
             tiny.setLowPrice(MyUtils.getCentBySinaPriceStr(stockObj[5]));
             SINA_CACHE.put(code,tiny);
-            log.info(code+"-SINA_CACHE-"+tiny.toString());
+
         }else {
             log.info(code+"-SINA_no_CACHE-"+tiny.toString());
         }

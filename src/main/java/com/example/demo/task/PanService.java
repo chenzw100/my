@@ -32,7 +32,7 @@ public class PanService {
     @Autowired
     XgbService xgbService;
     //盘前处理数据 6:23点获取
-    //@Scheduled(cron = tgbCron)
+    @Scheduled(cron = tgbCron)
     public void preTgb(){
         //获取数据
         if(isWorkday()){
@@ -82,7 +82,7 @@ public class PanService {
         }
     }
     //每2小时收集数据
-    //@Scheduled(cron = currentTimeCron)
+    @Scheduled(cron = currentTimeCron)
     public void allDay(){
         if(isWorkday()) {
             log.info("currentDate-ready data");
