@@ -50,10 +50,10 @@ public class SinaService extends BaseService {
         SinaTinyInfoStock tiny = SINA_CACHE.get(code);
 
         if(tiny==null){
-            log.info(code+"-SINA_CACHE-"+tiny.toString());
             tiny= new SinaTinyInfoStock();
             tiny.setCode(code);
             String[] stockObj = getStock(code);
+            log.info(code+"-SINA_CACHE-"+tiny.toString());
             if(stockObj.length<3){
                 return tiny;
             }

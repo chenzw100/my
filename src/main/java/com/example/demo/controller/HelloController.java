@@ -133,6 +133,7 @@ public class HelloController {
         PRE_END=queryEnd;
         String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]<br>查询日期20191015以后的 ";
         List<StockInfo> highCurrents = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_SPACE_HEIGHT.getCode());
+        List<StockInfo> kpls = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
         List<StockInfo> stockCurrentFives = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_CURRENT_FIVE.getCode());
         List<StockInfo> stockDayFives = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
         List<StockInfo> stockCurrents = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_CURRENT.getCode());
@@ -156,7 +157,7 @@ public class HelloController {
         }
 
 
-        return desc+queryEnd+"<br>【半月】<br>:"+staStockPlatesWeek2Impl+"【核心股的大低开,不参与!】<br>"+stockCurrents+"【周】<br>:"+staStockPlatesWeekImpl+"<br>:"+highCurrents+"<br>最近5天市场情况<br>"+temperaturesClose+"【连板指数上6+】<br>【核心股的大低开】:<br>"+downs+"<br>【相信数据，相信市场】:<br>"+stockCurrentFives+"【不参与竞价,大题材让20%又何妨】<br>"+stockDayFives;
+        return desc+queryEnd+"<br>:"+highCurrents+kpls+"<br>【半月】<br>:"+staStockPlatesWeek2Impl+"【核心股的大低开,不参与!】<br>"+stockCurrents+"【周】<br>:"+staStockPlatesWeekImpl+"<br>最近5天市场情况<br>"+temperaturesClose+"【连板指数上6+】<br>【核心股的大低开】:<br>"+downs+"<br>【相信数据，相信市场】:<br>"+stockCurrentFives+"【不参与竞价,大题材让20%又何妨】<br>"+stockDayFives;
     }
     @RequestMapping("/info/{end}")
     String info(@PathVariable("end")String end) {
