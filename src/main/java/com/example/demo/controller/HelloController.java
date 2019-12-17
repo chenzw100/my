@@ -91,6 +91,54 @@ public class HelloController {
         stockInfoRepository.save(myStock);
         return myStock.toString();
     }
+    @RequestMapping("/add2/{code}")
+    public String add2(@PathVariable("code")String code) {
+        if ("1".equals(code)) {
+            return "success";
+        }
+        if (code.indexOf("6") == 0) {
+            code = "sh" + code;
+        } else {
+            code = "sz" + code;
+        }
+        SinaTinyInfoStock sinaStock = sinaService.getTiny(code);
+        if (sinaStock == null) {
+            return "fail";
+        }
+        StockInfo myStock = new StockInfo(code, sinaStock.getName(), NumberEnum.StockType.STOCK_KPL.getCode());
+        myStock.setDayFormat(MyUtils.getTomorrowDayFormat());
+        myStock.setYesterdayClosePrice(sinaStock.getCurrentPrice());
+        myStock.setContinuous(1);
+        myStock.setOpenCount(-1);
+        myStock.setHotSort(-1);
+        myStock.setOneFlag(-1);
+        StockInfo fiveTgbStockTemp =stockInfoService.findStockKplByCodeAndTodayFormat(myStock.getCode());
+        if(fiveTgbStockTemp!=null){
+            myStock.setShowCount(fiveTgbStockTemp.getShowCount() + 1);
+        }else {
+            myStock.setShowCount(1);
+        }
+        List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myStock.getCode(),MyUtils.getDayFormat());
+        if(xgbStocks!=null && xgbStocks.size()>0){
+            StockLimitUp xgbStock =xgbStocks.get(0);
+            myStock.setPlateName(xgbStock.getPlateName());
+            myStock.setOneFlag(xgbStock.getOpenCount());
+            myStock.setContinuous(xgbStock.getContinueBoardCount());
+            myStock.setLimitUp(1);
+        }else {
+            xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(myStock.getCode());
+            if(xgbStocks!=null && xgbStocks.size()>0){
+                myStock.setPlateName(xgbStocks.get(0).getPlateName());
+            }else {
+                myStock.setPlateName("");
+            }
+            myStock.setOneFlag(1);
+            myStock.setContinuous(0);
+            myStock.setLimitUp(0);
+        }
+        stockInfoRepository.save(myStock);
+        return myStock.toString();
+    }
 
     @RequestMapping("/p")
     public String plate(){
