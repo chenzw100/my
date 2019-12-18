@@ -78,6 +78,9 @@ public class StockInfoService {
     public StockInfo findStockSpaceHeightByCodeAndYesterdayFormat(String code){
         return stockInfoRepository.findByCodeAndDayFormatAndStockType(code,MyUtils.getYesterdayDayFormat(), NumberEnum.StockType.STOCK_SPACE_HEIGHT.getCode());
     }
+    public List<StockInfo> fiveHeightSpace(String start, String end){
+        return stockInfoRepository.fiveHeightSpace(start,end);
+    }
     //---STOCK_LIMIT_UP_FIVE---start ---
     public List<StockInfo> findStockLimitUpFivesByTodayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_LIMIT_UP_FIVE.getCode());
