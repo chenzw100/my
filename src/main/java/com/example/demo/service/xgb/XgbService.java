@@ -34,7 +34,7 @@ public class XgbService extends QtService {
 
    // private static String limit_down="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=limit_down";
     //private static String yesterday_limit_up="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=yesterday_limit_up";yesterday_limit_up_avg_pcp
-    //private static String market_url="https://flash-api.xuangubao.cn/api/market_indicator/pcp_distribution";
+    private static String market_url="https://flash-api.xuangubao.cn/api/market_indicator/pcp_distribution";
     //private static String broken_url="https://flash-api.xuangubao.cn/api/market_indicator/line?fields=limit_up_broken_count,limit_up_broken_ratio";
 
     @Autowired
@@ -85,6 +85,14 @@ public class XgbService extends QtService {
             jsonDataLast = array.getJSONObject(array.size() - 1);
             String temperatureNum = jsonDataLast.getString("market_temperature");
             temperature.setNowTemperature(MyUtils.getCentBySinaPriceStr(temperatureNum));
+        }
+        response = getRequest(market_url);
+        if(response!=null){
+            JSONObject jsonObject =  JSONObject.parseObject(response.toString()).getJSONObject("data");
+            int limitDownCount = jsonObject.getInteger("limit_down_count");
+            int limitUpCount = jsonObject.getInteger("limit_up_count");
+            temperature.setLimitDown(limitDownCount);
+            temperature.setLimitUp(limitUpCount);
         }
 
         if(type==NumberEnum.TemperatureType.OPEN.getCode()){
