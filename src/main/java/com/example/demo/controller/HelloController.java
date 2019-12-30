@@ -179,11 +179,12 @@ public class HelloController {
         }
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         PRE_END=queryEnd;
-        String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据<br>当前查询日期";
+        String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据<br>===>当前查询日期";
         List<StockInfo> kpls = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
         List<StockInfo> downs =stockInfoService.findStockInfosByDayFormatOrderByOpenBidRate(queryEnd);
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
         List<StockInfo> highCurrents = stockInfoService.fiveHeightSpace(start, queryEnd);
+        highCurrents.addAll(kpls);
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
         List<StaStockPlate> staStockPlatesWeek = stockPlateService.weekStatistic();
         List<StaStockPlateImpl> staStockPlatesWeekImpl = new ArrayList<>();
@@ -201,7 +202,7 @@ public class HelloController {
         }
 
 
-        return desc+queryEnd+"<br>近5日空间版:"+highCurrents+"【周==》】:"+staStockPlatesWeekImpl+"最近5天市场情况<br>"+temperaturesClose+"【连板指数上6+】【核心股的大低开】:<br>"+downs+"【大行情让20%又何妨】:<br>"+kpls+"【半月=》】:"+staStockPlatesWeek2Impl;
+        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【一周热点板块】:<br>"+staStockPlatesWeekImpl+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【半月热点板块】:<br>"+staStockPlatesWeek2Impl;
     }
     @RequestMapping("/info/{end}")
     String info(@PathVariable("end")String end) {

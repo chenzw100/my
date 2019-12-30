@@ -179,6 +179,7 @@ public class XgbService extends QtService {
         spaceHeight.setYesterdayClosePrice(hstock.getYesterdayClosePrice());
         StockInfo stockTemp =stockInfoService.findStockSpaceHeightByCodeAndYesterdayFormat(spaceHeight.getCode());
         if(stockTemp!=null){
+            log.info("yesterday_space_height:"+spaceHeight.toString());
             spaceHeight.setShowCount(stockTemp.getShowCount() + 1);
         }else {
             spaceHeight.setShowCount(1);
@@ -281,7 +282,7 @@ public class XgbService extends QtService {
                 stockPlate.setPlateCode(code);
                 stockPlate.setContinuousCount(1);
             }else {
-                stockPlate.setId(null);
+                //stockPlate.setId(null);
                 stockPlate.setContinuousCount(stockPlate.getContinuousCount()+1);
             }
             if(desc==null){
@@ -290,6 +291,7 @@ public class XgbService extends QtService {
             stockPlate.setDescription(desc);
             stockPlate.setDayFormat(MyUtils.getDayFormat());
             stockPlate.setHotSort(i+1);
+            log.info("-->plate："+stockPlate.toString());
             stockPlateService.save(stockPlate);
         }
     }
