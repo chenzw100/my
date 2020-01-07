@@ -29,6 +29,9 @@ public class StockInfoService {
     public StockInfo save(StockInfo stockInfo){
         return stockInfoRepository.save(stockInfo);
     }
+    public List<StockInfo> findByDayFormatOrderByOpenBidRateDesc(String dayFormat){
+        return stockInfoRepository.findByDayFormatOrderByOpenBidRateDesc(dayFormat);
+    }
     public List<StockInfo> findStockInfosByDayFormatOrderByOpenBidRate(String dayFormat){
         return stockInfoRepository.findByDayFormatAndOpenBidRateLessThanOrderByOpenBidRateDesc(dayFormat,-698);
     }

@@ -200,9 +200,9 @@ public class HelloController {
                 staStockPlatesWeek2Impl.add(new StaStockPlateImpl(s));
             }
         }
+        List<StockInfo> alls = stockInfoService.findByDayFormatOrderByOpenBidRateDesc(queryEnd);
 
-
-        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【一周热点板块】:<br>"+staStockPlatesWeekImpl+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【半月热点板块】:<br>"+staStockPlatesWeek2Impl;
+        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【一周热点板块】:<br>"+staStockPlatesWeekImpl+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【半月热点板块】:<br>"+staStockPlatesWeek2Impl+"<br>===>【竞价情况】:<br>"+alls;
     }
     @RequestMapping("/info/{end}")
     String info(@PathVariable("end")String end) {
