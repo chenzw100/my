@@ -210,6 +210,7 @@ public class StockTemperature {
         String dateStr = DateFormatUtils.format(getCreated(), "MM-dd HH:mm");
         sb.append(dateStr+"=> [昨:").append(MyUtils.getYuanByCent(getYesterdayShow()));
         sb.append("] [连:").append(getContinueVal());
+        sb.append("] [炸:").append(MyUtils.getYuanByCent(getBrokenRatio()));
         sb.append("] [温:").append(MyUtils.getYuanByCent(getNowTemperature()));
         sb.append("] [涨:").append(getLimitUp()).append(", 跌:").append(getLimitDown()).append(", 炸:").append(getOpen());
         sb.append("] [涨:").append(getRaise()).append(", 跌:").append(getDown()).append("] [额:").append(getTradeVal()).append("亿]");
