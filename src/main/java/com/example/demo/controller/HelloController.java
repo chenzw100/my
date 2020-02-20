@@ -1,14 +1,17 @@
 package com.example.demo.controller;
 
-import com.example.demo.dao.*;
+import com.example.demo.dao.StockInfoRepository;
+import com.example.demo.dao.StockLimitUpRepository;
+import com.example.demo.dao.StockTemperatureRepository;
 import com.example.demo.domain.SinaTinyInfoStock;
 import com.example.demo.domain.StaStockPlate;
 import com.example.demo.domain.StaStockPlateImpl;
-import com.example.demo.domain.table.*;
+import com.example.demo.domain.table.StockInfo;
+import com.example.demo.domain.table.StockLimitUp;
+import com.example.demo.domain.table.StockTemperature;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockPlateService;
-import com.example.demo.service.kpl.KplService;
 import com.example.demo.service.sina.SinaService;
 import com.example.demo.service.xgb.XgbService;
 import com.example.demo.task.PanService;
@@ -158,7 +161,7 @@ public class HelloController {
     @RequestMapping("/pre")
     public String pre(){
         panService.preTgb();
-        panService.preOpen();
+        //panService.preOpen();
         return "pre success";
     }
     @RequestMapping("/risk/{end}")
@@ -186,7 +189,10 @@ public class HelloController {
         List<StockInfo> highCurrents = stockInfoService.fiveHeightSpace(start, queryEnd);
         highCurrents.addAll(kpls);
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
-        List<StaStockPlate> staStockPlatesWeek = stockPlateService.weekStatistic();
+
+        List<StockTemperature> temperaturesOpen=stockTemperatureRepository.open(start,queryEnd);
+
+       /* List<StaStockPlate> staStockPlatesWeek = stockPlateService.weekStatistic();
         List<StaStockPlateImpl> staStockPlatesWeekImpl = new ArrayList<>();
         if(staStockPlatesWeek.size()>0){
             for(StaStockPlate s: staStockPlatesWeek){
@@ -195,14 +201,15 @@ public class HelloController {
         }
         List<StaStockPlate> staStockPlatesWeek2 = stockPlateService.week2Statistic();
         List<StaStockPlateImpl> staStockPlatesWeek2Impl = new ArrayList<>();
-        if(staStockPlatesWeek.size()>0){
+        if(staStockPlatesWeek2.size()>0){
             for(StaStockPlate s: staStockPlatesWeek2){
                 staStockPlatesWeek2Impl.add(new StaStockPlateImpl(s));
             }
-        }
+        }*/
+
         List<StockInfo> alls = stockInfoService.findByDayFormatOrderByOpenBidRateDesc(queryEnd);
 
-        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【一周热点板块】:<br>"+staStockPlatesWeekImpl+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【半月热点板块】:<br>"+staStockPlatesWeek2Impl+"<br>===>【竞价情况】:<br>"+alls;
+        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【近5天开盘情况】:<br>"+temperaturesOpen+"<br>===>【竞价情况】:<br>"+alls;
     }
     @RequestMapping("/info/{end}")
     String info(@PathVariable("end")String end) {
