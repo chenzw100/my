@@ -15,25 +15,26 @@
         <input type="text" id="dateEnd" onkeyup="onKeyUpEnter(event)">
         <input type="button" value="确定" id="search" onclick="getSelect()"  />
         <hr>
-        <span>找出核心，二到三天是个临界点，市场情绪有逆转时要感觉行动起来</span>
+        <span>需要的是牛市，将会碾压一切</span>
     </div>
     <div>
+        <div id="mainLimitUp" class="mychart"></div>
+        <div id="mainStrongCount" class="mychart"></div>
+        <div id="mainContinueVal" class="mychart"></div>
+        <hr>
         <div id="mainLimitDown" class="mychart"></div>
         <div id="mainDownCount" class="mychart"></div>
         <hr>
         <div id="mainSpaceHeight" class="mychart"></div>
         <div id="mainNowTemperature" class="mychart"></div>
-        <div id="mainContinueVal" class="mychart"></div>
         <hr>
-        <div id="mainLimitUp" class="mychart"></div>
-        <div id="mainStrongCount" class="mychart"></div>
-        <hr>
+
 
     </div>
 
 
 </div>
-<script type="text/javascript" src="risk.js?v=1.8.8"></script>
+<script type="text/javascript" src="risk.js?v=1.0"></script>
 <script type="application/javascript">
     function onKeyUpEnter(e) {
         if (e.keyCode == 13) {

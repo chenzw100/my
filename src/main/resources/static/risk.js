@@ -36,7 +36,7 @@ function getViewData(){
         end="1";
     }
     $.ajax({
-        url : 'risk/'+end,
+        url : 'focus/'+end,
         dataType : 'json',
         type : 'get',
         async : false,
@@ -61,9 +61,9 @@ function getViewData(){
 function drawing(){
 
     var optionContinueVal = {
-        /*title : {
+        title : {
          text: '连板表现'
-         },*/
+         },
         tooltip : {
             trigger: 'axis'
         },
@@ -113,9 +113,9 @@ function drawing(){
     // 使用刚指定的配置项和数据显示图表。
     myChartContinueVal.setOption(optionContinueVal);
     var optionSpaceHeight = {
-        /*title : {
+        title : {
          text: '空间高度'
-         },*/
+         },
         tooltip : {
             trigger: 'axis'
         },
@@ -166,9 +166,9 @@ function drawing(){
     myChartSpaceHeight.setOption(optionSpaceHeight);
 
     var optionNowTemperature = {
-        /*title : {
+        title : {
             text: '市场温度'
-        },*/
+        },
         tooltip : {
             trigger: 'axis'
         },
@@ -220,9 +220,9 @@ function drawing(){
     myChartNowTemperature.setOption(optionNowTemperature);
     //=====
     var optionStrongCount = {
-        /*title : {
+        title : {
             text: '连板数'
-        },*/
+        },
         tooltip : {
             trigger: 'axis'
         },
@@ -273,9 +273,9 @@ function drawing(){
     myChartStrongCount.setOption(optionStrongCount);
 
     var optionCount = {
-        /*title : {
+        title : {
             text: '核按钮'
-        },*/
+        },
         tooltip : {
             trigger: 'axis'
         },
@@ -329,9 +329,9 @@ function drawing(){
 
 
     var optionLimitDownCount = {
-        /*title : {
+        title : {
          text: '跌停数'
-         },*/
+         },
         tooltip : {
             trigger: 'axis'
         },
@@ -380,9 +380,9 @@ function drawing(){
     };
     myChartLimitDownCount.setOption(optionLimitDownCount);
     var optionLimitUpCount = {
-        /*title : {
+        title : {
          text: '涨停数'
-         },*/
+         },
         tooltip : {
             trigger: 'axis'
         },

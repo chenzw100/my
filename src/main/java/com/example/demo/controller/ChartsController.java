@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
-import static com.example.demo.utils.MyChineseWorkDay.isWorkday;
 
 @RestController
 public class ChartsController {
@@ -25,8 +24,8 @@ public class ChartsController {
     @Autowired
     StockInfoService stockInfoService;
     private static String PRE_END="";
-    @RequestMapping(value = "/risk/{end}", method = RequestMethod.GET)
-     public Map risk(@PathVariable("end")String end){
+    @RequestMapping(value = "/focus/{end}", method = RequestMethod.GET)
+     public Map focus(@PathVariable("end")String end){
         String queryEnd = end;
         if("1".equals(end)){
             if(isWorkday()){
