@@ -41,6 +41,10 @@ public class SinaService extends BaseService {
 
     private String[] getStock(String code) {
         Object response = getRequest(url+code);
+        if(response==null){
+            log.error("--error code:"+code);
+            return null;
+        }
         String str = response.toString();
         String[] stockObj = str.split(",");
         return stockObj;
