@@ -5,6 +5,7 @@ import com.example.demo.dao.StockTemperatureRepository;
 import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockTemperature;
 import com.example.demo.service.StockInfoService;
+import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,5 +87,15 @@ public class ChartsController {
         return resultMap;
     }
 
-
+    public boolean isWorkday(){
+        ChineseWorkDay chineseWorkDay = new ChineseWorkDay(MyUtils.getCurrentDate());
+        try {
+            if(chineseWorkDay.isWorkday()){
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
