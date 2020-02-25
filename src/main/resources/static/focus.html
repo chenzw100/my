@@ -1,0 +1,53 @@
+<head>
+    <meta charset="UTF-8">
+    <title>for me</title>
+    <script type="text/javascript" src="echarts/echarts.js"></script>
+    <script type="text/javascript" src="jquery-2.2.4.min.js"></script>
+</head>
+
+<style>
+    .mychart{
+        width: 950px;height:200px;
+    }
+</style>
+<div class="container">
+    <div class="">
+        <input type="text" id="dateEnd" onkeyup="onKeyUpEnter(event)">
+        <input type="button" value="确定" id="search" onclick="getSelect()"  />
+        <hr>
+        <span>找出核心，二到三天是个临界点，市场情绪有逆转时要感觉行动起来</span>
+    </div>
+    <div>
+        <div id="mainLimitDown" class="mychart"></div>
+        <div id="mainDownCount" class="mychart"></div>
+        <hr>
+        <div id="mainSpaceHeight" class="mychart"></div>
+        <div id="mainNowTemperature" class="mychart"></div>
+        <div id="mainContinueVal" class="mychart"></div>
+        <hr>
+        <div id="mainLimitUp" class="mychart"></div>
+        <div id="mainStrongCount" class="mychart"></div>
+        <hr>
+
+    </div>
+
+
+</div>
+<script type="text/javascript" src="risk.js?v=1.8.8"></script>
+<script type="application/javascript">
+    function onKeyUpEnter(e) {
+        if (e.keyCode == 13) {
+            getSelect();
+        }else if(e.keyCode == 37){
+            //pre
+            $("#dateEnd").val(2);
+            getSelect();
+        }
+        else if(e.keyCode == 39){
+            //next
+            $("#dateEnd").val(3);
+            getSelect();
+        }
+    }
+
+</script>

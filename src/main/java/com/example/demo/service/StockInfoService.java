@@ -72,6 +72,13 @@ public class StockInfoService {
     }
 
     //---STOCK_SPACE_HEIGHT---start ---
+    public StockInfo findStockSpaceHeightByDayFormat(String dayFormat){
+        List<StockInfo> result = stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(dayFormat, NumberEnum.StockType.STOCK_SPACE_HEIGHT.getCode());
+        if(result!=null && result.size()>0){
+            return result.get(0);
+        }
+        return new StockInfo();
+    }
     public List<StockInfo> findStockSpaceHeightsByTodayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_SPACE_HEIGHT.getCode());
     }
