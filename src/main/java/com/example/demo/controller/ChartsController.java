@@ -54,6 +54,7 @@ public class ChartsController {
 
         TreeMap limitUpMap = new TreeMap<>();
         TreeMap limitDownMap = new TreeMap<>();
+        TreeMap tradeValMap = new TreeMap<>();
 
         for (StockTemperature t:temperaturesClose){
             continueValMap.put(t.getDayFormat(), t.getContinueVal());
@@ -62,6 +63,7 @@ public class ChartsController {
             downCountMap.put(t.getDayFormat(), t.getStrongDowns());
             limitUpMap.put(t.getDayFormat(), t.getLimitUp());
             limitDownMap.put(t.getDayFormat(), t.getLimitDown());
+            tradeValMap.put(t.getDayFormat(), t.getTradeVal());
         }
 
         HashMap resultMap =new HashMap();
@@ -75,6 +77,7 @@ public class ChartsController {
 
         resultMap.put("yDownCount", downCountMap.values());
         resultMap.put("yLimitDown", limitDownMap.values());
+        resultMap.put("yTradeVal", tradeValMap.values());
 
 
         List<StockInfo> highCurrents = stockInfoService.fiveHeightSpace(start, queryEnd);

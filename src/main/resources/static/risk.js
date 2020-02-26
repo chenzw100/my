@@ -1,4 +1,4 @@
-var xData,yContinueValData,yNowTemperatureData,yContinueCountData,yDownCountData,hotData;
+var xData,yContinueValData,yNowTemperatureData,yContinueCountData,yDownCountData,yLimitDownCountData,yTradeValData,hotData;
 var yLimitUpCountData,yLimitUpCountData,yBrokenData,yFirstContinueData;
 var myChartNowTemperature = echarts.init(document.getElementById('mainNowTemperature'));
 var myChartContinueVal = echarts.init(document.getElementById('mainContinueVal'));
@@ -53,6 +53,7 @@ function getViewData(){
             yContinueCountData=d["yContinueCount"];
             yLimitUpCountData=d["yLimitUp"];
             yContinueValData=d["yContinueVal"];
+            yTradeValData=d["yTradeVal"]
 
 
         }
@@ -430,6 +431,59 @@ function drawing(){
         ]
     };
     myChartLimitUpCount.setOption(optionLimitUpCount);
+    var optionTradeVal = {
+        title : {
+            text: '成交量'
+        },
+        tooltip : {
+            trigger: 'axis'
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : xData
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value',
+                axisLabel : {
+                    formatter: '{value} '
+                }
+            }
+        ],
+        series : [
+            {
+                name:'成交量',
+                type:'line',
+                smooth:true,
+                data:yTradeValData,
+                itemStyle: {
+                    normal: {
+                        lineStyle: {
+                            color : 'gray'
+                        }
+                    }
+                },
+                markPoint : {
+                    data : [
+                        {type : 'max', name: '最大值'},
+                        {type : 'min', name: '最小值'}
+                    ]
+                },
+                markLine : {
+                    data : [
+                        {type : 'average', name : '平均值'}
+                    ]
+                }
+            }
+        ]
+    };
+
+    myChartTradeVal.setOption(optionTradeVal);
+
 
     var optionBroken = {
         /*title : {
