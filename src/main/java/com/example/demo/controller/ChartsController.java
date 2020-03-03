@@ -113,11 +113,15 @@ public class ChartsController {
         TreeMap yesterdayShowMap = new TreeMap<>();
         TreeMap nowTemperatureMap = new TreeMap<>();
         TreeMap tradeValMap = new TreeMap<>();
+        TreeMap limitUpMap = new TreeMap<>();
+        TreeMap limitDownMap = new TreeMap<>();
         for (StockTemperature t:temperaturesOpen){
             continueValMap.put(t.getDayFormat(), t.getContinueVal());
             yesterdayShowMap.put(t.getDayFormat(), MyUtils.getYuanByCent(t.getYesterdayShow()));
             nowTemperatureMap.put(t.getDayFormat(), t.getNowTemperature());
             tradeValMap.put(t.getDayFormat(), t.getTradeVal());
+            limitUpMap.put(t, t.getLimitUp());
+            limitDownMap.put(t, t.getLimitDown());
         }
         HashMap resultMap =new HashMap();
         resultMap.put("x", continueValMap.keySet());
@@ -127,6 +131,9 @@ public class ChartsController {
 
         resultMap.put("yNowTemperature", nowTemperatureMap.values());
         resultMap.put("yTradeVal", tradeValMap.values());
+
+        resultMap.put("yLimitUp", limitUpMap.values());
+        resultMap.put("yLimitDown", limitDownMap.values());
         return resultMap;
     }
 
@@ -142,12 +149,16 @@ public class ChartsController {
         TreeMap yesterdayShowMap = new TreeMap<>();
         TreeMap nowTemperatureMap = new TreeMap<>();
         TreeMap tradeValMap = new TreeMap<>();
+        TreeMap limitUpMap = new TreeMap<>();
+        TreeMap limitDownMap = new TreeMap<>();
 
         for (StockTemperature t:temperaturesOpen){
             String key = MyUtils.getDayHHFormat(t.getCreated());
             continueValMap.put(key, t.getContinueVal());
             yesterdayShowMap.put(key, MyUtils.getYuanByCent(t.getYesterdayShow()));
             nowTemperatureMap.put(key, t.getNowTemperature());
+            limitUpMap.put(key, t.getLimitUp());
+            limitDownMap.put(key, t.getLimitDown());
         }
         HashMap resultMap =new HashMap();
         resultMap.put("x", continueValMap.keySet());
@@ -157,6 +168,9 @@ public class ChartsController {
 
         resultMap.put("yNowTemperature", nowTemperatureMap.values());
         resultMap.put("yTradeVal", tradeValMap.values());
+
+        resultMap.put("yLimitUp", limitUpMap.values());
+        resultMap.put("yLimitDown", limitDownMap.values());
 
         return resultMap;
     }

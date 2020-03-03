@@ -3,12 +3,14 @@ package com.example.demo.controller;
 import com.example.demo.dao.StockInfoRepository;
 import com.example.demo.dao.StockLimitUpRepository;
 import com.example.demo.dao.StockTemperatureRepository;
+import com.example.demo.dao.StockTruthRepository;
 import com.example.demo.domain.SinaTinyInfoStock;
 import com.example.demo.domain.StaStockPlate;
 import com.example.demo.domain.StaStockPlateImpl;
 import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockLimitUp;
 import com.example.demo.domain.table.StockTemperature;
+import com.example.demo.domain.table.StockTruth;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockPlateService;
@@ -47,6 +49,19 @@ public class HelloController {
     StockInfoRepository stockInfoRepository;
     @Autowired
     StockLimitUpRepository stockLimitUpRepository;
+    @Autowired
+    StockTruthRepository stockTruthRepository;
+    @RequestMapping("/truth/{info}")
+    public String truth(@PathVariable("info")String info) {
+        if ("1".equals(info)) {
+            return "success";
+        }
+        StockTruth stockTruth = new StockTruth();
+        stockTruth.setTruthInfo(info);
+        stockTruthRepository.save(stockTruth);
+        return "add success";
+    }
+
     @RequestMapping("/pre")
     public String pre() {
         panService.preTgb();
@@ -182,6 +197,13 @@ public class HelloController {
         }
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         PRE_END=queryEnd;
+        List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
+        StockTruth stockTruth = null;
+        if(stockTruths!=null&& stockTruths.size()==1){
+            stockTruth = stockTruths.get(0);
+        }else {
+            stockTruth =new StockTruth();
+        }
         String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据<br>===>当前查询日期";
         List<StockInfo> kpls = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
         List<StockInfo> downs =stockInfoService.findStockInfosByDayFormatOrderByOpenBidRate(queryEnd);
@@ -209,7 +231,7 @@ public class HelloController {
 
         List<StockInfo> alls = stockInfoService.findByDayFormatOrderByOpenBidRateDesc(queryEnd);
 
-        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【近5天开盘情况】:<br>"+temperaturesOpen+"<br>===>【竞价情况】:<br>"+alls;
+        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【复盘】:<br>"+stockTruth.getTruthInfo()+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【近5天开盘情况】:<br>"+temperaturesOpen+"<br>===>【竞价情况】:<br>"+alls;
     }
     @RequestMapping("/info/{end}")
     String info(@PathVariable("end")String end) {
@@ -229,6 +251,8 @@ public class HelloController {
         }
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         PRE_END=queryEnd;
+
+
         String desc ="【主流板块 大科技】注意[不参与竞价，核心股的大低开，连板指数上6+]；查询日期20191015";
         List<StockInfo> stockInfos = stockInfoService.findStockInfosByDayFormatOrderByStockType(queryEnd);
         List<StockInfo> downs =stockInfoService.findStockInfosByDayFormatOrderByOpenBidRate(queryEnd);

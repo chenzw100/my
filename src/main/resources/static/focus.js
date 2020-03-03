@@ -1,5 +1,5 @@
-var xData,yContinueValData,yNowTemperatureData,yContinueCountData,yDownCountData,yLimitDownCountData,yTradeValData,hotData;
-var yLimitUpCountData,yLimitUpCountData,yBrokenData,yFirstContinueData;
+var xData,yContinueValData,yNowTemperatureData,yContinueCountData,yDownCountData,yTradeValData,hotData;
+var yLimitUpCountData,yLimitDownCountData,yBrokenData,yFirstContinueData;
 var myChartNowTemperature = echarts.init(document.getElementById('mainNowTemperature'));
 var myChartContinueVal = echarts.init(document.getElementById('mainContinueVal'));
 var myChartSpaceHeight = echarts.init(document.getElementById('mainSpaceHeight'));
