@@ -47,6 +47,11 @@ public class HelloController {
     StockInfoRepository stockInfoRepository;
     @Autowired
     StockLimitUpRepository stockLimitUpRepository;
+    @RequestMapping("/pre")
+    public String pre() {
+        panService.preTgb();
+        return "pre success";
+    }
     @RequestMapping("/add/{code}")
     public String add(@PathVariable("code")String code) {
         if ("1".equals(code)) {
@@ -158,12 +163,7 @@ public class HelloController {
         panService.closePan();
         return "close success";
     }
-    @RequestMapping("/pre")
-    public String pre(){
-        panService.preTgb();
-        //panService.preOpen();
-        return "pre success";
-    }
+
     @RequestMapping("/risk/{end}")
     String risk(@PathVariable("end")String end) {
         String queryEnd = end;

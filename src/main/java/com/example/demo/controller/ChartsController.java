@@ -100,4 +100,65 @@ public class ChartsController {
         }
         return false;
     }
+
+    @RequestMapping(value = "/open/{end}", method = RequestMethod.GET)
+    public Map open(@PathVariable("end")String end){
+        if("1".equals(end)){
+            end=MyUtils.getDayFormat();
+        }
+        Date endDate =  MyUtils.getFormatDate(end);
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(10, endDate));
+        List<StockTemperature> temperaturesOpen=temperatureRepository.open(start,end);
+        TreeMap continueValMap = new TreeMap<>();
+        TreeMap yesterdayShowMap = new TreeMap<>();
+        TreeMap nowTemperatureMap = new TreeMap<>();
+        TreeMap tradeValMap = new TreeMap<>();
+        for (StockTemperature t:temperaturesOpen){
+            continueValMap.put(t.getDayFormat(), t.getContinueVal());
+            yesterdayShowMap.put(t.getDayFormat(), MyUtils.getYuanByCent(t.getYesterdayShow()));
+            nowTemperatureMap.put(t.getDayFormat(), t.getNowTemperature());
+            tradeValMap.put(t.getDayFormat(), t.getTradeVal());
+        }
+        HashMap resultMap =new HashMap();
+        resultMap.put("x", continueValMap.keySet());
+
+        resultMap.put("yContinueVal", continueValMap.values());
+        resultMap.put("yYesterdayShow", yesterdayShowMap.values());
+
+        resultMap.put("yNowTemperature", nowTemperatureMap.values());
+        resultMap.put("yTradeVal", tradeValMap.values());
+        return resultMap;
+    }
+
+    @RequestMapping(value = "/current/{end}", method = RequestMethod.GET)
+    public Map current(@PathVariable("end")String end){
+        if("1".equals(end)){
+            end=MyUtils.getDayFormat();
+        }
+        Date endDate =  MyUtils.getFormatDate(end);
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(10, endDate));
+        List<StockTemperature> temperaturesOpen=temperatureRepository.current(start, end);
+        TreeMap continueValMap = new TreeMap<>();
+        TreeMap yesterdayShowMap = new TreeMap<>();
+        TreeMap nowTemperatureMap = new TreeMap<>();
+        TreeMap tradeValMap = new TreeMap<>();
+
+        for (StockTemperature t:temperaturesOpen){
+            String key = MyUtils.getDayHHFormat(t.getCreated());
+            continueValMap.put(key, t.getContinueVal());
+            yesterdayShowMap.put(key, MyUtils.getYuanByCent(t.getYesterdayShow()));
+            nowTemperatureMap.put(key, t.getNowTemperature());
+        }
+        HashMap resultMap =new HashMap();
+        resultMap.put("x", continueValMap.keySet());
+
+        resultMap.put("yContinueVal", continueValMap.values());
+        resultMap.put("yYesterdayShow", yesterdayShowMap.values());
+
+        resultMap.put("yNowTemperature", nowTemperatureMap.values());
+        resultMap.put("yTradeVal", tradeValMap.values());
+
+        return resultMap;
+    }
+
 }

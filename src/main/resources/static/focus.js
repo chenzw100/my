@@ -10,6 +10,7 @@ var myChartLimitUpCount= echarts.init(document.getElementById('mainLimitUp'));
 var myChartDownCount = echarts.init(document.getElementById('mainDownCount'));
 var myChartLimitDownCount= echarts.init(document.getElementById('mainLimitDown'));
 
+var myChartTradeVal= echarts.init(document.getElementById('mainTradeVal'));
 
 $(function() {
 
@@ -325,9 +326,6 @@ function drawing(){
     };
     // 使用刚指定的配置项和数据显示图表。
     myChartDownCount.setOption(optionCount);
-
-
-
 
     var optionLimitDownCount = {
         title : {
