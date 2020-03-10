@@ -208,16 +208,16 @@ public class StockTemperature {
     public String toString(){
         StringBuilder sb = new StringBuilder();
         String dateStr = DateFormatUtils.format(getCreated(), "MM-dd HH:mm");
-        sb.append(dateStr+"=>[涨:").append(getLimitUp()).append(", 跌:").append(getLimitDown()).append(", 炸:").append(getOpen());
-        sb.append("] ");
+        sb.append(dateStr);
         if(dateStr.substring(6,8).equals("15")){
-            sb.append(" [负:").append(getStrongDowns()).append("] [正:").append(getContinueCount()).append("]");
+            sb.append(" [正:").append(getContinueCount()).append("] [负:").append(getStrongDowns()).append("]");
         }
-        sb.append("[昨:").append(MyUtils.getYuanByCent(getYesterdayShow()));
-        sb.append("] [连:").append(getContinueVal());
-        sb.append("] [炸:").append(MyUtils.getYuanByCent(getBrokenRatio()));
-        sb.append("] [上涨:").append(getRaise()).append(", 下跌跌:").append(getDown()).append("] [上证:").append(getTradeVal()).append("亿");
-        sb.append("] 温度:").append(MyUtils.getYuanByCent(getNowTemperature())).append("<br>");
+        sb.append("[涨:").append(getLimitUp()).append(", 跌:").append(getLimitDown()).append(", 炸:").append(getOpen())
+        .append("] [昨:").append(MyUtils.getYuanByCent(getYesterdayShow()))
+        .append("] [连:").append(getContinueVal())
+        .append("] [炸:").append(MyUtils.getYuanByCent(getBrokenRatio()))
+        .append("] [上涨:").append(getRaise()).append(", 下跌跌:").append(getDown()).append("] [上证:").append(getTradeVal()).append("亿")
+        .append("] 温度:").append(MyUtils.getYuanByCent(getNowTemperature())).append("<br>");
 
         return sb.toString();
     }

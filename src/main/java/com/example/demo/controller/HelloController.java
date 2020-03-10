@@ -179,6 +179,38 @@ public class HelloController {
         return "close success";
     }
 
+    @RequestMapping("/chance/{end}")
+    String chance(@PathVariable("end")String end) {
+        String queryEnd = end;
+        if("1".equals(end)){
+            if(isWorkday()){
+                queryEnd= MyUtils.getDayFormat();
+            }else {
+                queryEnd=MyUtils.getYesterdayDayFormat();
+            }
+        }else if("2".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+        }else if("3".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        }
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        PRE_END=queryEnd;
+        List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
+        StockTruth stockTruth = null;
+        if(stockTruths!=null&& stockTruths.size()==1){
+            stockTruth = stockTruths.get(0);
+        }else {
+            stockTruth =new StockTruth();
+        }
+        String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据<br>===>当前查询日期";
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
+        List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
+        List<StockInfo> days = stockInfoService.findStockDaysByDayFormat(queryEnd);
+        return desc+queryEnd+"<br>===>【复盘】:<br>"+stockTruth.getTruthInfo()+"<br>===>【竞价情况】:<br>"+days+"<br>===>【近5天市场情况】:<br>"+temperaturesClose;
+    }
+
     @RequestMapping("/risk/{end}")
     String risk(@PathVariable("end")String end) {
         String queryEnd = end;
