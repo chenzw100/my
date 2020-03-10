@@ -103,6 +103,9 @@ public class StockInfoService {
     public List<StockInfo> findStockDaysByTodayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DAY.getCode());
     }
+    public List<StockInfo> findStockDaysByDayFormat(String dayFormat){
+        return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode());
+    }
     public List<StockInfo> findStockDaysByYesterdayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getYesterdayDayFormat(), NumberEnum.StockType.STOCK_DAY.getCode());
     }
@@ -122,6 +125,9 @@ public class StockInfoService {
     //---STOCK_DAY_FIVE---start ---
     public List<StockInfo> findStockDayFivesByTodayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
+    }
+    public List<StockInfo> findStockDayFivesByDayFormat(String dayFormat){
+        return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(dayFormat, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
     }
     public List<StockInfo> findStockDayFivesByYesterdayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getYesterdayDayFormat(), NumberEnum.StockType.STOCK_DAY_FIVE.getCode());

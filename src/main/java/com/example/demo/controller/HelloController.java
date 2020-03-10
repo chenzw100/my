@@ -228,10 +228,11 @@ public class HelloController {
                 staStockPlatesWeek2Impl.add(new StaStockPlateImpl(s));
             }
         }*/
+       List<StockInfo> days = stockInfoService.findStockDaysByDayFormat(queryEnd);
+       List<StockInfo> fives = stockInfoService.findStockDayFivesByDayFormat(queryEnd);
+        //List<StockInfo> alls = stockInfoService.findByDayFormatOrderByOpenBidRateDesc(queryEnd);
 
-        List<StockInfo> alls = stockInfoService.findByDayFormatOrderByOpenBidRateDesc(queryEnd);
-
-        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【复盘】:<br>"+stockTruth.getTruthInfo()+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【近5天开盘情况】:<br>"+temperaturesOpen+"<br>===>【竞价情况】:<br>"+alls;
+        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【复盘】:<br>"+stockTruth.getTruthInfo()+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【数据情况】:<br>"+fives+"<br>===>【近5天开盘情况】:<br>"+temperaturesOpen+"<br>===>【竞价情况】:<br>"+days;
     }
     @RequestMapping("/info/{end}")
     String info(@PathVariable("end")String end) {

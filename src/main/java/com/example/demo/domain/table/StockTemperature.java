@@ -211,7 +211,7 @@ public class StockTemperature {
         sb.append(dateStr+"=>[涨:").append(getLimitUp()).append(", 跌:").append(getLimitDown()).append(", 炸:").append(getOpen());
         sb.append("] ");
         if(dateStr.substring(6,8).equals("15")){
-            sb.append(" [负:").append(getStrongDowns()).append("] [正:").append(getContinueCount()).append("]<br>");
+            sb.append(" [负:").append(getStrongDowns()).append("] [正:").append(getContinueCount()).append("]");
         }
         sb.append("[昨:").append(MyUtils.getYuanByCent(getYesterdayShow()));
         sb.append("] [连:").append(getContinueVal());
