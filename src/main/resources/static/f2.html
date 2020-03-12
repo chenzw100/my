@@ -7,22 +7,22 @@
 
 <style>
     .mychart{
-        width: 950px;height:150px;
+        width: 950px;height:170px;
     }
 </style>
 <div class="container">
-    <div class="">
-        <input type="text" id="dateEnd" onkeyup="onKeyUpEnter(event)">
-        <input type="button" value="确定" id="search" onclick="getSelect()"  />
-        <hr>
-        <span>空间高度与核按钮一起降，任何反常都是认知风险，出错概率大</span>
-    </div>
+
     <div>
         <div id="mainDownCount" class="mychart"></div>
         <div id="mainSpaceHeight" class="mychart"></div>
         <hr>
-        <div id="" style="margin-left: 100px;color:blue;">竞价有人要，开盘分时承接好；是否主流，主升段</div>
+        <div class="">
+            <input type="text" id="dateEnd" onkeyup="onKeyUpEnter(event)">
+            <input type="button" value="确定" id="search" onclick="getSelect()"  />
+        </div>
+        <div id="" style="margin-left: 100px;color:blue;">逼空是没有核按钮的前提</div>
         <div id="mainHot" style="margin-left: 100px;color:red;"></div>
+
         <hr>
         <div id="mainStrongCount" class="mychart"></div>
         <div id="mainLimitUp" class="mychart"></div>
@@ -37,7 +37,7 @@
 
 
 </div>
-<script type="text/javascript" src="f2.js?v=1.0"></script>
+<script type="text/javascript" src="f2.js?v=1.3"></script>
 <script type="application/javascript">
     function onKeyUpEnter(e) {
         if (e.keyCode == 13) {

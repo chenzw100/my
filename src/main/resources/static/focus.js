@@ -22,9 +22,7 @@ function initView(){
     changeView();
 }
 function getSelect(){
-    /*if(!checkSelectTime()){
-        return false;
-    }*/
+
     initView();
 }
 function changeView(){

@@ -113,6 +113,9 @@ public class StockInfo implements Serializable {
     public Integer getStockType() {
         return stockType;
     }
+    public String getStockTypeName(){
+        return NumberEnum.StockType.getStockType(getStockType());
+    }
 
     public void setStockType(Integer stockType) {
         this.stockType = stockType;

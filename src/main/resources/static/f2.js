@@ -35,7 +35,7 @@ function getViewData(){
         end="1";
     }
     $.ajax({
-        url : 'focus/'+end,
+        url : 'f2/'+end,
         dataType : 'json',
         type : 'get',
         async : false,
@@ -482,10 +482,10 @@ function drawing(){
     myChartTradeVal.setOption(optionTradeVal);
 
 
-    var optionBroken = {
-        /*title : {
+    /*var optionBroken = {
+        /!*title : {
          text: '炸板率'
-         },*/
+         },*!/
         tooltip : {
             trigger: 'axis'
         },
@@ -531,8 +531,8 @@ function drawing(){
                 }
             }
         ]
-    };
-    myChartBroken.setOption(optionBroken);
+    };*/
+    //myChartBroken.setOption(optionBroken);
     hotDataShow();
 
 }
@@ -540,7 +540,7 @@ function hotDataShow() {
     $("#mainHot").empty();
     for (var i=0;i<hotData.length;i++)
     {
-        $("#mainHot").append(hotData[i].name+"【竞价:" +hotData[i].todayOpenRate+"],明天开:"+hotData[i].tomorrowOpenRate+ ",明天收:"+hotData[i].tomorrowCloseRate+":"+hotData[i].plateName+"】<br>");
+        $("#mainHot").append(hotData[i].dayFormat+hotData[i].stockTypeName+hotData[i].continuous+"连版"+hotData[i].name+"【竞价:" +hotData[i].todayOpenRate+"],明天开:"+hotData[i].tomorrowOpenRate+ ",明天收:"+hotData[i].tomorrowCloseRate+":"+hotData[i].plateName+"】<br>");
     }
 
 }

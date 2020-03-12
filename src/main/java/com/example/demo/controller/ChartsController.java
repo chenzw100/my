@@ -60,7 +60,7 @@ public class ChartsController {
 
         for (StockTemperature t:temperaturesClose){
             continueValMap.put(t.getDayFormat(), t.getContinueVal());
-            nowTemperatureMap.put(t.getDayFormat(), t.getNowTemperature());
+            nowTemperatureMap.put(t.getDayFormat(), t.getTemperature());
             continueCountMap.put(t.getDayFormat(), t.getContinueCount());
             downCountMap.put(t.getDayFormat(), t.getStrongDowns());
             limitUpMap.put(t.getDayFormat(), t.getLimitUp());
@@ -89,6 +89,10 @@ public class ChartsController {
         resultMap.put("firstContinue", firstContinue.values());
 
         List<StockInfo> kpls = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
+        int fsize = kpls.size();
+        for(StockInfo s:highCurrents){
+            kpls.add(fsize,s);
+        }
 
         resultMap.put("hot",kpls);
         return resultMap;

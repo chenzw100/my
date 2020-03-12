@@ -144,6 +144,9 @@ public class StockTemperature {
     public int getNowTemperature() {
         return nowTemperature;
     }
+    public String getTemperature(){
+        return MyUtils.getYuanByCent(getNowTemperature());
+    }
 
     public void setNowTemperature(int nowTemperature) {
         this.nowTemperature = nowTemperature;
@@ -217,7 +220,7 @@ public class StockTemperature {
         .append("] [连:").append(getContinueVal())
         .append("] [炸:").append(MyUtils.getYuanByCent(getBrokenRatio()))
         .append("] [上涨:").append(getRaise()).append(", 下跌跌:").append(getDown()).append("] [上证:").append(getTradeVal()).append("亿")
-        .append("] 温度:").append(MyUtils.getYuanByCent(getNowTemperature())).append("<br>");
+        .append("] 温度:").append(getTemperature()).append("<br>");
 
         return sb.toString();
     }
