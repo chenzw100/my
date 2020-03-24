@@ -122,7 +122,7 @@ public class XgbService extends QtService {
 
     public void limitUp(){
         StockLimitUp spaceHeightStock=null;
-        int spaceHeight = 2;
+        int spaceHeight = 1;
         Object response = getRequest(limit_up);
         JSONArray array = JSONObject.parseObject(response.toString()).getJSONArray("data");
         log.info(":zt==================>"+array.size());
