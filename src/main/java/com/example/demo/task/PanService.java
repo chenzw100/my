@@ -3,6 +3,7 @@ package com.example.demo.task;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.pan.DealPanDataService;
 import com.example.demo.service.tgb.TgbService;
+import com.example.demo.service.xgb.XgbCurrentService;
 import com.example.demo.service.xgb.XgbService;
 import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyUtils;
@@ -23,7 +24,8 @@ public class PanService {
     private static final String closeCron ="58 3 15 ? * MON-FRI";
     //private static final String choiceMy="1 1 9 ? * MON-FRI";
     //private static final String currentTimeCron="1 55 0/1 ? * MON-FRI";
-    private static final String temperatureCron="10 33 9,10,11,13,14 ? * MON-FRI";
+    private static final String temperatureCron="10 35 9,10,11,13,14 ? * MON-FRI";
+    private static final String temperatureCron2="10 45 9,10,13,14 ? * MON-FRI";
     private static final String temperatureOpenCron="58 26 9 ? * MON-FRI";
     @Autowired
     DealPanDataService dealPanDataService;
@@ -31,6 +33,8 @@ public class PanService {
     TgbService tgbService;
     @Autowired
     XgbService xgbService;
+    @Autowired
+    XgbCurrentService xgbCurrentService;
     //盘前处理数据 6:23点获取
     //@Scheduled(cron = tgbCron)
     public void preTgb(){
@@ -77,8 +81,17 @@ public class PanService {
     @Scheduled(cron = temperatureCron)
     public void currentPan(){
         if(isWorkday()) {
-            log.info("currentPan-ready data");
-            xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
+            log.info("currentPan-ready1 data");
+            xgbCurrentService.currentPan();
+            //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
+        }
+    }
+    @Scheduled(cron = temperatureCron2)
+    public void currentPan2(){
+        if(isWorkday()) {
+            log.info("currentPan-ready2 data");
+            xgbCurrentService.currentPan();
+            //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         }
     }
     //每2小时收集数据

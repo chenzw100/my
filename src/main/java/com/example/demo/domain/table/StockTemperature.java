@@ -212,9 +212,7 @@ public class StockTemperature {
         StringBuilder sb = new StringBuilder();
         String dateStr = DateFormatUtils.format(getCreated(), "MM-dd HH:mm");
         sb.append(dateStr);
-        if(dateStr.substring(6,8).equals("15")){
-            sb.append(" [正:").append(getContinueCount()).append("] [负:").append(getStrongDowns()).append("]");
-        }
+        sb.append(" [正:").append(getContinueCount()).append("] [负:").append(getStrongDowns()).append("]");
         sb.append("[涨:").append(getLimitUp()).append(", 跌:").append(getLimitDown()).append(", 炸:").append(getOpen())
         .append("] [昨:").append(MyUtils.getYuanByCent(getYesterdayShow()))
         .append("] [连:").append(getContinueVal())
