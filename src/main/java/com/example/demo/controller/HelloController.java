@@ -245,6 +245,7 @@ public class HelloController {
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
 
         List<StockTemperature> temperaturesOpen=stockTemperatureRepository.open(start,queryEnd);
+        List<StockTemperature> temperatures=stockTemperatureRepository.findByDayFormat(queryEnd);
 
        /* List<StaStockPlate> staStockPlatesWeek = stockPlateService.weekStatistic();
         List<StaStockPlateImpl> staStockPlatesWeekImpl = new ArrayList<>();
@@ -264,7 +265,7 @@ public class HelloController {
        List<StockInfo> fives = stockInfoService.findStockDayFivesByDayFormat(queryEnd);
         //List<StockInfo> alls = stockInfoService.findByDayFormatOrderByOpenBidRateDesc(queryEnd);
 
-        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【复盘】:<br>"+stockTruth.getTruthInfo()+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【数据情况】:<br>"+fives+"<br>===>【近5天开盘情况】:<br>"+temperaturesOpen+"<br>===>【竞价情况】:<br>"+days;
+        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【复盘】:<br>"+stockTruth.getTruthInfo()+"<br>===>【当天市场情况】:<br>"+temperatures+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【数据情况】:<br>"+fives+"<br>===>【近5天开盘情况】:<br>"+temperaturesOpen+"<br>===>【竞价情况】:<br>"+days;
     }
     @RequestMapping("/info/{end}")
     String info(@PathVariable("end")String end) {

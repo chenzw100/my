@@ -26,7 +26,7 @@ public class PanService {
     //private static final String currentTimeCron="1 55 0/1 ? * MON-FRI";
     private static final String temperatureCron="10 35 9,10,11,13,14 ? * MON-FRI";
     private static final String temperatureCron2="10 45 9,10,13,14 ? * MON-FRI";
-    private static final String temperatureOpenCron="58 26 9 ? * MON-FRI";
+    private static final String temperatureOpenCron="59 25 9 ? * MON-FRI";
     @Autowired
     DealPanDataService dealPanDataService;
     @Autowired
