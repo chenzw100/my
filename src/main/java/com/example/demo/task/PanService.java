@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PanService {
     Log log = LogFactory.getLog(PanService.class);
-    //private static final String tgbCron = "58 50  8 ? * MON-FRI";
+    private static final String tgbCron = "58 10  8 ? * MON-FRI";
     private static final String openCron = "58 25 9 ? * MON-FRI";
     private static final String closeCron ="58 3 15 ? * MON-FRI";
     //private static final String choiceMy="1 1 9 ? * MON-FRI";
@@ -38,7 +38,7 @@ public class PanService {
     @Autowired
     XgbCurrentService xgbCurrentService;
     //盘前处理数据 6:23点获取
-    //@Scheduled(cron = tgbCron)
+    @Scheduled(cron = tgbCron)
     public void preTgb(){
         //获取数据
         if(isWorkday()){
