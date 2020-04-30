@@ -25,7 +25,9 @@ public class PanService {
     //private static final String choiceMy="1 1 9 ? * MON-FRI";
     //private static final String currentTimeCron="1 55 0/1 ? * MON-FRI";
     private static final String temperatureCron="10 35 9,10,11,13,14 ? * MON-FRI";
-    private static final String temperatureCron2="10 45 9,10,13,14 ? * MON-FRI";
+    private static final String temperatureCron2="10 45 9,13,14 ? * MON-FRI";
+    private static final String temperatureCron3="10 30 9,14 ? * MON-FRI";
+    private static final String temperatureCron4="10 01 10 ? * MON-FRI";
     private static final String temperatureOpenCron="59 25 9 ? * MON-FRI";
     @Autowired
     DealPanDataService dealPanDataService;
@@ -90,6 +92,22 @@ public class PanService {
     public void currentPan2(){
         if(isWorkday()) {
             log.info("currentPan-ready2 data");
+            xgbCurrentService.currentPan();
+            //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
+        }
+    }
+    @Scheduled(cron = temperatureCron3)
+    public void currentPan3(){
+        if(isWorkday()) {
+            log.info("currentPan-ready3 data");
+            xgbCurrentService.currentPan();
+            //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
+        }
+    }
+    @Scheduled(cron = temperatureCron4)
+    public void currentPan4(){
+        if(isWorkday()) {
+            log.info("currentPan-ready4 data");
             xgbCurrentService.currentPan();
             //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         }
