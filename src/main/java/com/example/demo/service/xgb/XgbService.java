@@ -91,8 +91,8 @@ public class XgbService extends QtService {
             JSONObject jsonObject =  JSONObject.parseObject(response.toString()).getJSONObject("data");
             int limitDownCount = jsonObject.getInteger("limit_down_count");
             int limitUpCount = jsonObject.getInteger("limit_up_count");
-            temperature.setLimitDown(limitDownCount);
-            temperature.setLimitUp(limitUpCount);
+            temperature.setLimitDown(temperature.getDownUp()-limitDownCount);
+            temperature.setLimitUp(temperature.getRaiseUp()-limitUpCount);
         }
 
         if(type==NumberEnum.TemperatureType.OPEN.getCode()){
