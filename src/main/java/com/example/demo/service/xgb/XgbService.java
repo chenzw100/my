@@ -89,8 +89,8 @@ public class XgbService extends QtService {
         response = getRequest(market_url);
         if(response!=null){
             JSONObject jsonObject =  JSONObject.parseObject(response.toString()).getJSONObject("data");
-            int limitDownCount = jsonObject.getInteger("limit_down_count");
-            int limitUpCount = jsonObject.getInteger("limit_up_count");
+            int limitDownCount = jsonObject.getInteger("st_limit_down_count");
+            int limitUpCount = jsonObject.getInteger("st_limit_up_count");
             temperature.setLimitDown(temperature.getDownUp()-limitDownCount);
             temperature.setLimitUp(temperature.getRaiseUp()-limitUpCount);
         }
