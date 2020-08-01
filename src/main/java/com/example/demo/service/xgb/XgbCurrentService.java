@@ -50,6 +50,8 @@ public class XgbCurrentService extends QtService {
 
     private static int downCount =0;
     private static int  upCount = 0;
+    private static int superCount=0;
+    private static int superUpCount=0;
     public void currentPan(){
         log.info("xgb==>start current");
         limitUp();
@@ -107,10 +109,13 @@ public class XgbCurrentService extends QtService {
         temperature.setTradeVal(currentTradeVal());
         temperature.setContinueCount(upCount);
         temperature.setStrongDowns(downCount);
-
+        temperature.setSuperCount(superCount);
+        temperature.setSuperUpCount(superUpCount);
         stockTemperatureRepository.save(temperature);
         upCount=0;
         downCount=0;
+        superCount=0;
+        superUpCount=0;
     }
 
     public void limitUp(){
@@ -168,10 +173,20 @@ public class XgbCurrentService extends QtService {
             JSONObject jsonStock =  array.getJSONObject(i);
             String name = jsonStock.getString("stock_chi_name");
             String changePercent = jsonStock.getString("change_percent");
+            Integer superUp = jsonStock.getInteger("limit_up_days");
             int cp =MyUtils.getCentByYuanStr(changePercent);
             //log.info(name+"-->super"+cp);
-            if(!name.contains("S") && cp<-8) {
-                downCount++;
+            if(!name.contains("S")) {
+                if(superUp==0){
+                    if(cp<-8){
+                        downCount++;
+                    }else if(cp>6) {
+                        superCount++;
+                    }
+                }else {
+                    superUpCount++;
+                }
+
             }
 
         }

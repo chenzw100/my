@@ -65,6 +65,9 @@ public class MyUtils {
     public static int getCentByYuanStr(String sinaPriceStr){
         return new BigDecimal(Double.parseDouble(sinaPriceStr)).multiply(new BigDecimal(100)).setScale(2, RoundingMode.HALF_UP).intValue();
     }
+    public static int getCentBy4Point(String sinaPriceStr){
+        return new BigDecimal(Double.parseDouble(sinaPriceStr)).multiply(new BigDecimal(10000)).setScale(2, RoundingMode.HALF_UP).intValue();
+    }
     public static String getYuanByCent(int cent){
         return new BigDecimal(cent).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP).toString();
         /*Double faultRate = Double.parseDouble(sinaPriceStr);
@@ -102,6 +105,8 @@ public class MyUtils {
     public static void main(String[] args) {
         //System.out.println(MyUtils.getIncreaseRate(302,309).multiply(new BigDecimal(100)).setScale(0, RoundingMode.HALF_UP));
         //System.out.println(MyUtils.getIncreaseRateCent(302, 309).intValue());
-        System.out.println(MyUtils.getAverageRateCent(-8000, 10).toString());
+        //System.out.println(MyUtils.getAverageRateCent(-8000, 10).toString());
+        int cp =MyUtils.getCentBy4Point("0.0996");
+        System.out.println("cp:"+cp+(cp<800));
     }
 }
