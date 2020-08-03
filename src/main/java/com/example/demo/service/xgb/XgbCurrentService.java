@@ -60,6 +60,15 @@ public class XgbCurrentService extends QtService {
         temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         log.info("xgb===>end current");
     }
+    public void closePan(){
+        log.info("xgb==>start closePan");
+        limitUp();
+        superStockBefore();
+        limitUpBrokenAfter();
+        temperature(NumberEnum.TemperatureType.CLOSE.getCode());
+        platesClose();
+        log.info("xgb===>end closePan");
+    }
 
     public void temperature(int type)  {
         StockTemperature temperature = new StockTemperature(type);
@@ -192,5 +201,37 @@ public class XgbCurrentService extends QtService {
         }
     }
 
-
+    public void platesClose(){
+        Object response = getRequest(plates_url);
+        JSONArray array = JSONObject.parseObject(response.toString()).getJSONObject("data").getJSONArray("items");
+        log.info("-->plates："+array.size());
+        int length = 5;
+        if(array.size()<5){
+            length = array.size();
+        }
+        for(int i=0;i<length;i++){
+            JSONObject jsonStock =  array.getJSONObject(i);
+            String code = jsonStock.getString("id");
+            StockPlate stockPlate = stockPlateService.findByPlateCodeByYesterday(code);
+            String desc = jsonStock.getString("description");
+            if(stockPlate == null){
+                stockPlate = new StockPlate();
+                String name = jsonStock.getString("name");
+                stockPlate.setPlateName(name);
+                stockPlate.setPlateCode(code);
+                stockPlate.setContinuousCount(1);
+            }else {
+                //stockPlate.setId(null);
+                stockPlate.setContinuousCount(stockPlate.getContinuousCount()+1);
+            }
+            if(desc==null){
+                desc="";
+            }
+            stockPlate.setDescription(desc);
+            stockPlate.setDayFormat(MyUtils.getDayFormat());
+            stockPlate.setHotSort(i+1);
+            log.info("-->plate："+stockPlate.toString());
+            stockPlateService.save(stockPlate);
+        }
+    }
 }
