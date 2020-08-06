@@ -61,6 +61,17 @@ public class HelloController {
         stockTruthRepository.save(stockTruth);
         return "add success";
     }
+    @RequestMapping("/truth/{dayFormat}/{info}")
+    public String truth2(@PathVariable("info")String info,@PathVariable("dayFormat")String dayFormat) {
+        if ("1".equals(dayFormat)) {
+            return "success"+dayFormat;
+        }
+        StockTruth stockTruth = new StockTruth();
+        stockTruth.setTruthInfo(info);
+        stockTruth.setDayFormat(dayFormat);
+        stockTruthRepository.save(stockTruth);
+        return "add success";
+    }
 
     @RequestMapping("/pre")
     public String pre() {
@@ -231,10 +242,9 @@ public class HelloController {
         PRE_END=queryEnd;
         List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
         StockTruth stockTruth = null;
-        if(stockTruths!=null&& stockTruths.size()==1){
-            stockTruth = stockTruths.get(0);
-        }else {
+        if(stockTruths==null){
             stockTruth =new StockTruth();
+            stockTruths.add(stockTruth);
         }
         String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据<br>===>当前查询日期";
         List<StockInfo> kpls = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
@@ -265,7 +275,7 @@ public class HelloController {
        List<StockInfo> fives = stockInfoService.findStockDayFivesByDayFormat(queryEnd);
         //List<StockInfo> alls = stockInfoService.findByDayFormatOrderByOpenBidRateDesc(queryEnd);
 
-        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【复盘】:<br>"+stockTruth.getTruthInfo()+"<br>===>【当天市场情况】:<br>"+temperatures+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【数据情况】:<br>"+fives+"<br>===>【近5天开盘情况】:<br>"+temperaturesOpen+"<br>===>【竞价情况】:<br>"+days;
+        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【近5天开盘情况】:<br>"+temperaturesOpen+"<br>===>【复盘】:<br>"+stockTruths+"<br>===>【当天市场情况】:<br>"+temperatures+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【数据情况】:<br>"+fives+"<br>===>【竞价情况】:<br>"+days;
     }
     @RequestMapping("/info/{end}")
     String info(@PathVariable("end")String end) {

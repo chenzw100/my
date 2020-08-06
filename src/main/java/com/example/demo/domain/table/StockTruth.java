@@ -1,5 +1,6 @@
 package com.example.demo.domain.table;
 
+import com.example.demo.enums.NumberEnum;
 import com.example.demo.utils.MyUtils;
 
 import javax.persistence.Column;
@@ -43,5 +44,13 @@ public class StockTruth {
 
     public void setTruthInfo(String truthInfo) {
         this.truthInfo = truthInfo;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getTruthInfo()).append("<br>");
+        return sb.toString();
+
     }
 }
