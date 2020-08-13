@@ -3,11 +3,12 @@ package com.example.demo.service.xgb;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.dao.StockLimitUpRepository;
+import com.example.demo.dao.StockPlateRepository;
+import com.example.demo.dao.StockPlateStaRepository;
 import com.example.demo.dao.StockTemperatureRepository;
-import com.example.demo.domain.table.StockInfo;
-import com.example.demo.domain.table.StockLimitUp;
-import com.example.demo.domain.table.StockPlate;
-import com.example.demo.domain.table.StockTemperature;
+import com.example.demo.domain.StaStockPlate;
+import com.example.demo.domain.StaStockPlateImpl;
+import com.example.demo.domain.table.*;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockPlateService;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,14 +49,57 @@ public class XgbService extends QtService {
     StockInfoService stockInfoService;
     @Autowired
     StockPlateService stockPlateService;
+    @Autowired
+    StockPlateStaRepository stockPlateStaRepository;
     public void closePan(){
         log.info("xgb==>start closePan");
         limitUp();
-        superStockBefore();
-        limitUpBrokenAfter();
-        temperature(NumberEnum.TemperatureType.CLOSE.getCode());
+        //superStockBefore();
+        //limitUpBrokenAfter();
+        //temperature(NumberEnum.TemperatureType.CLOSE.getCode());
         platesClose();
         log.info("xgb===>end closePan");
+    }
+    public void staPlates(){
+        List<StaStockPlate> staStockPlatesWeek = stockPlateService.weekStatistic();
+        if(staStockPlatesWeek.size()>0){
+            for(StaStockPlate s: staStockPlatesWeek){
+                StockPlateSta stockPlateSta = new StockPlateSta();
+                stockPlateSta.setDayFormat(MyUtils.getDayFormat());
+                stockPlateSta.setContinuousCount(s.getContinuousCount());
+                stockPlateSta.setDescription(s.getDescription());
+                stockPlateSta.setHotSort(s.getHotSort());
+                stockPlateSta.setPlateName(s.getPlateName());
+                stockPlateSta.setPlateType(NumberEnum.PlateType.WEEK.getCode());
+                stockPlateStaRepository.save(stockPlateSta);
+            }
+        }
+        List<StaStockPlate> staStockPlatesWeek2 = stockPlateService.week2Statistic();
+        if(staStockPlatesWeek.size()>0){
+            for(StaStockPlate s: staStockPlatesWeek2){
+                StockPlateSta stockPlateSta = new StockPlateSta();
+                stockPlateSta.setDayFormat(MyUtils.getDayFormat());
+                stockPlateSta.setContinuousCount(s.getContinuousCount());
+                stockPlateSta.setDescription(s.getDescription());
+                stockPlateSta.setHotSort(s.getHotSort());
+                stockPlateSta.setPlateName(s.getPlateName());
+                stockPlateSta.setPlateType(NumberEnum.PlateType.TWO_WEEK.getCode());
+                stockPlateStaRepository.save(stockPlateSta);
+            }
+        }
+        List<StaStockPlate> staStockPlatesMonth = stockPlateService.monthStatistic();
+        if(staStockPlatesWeek.size()>0){
+            for(StaStockPlate s: staStockPlatesMonth){
+                StockPlateSta stockPlateSta = new StockPlateSta();
+                stockPlateSta.setDayFormat(MyUtils.getDayFormat());
+                stockPlateSta.setContinuousCount(s.getContinuousCount());
+                stockPlateSta.setDescription(s.getDescription());
+                stockPlateSta.setHotSort(s.getHotSort());
+                stockPlateSta.setPlateName(s.getPlateName());
+                stockPlateSta.setPlateType(NumberEnum.PlateType.MONTH.getCode());
+                stockPlateStaRepository.save(stockPlateSta);
+            }
+        }
     }
 
     public void temperature(int type)  {
