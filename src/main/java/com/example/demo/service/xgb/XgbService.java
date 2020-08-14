@@ -58,6 +58,7 @@ public class XgbService extends QtService {
         //limitUpBrokenAfter();
         //temperature(NumberEnum.TemperatureType.CLOSE.getCode());
         platesClose();
+        staPlates();
         log.info("xgb===>end closePan");
     }
     public void staPlates(){
