@@ -135,8 +135,8 @@ public class NumberEnum {
             this.desc = desc;
         }
 
-        public static String getTemperatureType(int code){
-            for(TemperatureType d : TemperatureType.values()){
+        public static String getPlateType(int code){
+            for(PlateType d : PlateType.values()){
                 if(d.getCode()==code){
                     return d.getDesc();
                 }

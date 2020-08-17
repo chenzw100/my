@@ -1,16 +1,10 @@
 package com.example.demo.controller;
 
-import com.example.demo.dao.StockInfoRepository;
-import com.example.demo.dao.StockLimitUpRepository;
-import com.example.demo.dao.StockTemperatureRepository;
-import com.example.demo.dao.StockTruthRepository;
+import com.example.demo.dao.*;
 import com.example.demo.domain.SinaTinyInfoStock;
 import com.example.demo.domain.StaStockPlate;
 import com.example.demo.domain.StaStockPlateImpl;
-import com.example.demo.domain.table.StockInfo;
-import com.example.demo.domain.table.StockLimitUp;
-import com.example.demo.domain.table.StockTemperature;
-import com.example.demo.domain.table.StockTruth;
+import com.example.demo.domain.table.*;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockPlateService;
@@ -51,6 +45,13 @@ public class HelloController {
     StockLimitUpRepository stockLimitUpRepository;
     @Autowired
     StockTruthRepository stockTruthRepository;
+    @Autowired
+    StockPlateStaRepository stockPlateStaRepository;
+    @RequestMapping("/plates")
+    public String plates() {
+       xgbService.staPlates();
+        return "staPlates success";
+    }
     @RequestMapping("/truth/{info}")
     public String truth(@PathVariable("info")String info) {
         if ("1".equals(info)) {
@@ -277,7 +278,7 @@ public class HelloController {
 
         return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【近5天开盘情况】:<br>"+temperaturesOpen+"<br>===>【复盘】:<br>"+stockTruths+"<br>===>【当天市场情况】:<br>"+temperatures+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【数据情况】:<br>"+fives+"<br>===>【竞价情况】:<br>"+days;
     }
-    @RequestMapping("/info/{end}")
+    @RequestMapping("/info3/{end}")
     String info(@PathVariable("end")String end) {
         String queryEnd = end;
         if("1".equals(end)){
@@ -327,6 +328,42 @@ public class HelloController {
         }
 
         return desc+queryEnd+"<br>月:"+staStockPlatesMonthImpl+"<br>半月:"+staStockPlatesWeek2Impl+"周:"+staStockPlatesWeekImpl+"<br>最近5天市场情况<br>"+temperaturesClose+"<br>"+temperaturesOpen+"大低开:<br>"+downs+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+stockInfos;
+    }
+    @RequestMapping("/info/{end}")
+    String pan(@PathVariable("end")String end) {
+        String queryEnd = end;
+        if("1".equals(end)){
+            if(isWorkday()){
+                queryEnd= MyUtils.getDayFormat();
+            }else {
+                queryEnd=MyUtils.getYesterdayDayFormat();
+            }
+        }else if("2".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+        }else if("3".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        }
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        PRE_END=queryEnd;
+
+        String desc ="【主流板块 大科技】注意[不参与竞价，核心股的大低开，连板指数上6+]；查询日期20191015";
+        List<StockInfo> stockInfos = stockInfoService.findStockInfosByDayFormatOrderByStockType(queryEnd);
+        List<StockInfo> downs =stockInfoService.findStockInfosByDayFormatOrderByOpenBidRate(queryEnd);
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
+        List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
+        List<StockTemperature> temperaturesOpen=stockTemperatureRepository.open(start, queryEnd);
+        List<StockTemperature> temperatures=stockTemperatureRepository.findByDayFormat(queryEnd);
+        List<StockPlateSta> stockPlates =stockPlateStaRepository.findByDayFormatOrderByPlateType(queryEnd);
+        List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
+        StockTruth stockTruth = null;
+        if(stockTruths==null){
+            stockTruth =new StockTruth();
+            stockTruths.add(stockTruth);
+        }
+
+        return desc+queryEnd+"<br>月:"+stockPlates+"<br>心得:"+stockTruths+"<br>最近5天市场情况<br>"+temperaturesClose+"<br>"+temperaturesOpen+"大低开:<br>"+downs+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+stockInfos;
     }
     @RequestMapping("/info2/{end}")
     String info2(@PathVariable("end")String end) {

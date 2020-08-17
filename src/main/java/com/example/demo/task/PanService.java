@@ -21,7 +21,7 @@ public class PanService {
     Log log = LogFactory.getLog(PanService.class);
     private static final String tgbCron = "58 10  8 ? * MON-FRI";
     private static final String openCron = "50 25 9 ? * MON-FRI";
-    private static final String closeCron ="58 3 15 ? * MON-FRI";
+    private static final String closeCron ="58 2 15 ? * MON-FRI";
     //private static final String choiceMy="1 1 9 ? * MON-FRI";
     //private static final String currentTimeCron="1 55 0/1 ? * MON-FRI";
     private static final String temperatureCron="10 35 9,10,11,13,14 ? * MON-FRI";

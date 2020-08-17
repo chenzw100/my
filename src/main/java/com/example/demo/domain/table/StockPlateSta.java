@@ -1,5 +1,7 @@
 package com.example.demo.domain.table;
 
+import com.example.demo.enums.NumberEnum;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,8 +31,21 @@ public class StockPlateSta implements Serializable {
     private Integer continuousCount;
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '热度排序'")
     private Integer hotSort;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '出现统计次数'")
+    private Integer totalCount;
+
+    public Integer getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(Integer totalCount) {
+        this.totalCount = totalCount;
+    }
 
     public Integer getPlateType() {
+        if(plateType==null){
+            plateType=0;
+        }
         return plateType;
     }
 
@@ -91,7 +106,7 @@ public class StockPlateSta implements Serializable {
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append(plateName).append("<br>");
+        sb.append(NumberEnum.PlateType.getPlateType(getPlateType())).append("[热度:").append(getTotalCount()).append(":").append(getPlateName()).append("],").append(getDescription()).append("<br>");
         return sb.toString();
     }
 

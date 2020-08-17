@@ -63,6 +63,7 @@ public class XgbService extends QtService {
     }
     public void staPlates(){
         List<StaStockPlate> staStockPlatesWeek = stockPlateService.weekStatistic();
+        log.info("staStockPlatesWeek-ready data"+staStockPlatesWeek.size());
         if(staStockPlatesWeek.size()>0){
             for(StaStockPlate s: staStockPlatesWeek){
                 StockPlateSta stockPlateSta = new StockPlateSta();
@@ -72,6 +73,7 @@ public class XgbService extends QtService {
                 stockPlateSta.setHotSort(s.getHotSort());
                 stockPlateSta.setPlateName(s.getPlateName());
                 stockPlateSta.setPlateType(NumberEnum.PlateType.WEEK.getCode());
+                stockPlateSta.setTotalCount(s.getTotalCount());
                 stockPlateStaRepository.save(stockPlateSta);
             }
         }
@@ -84,11 +86,13 @@ public class XgbService extends QtService {
                 stockPlateSta.setDescription(s.getDescription());
                 stockPlateSta.setHotSort(s.getHotSort());
                 stockPlateSta.setPlateName(s.getPlateName());
+                stockPlateSta.setTotalCount(s.getTotalCount());
                 stockPlateSta.setPlateType(NumberEnum.PlateType.TWO_WEEK.getCode());
                 stockPlateStaRepository.save(stockPlateSta);
             }
         }
         List<StaStockPlate> staStockPlatesMonth = stockPlateService.monthStatistic();
+        log.info("staStockPlatesMonth-ready data"+staStockPlatesMonth.size());
         if(staStockPlatesWeek.size()>0){
             for(StaStockPlate s: staStockPlatesMonth){
                 StockPlateSta stockPlateSta = new StockPlateSta();
@@ -97,6 +101,7 @@ public class XgbService extends QtService {
                 stockPlateSta.setDescription(s.getDescription());
                 stockPlateSta.setHotSort(s.getHotSort());
                 stockPlateSta.setPlateName(s.getPlateName());
+                stockPlateSta.setTotalCount(s.getTotalCount());
                 stockPlateSta.setPlateType(NumberEnum.PlateType.MONTH.getCode());
                 stockPlateStaRepository.save(stockPlateSta);
             }
