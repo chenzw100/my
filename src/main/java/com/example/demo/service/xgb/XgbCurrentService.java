@@ -112,7 +112,9 @@ public class XgbCurrentService extends QtService {
             temperature.setContinueVal("0");
             //temperature.setYesterdayShow(0);
         }else {
-            temperature.setContinueVal(dfcfService.currentContinueVal());
+            String continueVal = dfcfService.currentContinueVal();
+            log.info("-----------lian :"+continueVal);
+            temperature.setContinueVal(continueVal);
             //temperature.setYesterdayShow(MyUtils.getCentByYuanStr(dfcfService.currentYesterdayVal()));
         }
         temperature.setTradeVal(currentTradeVal());

@@ -20,7 +20,7 @@ import java.util.List;
  userRepository.exists(1l);
  */
 public interface StockPlateStaRepository extends JpaRepository<StockPlateSta,Long> {
-    List<StockPlateSta> findByDayFormat(String dayFormat);
+    List<StockPlateSta> findByDayFormatAndPlateType(String dayFormat,Integer plateType);
     List<StockPlateSta> findByDayFormatOrderByPlateType(String dayFormat);
     StockPlateSta save(StockPlateSta stockPlate);
 
