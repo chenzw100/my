@@ -14,6 +14,7 @@ import com.example.demo.service.sina.SinaService;
 import com.example.demo.service.xgb.XgbService;
 import com.example.demo.task.PanService;
 import com.example.demo.utils.ChineseWorkDay;
+import com.example.demo.utils.HttpClientUtil;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,9 +59,8 @@ public class HelloController {
     private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
     @RequestMapping("/con")
     public String con() {
-        ResponseEntity entity =restTemplate.getForEntity(current_Continue,String.class);
-        JSONObject jsonObject =restTemplate.getForObject(current_Continue, JSONObject.class);
-        return "success:";
+        String ss = dfcfService.currentContinueVal();
+        return "success:"+ss;
     }
     @RequestMapping("/plates")
     public String plates() {

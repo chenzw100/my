@@ -118,6 +118,7 @@ public class XgbCurrentService extends QtService {
             //temperature.setYesterdayShow(MyUtils.getCentByYuanStr(dfcfService.currentYesterdayVal()));
         }
         temperature.setTradeVal(currentTradeVal());
+        temperature.setTradeCYBVal(currentCYBTradeVal());
         temperature.setContinueCount(upCount);
         temperature.setStrongDowns(downCount);
         temperature.setSuperCount(superCount);

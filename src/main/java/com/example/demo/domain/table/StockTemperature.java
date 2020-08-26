@@ -47,6 +47,8 @@ public class StockTemperature {
     @Column(nullable = false)
     private int tradeVal;
     @Column(nullable = false)
+    private int tradeCYBVal;
+    @Column(nullable = false)
     private String continueVal;
     @Column(nullable = false)
     private int strongDowns;
@@ -57,6 +59,14 @@ public class StockTemperature {
     private int superCount;
     @Column(nullable = false)
     private int superUpCount;
+
+    public int getTradeCYBVal() {
+        return tradeCYBVal;
+    }
+
+    public void setTradeCYBVal(int tradeCYBVal) {
+        this.tradeCYBVal = tradeCYBVal;
+    }
 
     public int getSuperCount() {
         return superCount;
@@ -233,9 +243,9 @@ public class StockTemperature {
         StringBuilder sb = new StringBuilder();
         String dateStr = DateFormatUtils.format(getCreated(), "MM-dd HH:mm");
         sb.append(dateStr);
-        sb.append("[强:").append(getSuperUpCount()).append(",大阳:").append(getSuperCount()).append("] [上证:").append(getTradeVal()).append("亿]")
-        .append("[正:").append(getContinueCount()).append("] [负:").append(getStrongDowns()).append("]")
-        .append("[涨:").append(getLimitUp()).append(", 跌:").append(getLimitDown()).append(", 炸:").append(getOpen())
+        sb.append("[上证:").append(getTradeVal()).append("亿、创:").append(getTradeCYBVal()).append("亿][强:").append(getSuperUpCount()).append(",大阳:").append(getSuperCount())
+        .append(",正:").append(getContinueCount()).append("] [负:").append(getStrongDowns()).append(", 跌:").append(getLimitDown())
+         .append("][涨:").append(getLimitUp()).append(", 炸:").append(getOpen())
         .append("] [昨:").append(MyUtils.getYuanByCent(getYesterdayShow()))
         .append("] [连:").append(getContinueVal())
         .append("] [炸:").append(MyUtils.getYuanByCent(getBrokenRatio()))
