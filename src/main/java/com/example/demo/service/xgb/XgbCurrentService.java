@@ -48,10 +48,10 @@ public class XgbCurrentService extends QtService {
     @Autowired
     StockPlateService stockPlateService;
 
-    private static int downCount =0;
-    private static int  upCount = 0;
-    private static int superCount=0;
-    private static int superUpCount=0;
+    private static int downCount =0,downCountCYB=0;
+    private static int  upCount = 0,upCountCYB=0;
+    private static int superCount=0,superCountCYB=0;
+    private static int superUpCount=0,superUpCountCYB=0;
     public void currentPan(){
         log.info("xgb==>start current");
         limitUp();
@@ -120,14 +120,18 @@ public class XgbCurrentService extends QtService {
         temperature.setTradeVal(currentTradeVal());
         temperature.setTradeCYBVal(currentCYBTradeVal());
         temperature.setContinueCount(upCount);
+        temperature.setContinueCountCYB(upCountCYB);
         temperature.setStrongDowns(downCount);
+        temperature.setStrongDownsCYB(downCountCYB);
         temperature.setSuperCount(superCount);
+        temperature.setSuperCountCYB(superCountCYB);
         temperature.setSuperUpCount(superUpCount);
+        temperature.setSuperUpCountCYB(superUpCountCYB);
         stockTemperatureRepository.save(temperature);
-        upCount=0;
-        downCount=0;
-        superCount=0;
-        superUpCount=0;
+        upCount=0;upCountCYB=0;
+        downCount=0;downCountCYB=0;
+        superCount=0;superCountCYB=0;
+        superUpCount=0;superUpCountCYB=0;
     }
 
     public void limitUp(){
@@ -154,6 +158,9 @@ public class XgbCurrentService extends QtService {
 
                 if (xgbStock.getContinueBoardCount() > spaceHeight) {
                     upCount++;
+                    if(codeStr.indexOf("300")==0){
+                        upCountCYB++;
+                    }
                 }
             }
         }
@@ -168,11 +175,15 @@ public class XgbCurrentService extends QtService {
         for(int i=0;i<array.size();i++){
             JSONObject jsonStock =  array.getJSONObject(i);
             String name = jsonStock.getString("stock_chi_name");
+            String symbol = jsonStock.getString("symbol");
             String changePercent = jsonStock.getString("change_percent");
             int cp =MyUtils.getCentByYuanStr(changePercent);
             //log.info(name+"-broken---->"+cp);
             if(!name.contains("S") && cp<0) {
                 downCount++;
+                if(symbol.indexOf("300")==0){
+                    downCountCYB++;
+                }
             }
 
         }
@@ -186,17 +197,27 @@ public class XgbCurrentService extends QtService {
             String name = jsonStock.getString("stock_chi_name");
             String changePercent = jsonStock.getString("change_percent");
             Integer superUp = jsonStock.getInteger("limit_up_days");
+            String symbol = jsonStock.getString("symbol");
             int cp =MyUtils.getCentByYuanStr(changePercent);
             //log.info(name+"-->super"+cp);
             if(!name.contains("S")) {
                 if(superUp==0){
                     if(cp<-8){
                         downCount++;
+                        if(symbol.indexOf("300")==0){
+                            downCountCYB++;
+                        }
                     }else if(cp>6) {
                         superCount++;
+                        if(symbol.indexOf("300")==0){
+                            superCountCYB++;
+                        }
                     }
                 }else {
                     superUpCount++;
+                    if(symbol.indexOf("300")==0){
+                        superUpCountCYB++;
+                    }
                 }
 
             }

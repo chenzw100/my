@@ -107,6 +107,8 @@ public class MyUtils {
         //System.out.println(MyUtils.getIncreaseRateCent(302, 309).intValue());
         //System.out.println(MyUtils.getAverageRateCent(-8000, 10).toString());
         int cp =MyUtils.getCentBy4Point("0.0996");
-        System.out.println("cp:"+cp+(cp<800));
+        String sy ="300265";
+
+        System.out.println("cp:"+sy.indexOf("2300"));
     }
 }
