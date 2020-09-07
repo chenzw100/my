@@ -21,7 +21,7 @@ import java.util.List;
  userRepository.exists(1l);
  */
 public interface StockPlateRepository extends JpaRepository<StockPlate,Long> {
-    StockPlate findByPlateCodeAndDayFormat(String code, String dayFormat);
+    List<StockPlate> findByPlateCodeAndDayFormat(String code, String dayFormat);
     StockPlate save(StockPlate stockPlate);
     @Query(value="SELECT * from stock_info WHERE day_format BETWEEN ?1 AND ?2", nativeQuery = true)
     public List<StockPlate> statistic(String start, String end);

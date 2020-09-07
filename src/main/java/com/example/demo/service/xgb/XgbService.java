@@ -333,7 +333,7 @@ public class XgbService extends QtService {
                 stockPlate.setPlateCode(code);
                 stockPlate.setContinuousCount(1);
             }else {
-                //stockPlate.setId(null);
+                stockPlate.setId(null);
                 stockPlate.setContinuousCount(stockPlate.getContinuousCount()+1);
             }
             if(desc==null){
@@ -342,8 +342,8 @@ public class XgbService extends QtService {
             stockPlate.setDescription(desc);
             stockPlate.setDayFormat(MyUtils.getDayFormat());
             stockPlate.setHotSort(i+1);
-            log.info("-->plate："+stockPlate.toString());
             stockPlateService.save(stockPlate);
+            log.info("-->plate："+stockPlate.toString());
         }
     }
 
