@@ -392,7 +392,7 @@ public class HelloController {
         List<StockInfo> kpls = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
         List<StockInfo> highCurrents = stockInfoService.fiveHeightSpace(start, queryEnd);
         highCurrents.addAll(kpls);
-        return desc+queryEnd+"<br>心理历程:"+stockTruths+"<br>最近5天市场情况<br>"+temperaturesClose+"大低开:<br>"+downs+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+highCurrents+"<br>"+stockInfos+"<br>"+temperaturesOpen+"<br>月:"+stockPlates;
+        return desc+queryEnd+"<br>心理历程:"+stockTruths+"<br>月度主题:"+stockPlates+"<br>最近5天市场情况<br>"+temperaturesClose+"大低开:<br>"+downs+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+highCurrents+"<br>"+stockInfos+"<br>"+temperaturesOpen;
     }
     @RequestMapping("/info2/{end}")
     String info2(@PathVariable("end")String end) {
