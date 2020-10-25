@@ -58,6 +58,11 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
+			<dependency>
+				<groupId>net.sourceforge.tess4j</groupId>
+				<artifactId>tess4j</artifactId>
+				<version>4.4.0</version>
+			</dependency>
 	</dependencies>
 
 	<build>

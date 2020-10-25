@@ -7,11 +7,9 @@ import com.example.demo.dao.StockTruthRepository;
 import com.example.demo.domain.SinaTinyInfoStock;
 import com.example.demo.domain.StaStockPlate;
 import com.example.demo.domain.StaStockPlateImpl;
-import com.example.demo.domain.table.StockInfo;
-import com.example.demo.domain.table.StockLimitUp;
-import com.example.demo.domain.table.StockTemperature;
-import com.example.demo.domain.table.StockTruth;
+import com.example.demo.domain.table.*;
 import com.example.demo.enums.NumberEnum;
+import com.example.demo.service.KpwService;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockPlateService;
 import com.example.demo.service.sina.SinaService;
@@ -51,6 +49,40 @@ public class HelloController {
     StockLimitUpRepository stockLimitUpRepository;
     @Autowired
     StockTruthRepository stockTruthRepository;
+    @Autowired
+    KpwService kpwService;
+    @RequestMapping("/kpw/{code}")
+    public String kpw(@PathVariable("code")String code) {
+        if ("1".equals(code)) {
+            return "success";
+        }
+        StockZy stockZy =new StockZy();
+        stockZy.setZy("专业");
+        stockZy.setName("名字");
+        stockZy.setInfoLevel("1级");
+        stockZy.setInfoCity("四川");
+        kpwService.infos(code,stockZy);
+        System.out.println("----------------------------code = [" + code + "]-----------------------------");
+        //kpwService.getKpwInfo(code);
+        return "add success";
+    }
+    @RequestMapping("/kpws/{page}")
+    public String kpw(@PathVariable("page")Integer page) {
+        //694
+        for(int i=510;i<694;i++){
+            System.out.println("------------------------page = [" + i + "]-------------------------");
+            kpwService.infoPages(i);
+        }
+        /*if ("0".equals(page)) {
+            for(int i=2;i<694;i++){
+                System.out.println("------------------------page = [" + i + "]-------------------------");
+                kpwService.infoPages(i);
+            }
+            return "success";
+        }
+        kpwService.infoPages(page);*/
+        return "add success";
+    }
     @RequestMapping("/truth/{info}")
     public String truth(@PathVariable("info")String info) {
         if ("1".equals(info)) {
