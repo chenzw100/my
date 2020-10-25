@@ -1,6 +1,7 @@
 package com.example.demo.service.dfcf;
 
 import com.example.demo.service.base.BaseService;
+import com.example.demo.utils.HttpClientUtil;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,11 +13,7 @@ public class DfcfService extends BaseService {
     private static String current_Yesterday="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08151&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
 
     public String currentContinueVal() {
-        Object response =  getRequest(current_Continue);
-        if(response==null){
-            return "0";
-        }
-        String str = response.toString();
+        String str = HttpClientUtil.doGet(current_Continue);;
         String[] stockObj = str.split(",");
         if(stockObj.length<7){
             log.error( ":err=" + str);

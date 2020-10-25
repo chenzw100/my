@@ -1,27 +1,28 @@
 package com.example.demo.controller;
 
-import com.example.demo.dao.StockInfoRepository;
-import com.example.demo.dao.StockLimitUpRepository;
-import com.example.demo.dao.StockTemperatureRepository;
-import com.example.demo.dao.StockTruthRepository;
+import com.alibaba.fastjson.JSONObject;
+import com.example.demo.dao.*;
 import com.example.demo.domain.SinaTinyInfoStock;
 import com.example.demo.domain.StaStockPlate;
 import com.example.demo.domain.StaStockPlateImpl;
 import com.example.demo.domain.table.*;
 import com.example.demo.enums.NumberEnum;
-import com.example.demo.service.KpwService;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockPlateService;
+import com.example.demo.service.dfcf.DfcfService;
 import com.example.demo.service.sina.SinaService;
 import com.example.demo.service.xgb.XgbService;
 import com.example.demo.task.PanService;
 import com.example.demo.utils.ChineseWorkDay;
+import com.example.demo.utils.HttpClientUtil;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,38 +51,21 @@ public class HelloController {
     @Autowired
     StockTruthRepository stockTruthRepository;
     @Autowired
-    KpwService kpwService;
-    @RequestMapping("/kpw/{code}")
-    public String kpw(@PathVariable("code")String code) {
-        if ("1".equals(code)) {
-            return "success";
-        }
-        StockZy stockZy =new StockZy();
-        stockZy.setZy("专业");
-        stockZy.setName("名字");
-        stockZy.setInfoLevel("1级");
-        stockZy.setInfoCity("四川");
-        kpwService.infos(code,stockZy);
-        System.out.println("----------------------------code = [" + code + "]-----------------------------");
-        //kpwService.getKpwInfo(code);
-        return "add success";
+    StockPlateStaRepository stockPlateStaRepository;
+    @Autowired
+    DfcfService dfcfService;
+    @Autowired
+    private RestTemplate restTemplate;
+    private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
+    @RequestMapping("/con")
+    public String con() {
+        String ss = dfcfService.currentContinueVal();
+        return "success:"+ss;
     }
-    @RequestMapping("/kpws/{page}")
-    public String kpw(@PathVariable("page")Integer page) {
-        //694
-        for(int i=510;i<694;i++){
-            System.out.println("------------------------page = [" + i + "]-------------------------");
-            kpwService.infoPages(i);
-        }
-        /*if ("0".equals(page)) {
-            for(int i=2;i<694;i++){
-                System.out.println("------------------------page = [" + i + "]-------------------------");
-                kpwService.infoPages(i);
-            }
-            return "success";
-        }
-        kpwService.infoPages(page);*/
-        return "add success";
+    @RequestMapping("/plates")
+    public String plates() {
+       xgbService.staPlates();
+        return "staPlates success";
     }
     @RequestMapping("/truth/{info}")
     public String truth(@PathVariable("info")String info) {
@@ -90,6 +74,17 @@ public class HelloController {
         }
         StockTruth stockTruth = new StockTruth();
         stockTruth.setTruthInfo(info);
+        stockTruthRepository.save(stockTruth);
+        return "add success";
+    }
+    @RequestMapping("/truth/{dayFormat}/{info}")
+    public String truth2(@PathVariable("info")String info,@PathVariable("dayFormat")String dayFormat) {
+        if ("1".equals(dayFormat)) {
+            return "success"+dayFormat;
+        }
+        StockTruth stockTruth = new StockTruth();
+        stockTruth.setTruthInfo(info);
+        stockTruth.setDayFormat(dayFormat);
         stockTruthRepository.save(stockTruth);
         return "add success";
     }
@@ -263,15 +258,14 @@ public class HelloController {
         PRE_END=queryEnd;
         List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
         StockTruth stockTruth = null;
-        if(stockTruths!=null&& stockTruths.size()==1){
-            stockTruth = stockTruths.get(0);
-        }else {
+        if(stockTruths==null){
             stockTruth =new StockTruth();
+            stockTruths.add(stockTruth);
         }
         String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据<br>===>当前查询日期";
-        List<StockInfo> kpls = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
         List<StockInfo> downs =stockInfoService.findStockInfosByDayFormatOrderByOpenBidRate(queryEnd);
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
+        List<StockInfo> kpls = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
         List<StockInfo> highCurrents = stockInfoService.fiveHeightSpace(start, queryEnd);
         highCurrents.addAll(kpls);
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
@@ -297,9 +291,9 @@ public class HelloController {
        List<StockInfo> fives = stockInfoService.findStockDayFivesByDayFormat(queryEnd);
         //List<StockInfo> alls = stockInfoService.findByDayFormatOrderByOpenBidRateDesc(queryEnd);
 
-        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【复盘】:<br>"+stockTruth.getTruthInfo()+"<br>===>【当天市场情况】:<br>"+temperatures+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【数据情况】:<br>"+fives+"<br>===>【近5天开盘情况】:<br>"+temperaturesOpen+"<br>===>【竞价情况】:<br>"+days;
+        return desc+queryEnd+"<br>===>【核心股的大低开】:<br>"+downs+"<br>===>【近5天开盘情况】:<br>"+temperaturesOpen+"<br>===>【复盘】:<br>"+stockTruths+"<br>===>【当天市场情况】:<br>"+temperatures+"<br>===>【近5日空间版和目标股】:<br>"+highCurrents+"<br>===>【近5天市场情况】:<br>"+temperaturesClose+"<br>===>【数据情况】:<br>"+fives+"<br>===>【竞价情况】:<br>"+days;
     }
-    @RequestMapping("/info/{end}")
+    @RequestMapping("/info3/{end}")
     String info(@PathVariable("end")String end) {
         String queryEnd = end;
         if("1".equals(end)){
@@ -349,6 +343,56 @@ public class HelloController {
         }
 
         return desc+queryEnd+"<br>月:"+staStockPlatesMonthImpl+"<br>半月:"+staStockPlatesWeek2Impl+"周:"+staStockPlatesWeekImpl+"<br>最近5天市场情况<br>"+temperaturesClose+"<br>"+temperaturesOpen+"大低开:<br>"+downs+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+stockInfos;
+    }
+    @RequestMapping("/info/{end}")
+    String pan(@PathVariable("end")String end) {
+        String queryEnd = end;
+        if("1".equals(end)){
+            if(isWorkday()){
+                queryEnd= MyUtils.getDayFormat();
+            }else {
+                queryEnd=MyUtils.getYesterdayDayFormat();
+            }
+        }else if("2".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+        }else if("3".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        }
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        PRE_END=queryEnd;
+        String preDate =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+
+        String desc ="【主流板块 大科技】注意[不参与竞价，核心股的大低开，连板指数上6+]；日期20191015<br>查询日期:";
+        List<StockInfo> stockInfos = stockInfoService.findStockInfosByDayFormatOrderByStockType(queryEnd);
+        List<StockInfo> downs =stockInfoService.findStockInfosByDayFormatOrderByOpenBidRate(queryEnd);
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
+        List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
+        List<StockTemperature> temperaturesOpen=stockTemperatureRepository.open(start, queryEnd);
+        List<StockTemperature> dayTemperatures=stockTemperatureRepository.findByDayFormat(queryEnd);
+        List<StockTemperature> preTemperatures=stockTemperatureRepository.findByDayFormat(preDate);
+        List<StockPlateSta> stockPlates =stockPlateStaRepository.findByDayFormatAndPlateType(queryEnd, 1);
+        List<StockTemperature> temperatures = new ArrayList<>();
+        int i=0;
+        int size = preTemperatures.size();
+        for(StockTemperature st:dayTemperatures){
+            if(i<size){
+                temperatures.add(preTemperatures.get(i));
+            }
+            temperatures.add(st);
+            i++;
+        }
+        List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
+        StockTruth stockTruth = null;
+        if(stockTruths==null){
+            stockTruth =new StockTruth();
+            stockTruths.add(stockTruth);
+        }
+        List<StockInfo> kpls = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
+        List<StockInfo> highCurrents = stockInfoService.fiveHeightSpace(start, queryEnd);
+        highCurrents.addAll(kpls);
+        return desc+queryEnd+"<br>心理历程:"+stockTruths+"<br>最近5天市场情况<br>"+temperaturesClose+"大低开:<br>"+downs+"<br>"+temperatures+"<br>【相信数据，相信市场】:<br>"+highCurrents+"<br>"+stockInfos+"<br>"+temperaturesOpen+"<br>月:"+stockPlates;
     }
     @RequestMapping("/info2/{end}")
     String info2(@PathVariable("end")String end) {

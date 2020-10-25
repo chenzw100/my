@@ -110,4 +110,38 @@ public class NumberEnum {
             return "";
         }
     }
+
+    public enum PlateType{
+        MONTH(1,"月"),
+        TWO_WEEK(2,"半月"),
+        WEEK(3,"周");
+
+        private PlateType(int code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+        private int code;
+        private String desc;
+        public int getCode() {
+            return code;
+        }
+        public void setCode(int code) {
+            this.code = code;
+        }
+        public String getDesc() {
+            return desc;
+        }
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        public static String getPlateType(int code){
+            for(PlateType d : PlateType.values()){
+                if(d.getCode()==code){
+                    return d.getDesc();
+                }
+            }
+            return "";
+        }
+    }
 }

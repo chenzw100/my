@@ -54,6 +54,26 @@ public class QtService extends BaseService{
         str = str.substring(0,str.length()-4);
         return Integer.parseInt(str);
     }
+    public Integer currentCYBZTradeVal() {
+        String[] stockObj = getStock("sz399006");
+        if(stockObj.length<7){
+            log.error( ":err=qt");
+            return 0;
+        }
+        String str =stockObj[7];
+        str = str.substring(0,str.length()-4);
+        return Integer.parseInt(str);
+    }
+    public Integer currentCYBTradeVal() {
+        String[] stockObj = getStock("sz399102");
+        if(stockObj.length<7){
+            log.error( ":err=qt");
+            return 0;
+        }
+        String str =stockObj[7];
+        str = str.substring(0,str.length()-4);
+        return Integer.parseInt(str);
+    }
     private String[] getStock(String code) {
         Object response = getRequest(url+code);
         String str = response.toString();

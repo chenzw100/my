@@ -33,7 +33,11 @@ public class StockPlateService {
         return stockPlateRepository.save(stockPlate);
     }
     public StockPlate findByPlateCodeByYesterday(String code){
-        return stockPlateRepository.findByPlateCodeAndDayFormat(code,MyUtils.getYesterdayDayFormat());
+        List<StockPlate> staStockPlates = stockPlateRepository.findByPlateCodeAndDayFormat(code,MyUtils.getYesterdayDayFormat());
+        if(staStockPlates!=null && staStockPlates.size()>0){
+            return staStockPlates.get(0);
+        }
+        return null;
     }
     public List<StaStockPlate>  weekStatistic(){
         String start = MyUtils.getPreFiveDayFormat();

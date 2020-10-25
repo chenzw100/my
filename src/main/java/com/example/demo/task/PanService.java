@@ -20,14 +20,15 @@ import org.springframework.stereotype.Component;
 public class PanService {
     Log log = LogFactory.getLog(PanService.class);
     private static final String tgbCron = "58 10  8 ? * MON-FRI";
-    private static final String openCron = "58 25 9 ? * MON-FRI";
-    private static final String closeCron ="58 3 15 ? * MON-FRI";
+    private static final String openCron = "50 25 9 ? * MON-FRI";
+    private static final String closeCron ="58 2 15 ? * MON-FRI";
     //private static final String choiceMy="1 1 9 ? * MON-FRI";
     //private static final String currentTimeCron="1 55 0/1 ? * MON-FRI";
     private static final String temperatureCron="10 35 9,10,11,13,14 ? * MON-FRI";
     private static final String temperatureCron2="10 45 9,13,14 ? * MON-FRI";
     private static final String temperatureCron3="10 30 9,14 ? * MON-FRI";
     private static final String temperatureCron4="10 01 10 ? * MON-FRI";
+    private static final String temperatureCron5="10 33 9 ? * MON-FRI";
     private static final String temperatureOpenCron="59 25 9 ? * MON-FRI";
     @Autowired
     DealPanDataService dealPanDataService;
@@ -76,6 +77,7 @@ public class PanService {
         if(isWorkday()) {
             log.info("closePan-ready data");
             dealPanDataService.close();
+            xgbCurrentService.closePan();
             xgbService.closePan();
         }
     }
@@ -106,6 +108,14 @@ public class PanService {
     }
     @Scheduled(cron = temperatureCron4)
     public void currentPan4(){
+        if(isWorkday()) {
+            log.info("currentPan-ready4 data");
+            xgbCurrentService.currentPan();
+            //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
+        }
+    }
+    @Scheduled(cron = temperatureCron5)
+    public void currentPan5(){
         if(isWorkday()) {
             log.info("currentPan-ready4 data");
             xgbCurrentService.currentPan();

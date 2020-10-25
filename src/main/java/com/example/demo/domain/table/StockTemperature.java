@@ -47,16 +47,66 @@ public class StockTemperature {
     @Column(nullable = false)
     private int tradeVal;
     @Column(nullable = false)
+    private int tradeCYBVal;
+    @Column(nullable = false)
     private String continueVal;
     @Column(nullable = false)
     private int strongDowns;
     @Column(nullable = false)
+    private int strongDownsCYB;
+    @Column(nullable = false)
     private int continueCount;
+    @Column(nullable = false)
+    private int continueCountCYB;
 
     @Column(nullable = false)
     private int superCount;
     @Column(nullable = false)
+    private int superCountCYB;
+    @Column(nullable = false)
     private int superUpCount;
+    @Column(nullable = false)
+    private int superUpCountCYB;
+
+    public int getStrongDownsCYB() {
+        return strongDownsCYB;
+    }
+
+    public void setStrongDownsCYB(int strongDownsCYB) {
+        this.strongDownsCYB = strongDownsCYB;
+    }
+
+    public int getContinueCountCYB() {
+        return continueCountCYB;
+    }
+
+    public void setContinueCountCYB(int continueCountCYB) {
+        this.continueCountCYB = continueCountCYB;
+    }
+
+    public int getSuperCountCYB() {
+        return superCountCYB;
+    }
+
+    public void setSuperCountCYB(int superCountCYB) {
+        this.superCountCYB = superCountCYB;
+    }
+
+    public int getSuperUpCountCYB() {
+        return superUpCountCYB;
+    }
+
+    public void setSuperUpCountCYB(int superUpCountCYB) {
+        this.superUpCountCYB = superUpCountCYB;
+    }
+
+    public int getTradeCYBVal() {
+        return tradeCYBVal;
+    }
+
+    public void setTradeCYBVal(int tradeCYBVal) {
+        this.tradeCYBVal = tradeCYBVal;
+    }
 
     public int getSuperCount() {
         return superCount;
@@ -233,9 +283,11 @@ public class StockTemperature {
         StringBuilder sb = new StringBuilder();
         String dateStr = DateFormatUtils.format(getCreated(), "MM-dd HH:mm");
         sb.append(dateStr);
-        sb.append("[强:").append(getSuperUpCount()).append(",大阳:").append(getSuperCount()).append("] [上证:").append(getTradeVal()).append("亿]")
-        .append("[正:").append(getContinueCount()).append("] [负:").append(getStrongDowns()).append("]")
-        .append("[涨:").append(getLimitUp()).append(", 跌:").append(getLimitDown()).append(", 炸:").append(getOpen())
+        sb.append("[上证:").append(getTradeVal()).append("亿、创:").append(getTradeCYBVal()).append("亿][强:").append(getSuperUpCount()).append(",大阳:").append(getSuperCount())
+        .append(",正:").append(getContinueCount()).append("] [负:").append(getStrongDowns()).append(", 跌:").append(getLimitDown())
+                .append("][C强:").append(getSuperUpCountCYB()).append(",C大阳:").append(getSuperCountCYB())
+                .append(",C正:").append(getContinueCountCYB()).append("] [C负:").append(getStrongDownsCYB())
+         .append("][涨:").append(getLimitUp()).append(", 炸:").append(getOpen())
         .append("] [昨:").append(MyUtils.getYuanByCent(getYesterdayShow()))
         .append("] [连:").append(getContinueVal())
         .append("] [炸:").append(MyUtils.getYuanByCent(getBrokenRatio()))

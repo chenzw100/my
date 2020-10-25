@@ -48,10 +48,10 @@ public class XgbCurrentService extends QtService {
     @Autowired
     StockPlateService stockPlateService;
 
-    private static int downCount =0;
-    private static int  upCount = 0;
-    private static int superCount=0;
-    private static int superUpCount=0;
+    private static int downCount =0,downCountCYB=0;
+    private static int  upCount = 0,upCountCYB=0;
+    private static int superCount=0,superCountCYB=0;
+    private static int superUpCount=0,superUpCountCYB=0;
     public void currentPan(){
         log.info("xgb==>start current");
         limitUp();
@@ -59,6 +59,15 @@ public class XgbCurrentService extends QtService {
         limitUpBrokenAfter();
         temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         log.info("xgb===>end current");
+    }
+    public void closePan(){
+        log.info("xgb==>start closePan");
+        limitUp();
+        superStockBefore();
+        limitUpBrokenAfter();
+        temperature(NumberEnum.TemperatureType.CLOSE.getCode());
+        platesClose();
+        log.info("xgb===>end closePan");
     }
 
     public void temperature(int type)  {
@@ -103,19 +112,26 @@ public class XgbCurrentService extends QtService {
             temperature.setContinueVal("0");
             //temperature.setYesterdayShow(0);
         }else {
-            temperature.setContinueVal(dfcfService.currentContinueVal());
+            String continueVal = dfcfService.currentContinueVal();
+            log.info("-----------lian :"+continueVal);
+            temperature.setContinueVal(continueVal);
             //temperature.setYesterdayShow(MyUtils.getCentByYuanStr(dfcfService.currentYesterdayVal()));
         }
         temperature.setTradeVal(currentTradeVal());
+        temperature.setTradeCYBVal(currentCYBTradeVal());
         temperature.setContinueCount(upCount);
+        temperature.setContinueCountCYB(upCountCYB);
         temperature.setStrongDowns(downCount);
+        temperature.setStrongDownsCYB(downCountCYB);
         temperature.setSuperCount(superCount);
+        temperature.setSuperCountCYB(superCountCYB);
         temperature.setSuperUpCount(superUpCount);
+        temperature.setSuperUpCountCYB(superUpCountCYB);
         stockTemperatureRepository.save(temperature);
-        upCount=0;
-        downCount=0;
-        superCount=0;
-        superUpCount=0;
+        upCount=0;upCountCYB=0;
+        downCount=0;downCountCYB=0;
+        superCount=0;superCountCYB=0;
+        superUpCount=0;superUpCountCYB=0;
     }
 
     public void limitUp(){
@@ -142,6 +158,9 @@ public class XgbCurrentService extends QtService {
 
                 if (xgbStock.getContinueBoardCount() > spaceHeight) {
                     upCount++;
+                    if(codeStr.indexOf("300")==0){
+                        upCountCYB++;
+                    }
                 }
             }
         }
@@ -156,11 +175,15 @@ public class XgbCurrentService extends QtService {
         for(int i=0;i<array.size();i++){
             JSONObject jsonStock =  array.getJSONObject(i);
             String name = jsonStock.getString("stock_chi_name");
+            String symbol = jsonStock.getString("symbol");
             String changePercent = jsonStock.getString("change_percent");
             int cp =MyUtils.getCentByYuanStr(changePercent);
             //log.info(name+"-broken---->"+cp);
             if(!name.contains("S") && cp<0) {
                 downCount++;
+                if(symbol.indexOf("300")==0){
+                    downCountCYB++;
+                }
             }
 
         }
@@ -174,17 +197,27 @@ public class XgbCurrentService extends QtService {
             String name = jsonStock.getString("stock_chi_name");
             String changePercent = jsonStock.getString("change_percent");
             Integer superUp = jsonStock.getInteger("limit_up_days");
+            String symbol = jsonStock.getString("symbol");
             int cp =MyUtils.getCentByYuanStr(changePercent);
             //log.info(name+"-->super"+cp);
             if(!name.contains("S")) {
                 if(superUp==0){
                     if(cp<-8){
                         downCount++;
+                        if(symbol.indexOf("300")==0){
+                            downCountCYB++;
+                        }
                     }else if(cp>6) {
                         superCount++;
+                        if(symbol.indexOf("300")==0){
+                            superCountCYB++;
+                        }
                     }
                 }else {
                     superUpCount++;
+                    if(symbol.indexOf("300")==0){
+                        superUpCountCYB++;
+                    }
                 }
 
             }
@@ -192,5 +225,37 @@ public class XgbCurrentService extends QtService {
         }
     }
 
-
+    public void platesClose(){
+        Object response = getRequest(plates_url);
+        JSONArray array = JSONObject.parseObject(response.toString()).getJSONObject("data").getJSONArray("items");
+        log.info("-->plates："+array.size());
+        int length = 5;
+        if(array.size()<5){
+            length = array.size();
+        }
+        for(int i=0;i<length;i++){
+            JSONObject jsonStock =  array.getJSONObject(i);
+            String code = jsonStock.getString("id");
+            StockPlate stockPlate = stockPlateService.findByPlateCodeByYesterday(code);
+            String desc = jsonStock.getString("description");
+            if(stockPlate == null){
+                stockPlate = new StockPlate();
+                String name = jsonStock.getString("name");
+                stockPlate.setPlateName(name);
+                stockPlate.setPlateCode(code);
+                stockPlate.setContinuousCount(1);
+            }else {
+                //stockPlate.setId(null);
+                stockPlate.setContinuousCount(stockPlate.getContinuousCount()+1);
+            }
+            if(desc==null){
+                desc="";
+            }
+            stockPlate.setDescription(desc);
+            stockPlate.setDayFormat(MyUtils.getDayFormat());
+            stockPlate.setHotSort(i+1);
+            log.info("-->plate："+stockPlate.toString());
+            stockPlateService.save(stockPlate);
+        }
+    }
 }
