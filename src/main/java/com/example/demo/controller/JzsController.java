@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.Gk27Service;
+import com.example.demo.service.JZwService;
 import com.example.demo.service.KpwHrService;
 import com.example.demo.service.KpwService;
 import org.apache.commons.logging.Log;
@@ -19,6 +20,8 @@ public class JzsController {
     KpwService kpwService;
     @Autowired
     Gk27Service gk27Service;
+    @Autowired
+    JZwService jZwService;
     @RequestMapping("/kpwhr/{code}")
     public String kpw(@PathVariable("code")String code) {
         kpwHrService.testId(code);
@@ -26,24 +29,24 @@ public class JzsController {
     }
     @RequestMapping("/one")
     public String kpw() {
-        kpwHrService.infoPages(1);
+        jZwService.infoPages(1);
         return "one success";
     }
-    @RequestMapping("/kpwhrs/{page}")
+    @RequestMapping("/p/{page}")
     public String kpw(@PathVariable("page")Integer page) {
         for(int i=page;i<page+10;i++){
             log.info("--------------------------------------------------------------------------------------------page = [" + i + "]");
-            kpwHrService.infoPages(i);
+            jZwService.infoPages(i);
             log.info("-----------------------------------------------------------------------------------------------完成page = [" + i + "]");
         }
         return "add success";
     }
-    @RequestMapping("/kpwhr2/{page}/{count}")
-    public String kpw(@PathVariable("page")Integer page,@PathVariable("page")Integer count) {
+    @RequestMapping("/p2/{page}/{count}")
+    public String kpw(@PathVariable("page")Integer page,@PathVariable("count")Integer count) {
         for(int i=page;i<count;i++){
             log.info("page = [" + i + "]");
-            gk27Service.infoPages(i);
-            log.info("-----------------------完成page = [" + i + "]");
+            jZwService.infoPages(i);
+            log.info("-------------------------------------------------------------------new--------完成page = [" + i + "]");
         }
         return "add success";
     }
