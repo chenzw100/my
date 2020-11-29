@@ -24,9 +24,10 @@ public class StockZyService {
     StockZyRepository stockZyRepository;
     public Page<StockZy> findALl(Integer pageNumber,Integer pageSize,StockZy stockZy){
         if(pageNumber==null){
-            pageNumber=1;
+            pageNumber=0;
             pageSize=10;
         }
+        pageNumber--;
         Sort.Order order = new Sort.Order(Sort.Direction.DESC,"id");
         Sort.Order order1 = new Sort.Order(Sort.Direction.DESC,"name");
         //如果有多个排序条件 建议使用此种方式 使用 Sort.by 替换之前的  new Sort();
@@ -38,7 +39,10 @@ public class StockZyService {
          * 排序的规则
          */
         Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
-        Example<StockZy> example = Example.of(stockZy);
+       /* ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("customerWx", match -> match.startsWith())
+                .withMatcher("customerYx", match -> match.startsWith());*/
+        Example<StockZy> example = Example.of(stockZy/*,matcher*/);
         Page<StockZy> all = stockZyRepository.findAll(example,pageable);
         return all;
     }
