@@ -226,6 +226,7 @@ public class HelloController {
         PRE_END=queryEnd;
         List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
         List<StockInfo> fives = stockInfoService.findStockDayFivesByDayFormat(queryEnd);
+        List<StockPlateSta> stockPlates =stockPlateStaRepository.findByDayFormatAndPlateType(queryEnd, 1);
         StockTruth stockTruth = null;
         if(stockTruths!=null&& stockTruths.size()==1){
             stockTruth = stockTruths.get(0);
@@ -236,7 +237,7 @@ public class HelloController {
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
         List<StockInfo> days = stockInfoService.findStockDaysByDayFormat(queryEnd);
-        return desc+queryEnd+"<br>===>【复盘】:<br>"+stockTruth.getTruthInfo()+"<br>===>【竞价情况】:<br>"+days+"===>【近5天市场情况】:<br>"+temperaturesClose+"<br>"+fives;
+        return desc+queryEnd+"<br>===>【复盘】:<br>"+stockTruth.getTruthInfo()+stockPlates+"<br>===>【竞价情况】:<br>"+days+"===>【近5天市场情况】:<br>"+temperaturesClose+"<br>"+fives;
     }
 
     @RequestMapping("/risk/{end}")
