@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Basic DataGrid - jQuery EasyUI Demo</title>
+    <link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../css/demo.css">
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+</head>
+<body>
+<h2>人才库数据</h2>
+<p>标注数据</p>
+<div style="margin:20px 0;"></div>
+
+<table id="dg"></table>
+
+</body>
+</html>
+<script>
+    $('#dg').datagrid({
+        url:'http://localhost:9090/list',
+        pagination:true,
+        columns:[[
+            {field:'name',title:'姓名',width:100,editor:"{type:'validatebox',options:{required:true}}"},
+            {field:'phone',title:'电话',width:100},
+            {field:'infoLevel',title:'级别',width:100},
+            {field:'infoCity',title:'城市',width:100},
+            {field:'zy',title:'专业',width:100},
+            {field:'infoDesc',title:'备注',width:100,
+                editor:{
+                    type:'checkbox',
+                    options:{
+                        on: '1',
+                        off: '0'
+                    }
+                }
+            },
+            {field:'action',title:'Action',width:70,align:'center',
+                formatter:function(value,row,index){
+                    if (row.editing){
+                        var s = '<a href="#" onclick="saverow(this)">Save</a> ';
+                        var c = '<a href="#" onclick="cancelrow(this)">Cancel</a>';
+                        return s+c;
+                    } else {
+                        var e = '<a href="#" onclick="editrow(this)">Edit</a> ';
+                        var d = '<a href="#" onclick="deleterow(this)">Delete</a>';
+                        return e+d;
+                    }
+                }
+            }
+        ]],
+        onBeforeEdit:function(index,row){
+            row.editing = true;
+            updateActions(index);
+        },
+        onAfterEdit:function(index,row){
+            row.editing = false;
+            updateActions(index);
+        },
+        onCancelEdit:function(index,row){
+            row.editing = false;
+            updateActions(index);
+        }
+    });
+    function updateActions(index){
+        $('#dg').datagrid('updateRow',{
+            index: index,
+            row:{}
+        });
+    }
+    function getRowIndex(target){
+        var tr = $(target).closest('tr.datagrid-row');
+        return parseInt(tr.attr('datagrid-row-index'));
+    }
+    function editrow(target){
+        $('#dg').datagrid('beginEdit', getRowIndex(target));
+    }
+    function deleterow(target){
+        $.messager.confirm('Confirm','Are you sure?',function(r){
+            if (r){
+                $('#dg').datagrid('deleteRow', getRowIndex(target));
+            }
+        });
+    }
+    function saverow(target){
+        $('#dg').datagrid('endEdit', getRowIndex(target));
+    }
+    function cancelrow(target){
+        $('#dg').datagrid('cancelEdit', getRowIndex(target));
+    }
+</script>

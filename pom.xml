@@ -63,6 +63,11 @@
 			<artifactId>hutool-all</artifactId>
 			<version>4.1.9</version>
 		</dependency>
+			<dependency>
+				<groupId>net.sourceforge.tess4j</groupId>
+				<artifactId>tess4j</artifactId>
+				<version>4.4.0</version>
+			</dependency>
 	</dependencies>
 
 	<build>

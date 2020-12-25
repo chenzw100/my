@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Build CRUD DataGrid with jQuery EasyUI - jQuery EasyUI Demo</title>
+    <link rel="stylesheet" type="text/css" href="../css/demo.css">
+    <link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../themes/icon.css">
+    <script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.edatagrid.js"></script>
+</head>
+<body>
+<h2>公司人才信息</h2>
+<p>标注人才信息</p>
+<div>
+    <label>意向：</label><input type="text" name="customerYx" id="customerYx">
+    <label>微信：</label><input type="text" name="customerWx" id="customerWx">
+    <input type="button" name="query" id="query" value="查询">
+</div>
+<table id="dg" title="人才库"
+       toolbar="#toolbar" pagination="true" idField="id"
+       rownumbers="true" fitColumns="true" singleSelect="true">
+    <thead>
+    <tr>
+        <th field="name" width="50" >姓名</th>
+        <th field="phone" width="100" >电话</th>
+        <th field="zy" width="50" >专业</th>
+        <th field="infoCity" width="50" >城市</th>
+        <th field="infoDesc" width="50" >描述</th>
+        <!--<th field="infoDesc" width="50" editor="{type:'validatebox',options:{required:true}}">infoLevel</th>-->
+        <th field="customerYx" width="50" editor="{type:'checkbox',options:{on: '是',off: '否'}}">意向</th>
+        <th field="customerWx" width="50" editor="{type:'checkbox',options:{on: '是',off: '否'}}">微信</th>
+    </tr>
+    </thead>
+</table>
+<div id="toolbar">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:$('#dg').edatagrid('addRow')">New</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="javascript:$('#dg').edatagrid('destroyRow')">Destroy</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="javascript:$('#dg').edatagrid('saveRow')">Save</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-undo" plain="true" onclick="javascript:$('#dg').edatagrid('cancelRow')">Cancel</a>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $('#dg').edatagrid({
+            url:'/list',
+            saveUrl: '/save',
+            updateUrl: '/update',
+            destroyUrl: 'destroy_user.php'
+        });
+    });
+    $("#query").click(function () {
+        $('#dg').datagrid('load', {
+            customerYx: $("#customerYx").val(),
+            customerWx: $("#customerWx").val()
+        });
+    })
+
+    //$('#dg').datagrid('reload');
+
+    /*$(document).bind("contextmenu",function(){return false;});
+    $(document).bind("selectstart",function(){return false;});
+    $(document).keydown(function(){return key(arguments[0])});*/
+</script>
+
+</body>
+</html>
