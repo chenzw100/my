@@ -224,20 +224,21 @@ public class HelloController {
         }
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         PRE_END=queryEnd;
-        List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
+
         List<StockInfo> fives = stockInfoService.findStockDayFivesByDayFormat(queryEnd);
         List<StockPlateSta> stockPlates =stockPlateStaRepository.findByDayFormatAndPlateType(queryEnd, 1);
+
+        List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
         StockTruth stockTruth = null;
-        if(stockTruths!=null&& stockTruths.size()==1){
-            stockTruth = stockTruths.get(0);
-        }else {
+        if(stockTruths==null){
             stockTruth =new StockTruth();
+            stockTruths.add(stockTruth);
         }
         String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据=====>当前查询日期";
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
         List<StockInfo> days = stockInfoService.findStockDaysByDayFormat(queryEnd);
-        return desc+queryEnd+"<br>===>【复盘】:<br>"+stockTruth.getTruthInfo()+stockPlates+"<br>===>【竞价情况】:<br>"+days+"===>【近5天市场情况】:<br>"+temperaturesClose+"<br>"+fives;
+        return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"<br>===>【复盘】:<br>"+stockPlates+"<br>===>【竞价情况】:<br>"+days+"===>【近5天市场情况】:<br>"+temperaturesClose+"<br>"+fives;
     }
 
     @RequestMapping("/risk/{end}")
