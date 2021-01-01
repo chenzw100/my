@@ -239,7 +239,6 @@ public class HelloController {
         PRE_END=queryEnd;
 
         List<StockInfo> fives = stockInfoService.findStockDayFivesByDayFormatTomorrowOpenYield(queryEnd);
-        List<StockPlateSta> stockPlates =stockPlateStaRepository.findByDayFormatAndPlateType(queryEnd, 1);
 
         List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
         StockTruth stockTruth = null;
@@ -249,7 +248,6 @@ public class HelloController {
         }
         String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据=====>当前查询日期";
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
-        List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
         List<StockInfo> days = stockInfoService.findStockDaysByDayFormatTomorrowOpenYield(queryEnd);
         return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"<br>===>【竞价情况】:<br>"+days+"<br>"+fives;
     }
