@@ -81,6 +81,64 @@ public class StockInfo implements Serializable {
     private String fiveHighRate;
     @Transient
     private String fiveLowRate;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '收盘收益'")
+    private Integer todayCloseYield;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '明日开盘收益'")
+    private Integer tomorrowOpenYield;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '明日收盘收益'")
+    private Integer tomorrowCloseYield;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '五日最高收益'")
+    private Integer fiveHighYield;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '五日最低收益'")
+    private Integer fiveLowYield;
+
+    public Integer getTodayCloseYield() {
+        //(todayClosePrice-todayPrice)/todayPrice
+        todayCloseYield =MyUtils.getIncreaseRateCent(getTodayClosePrice(),getTodayOpenPrice()).intValue();
+        return todayCloseYield;
+    }
+
+    public void setTodayCloseYield(Integer todayCloseYield) {
+        this.todayCloseYield = todayCloseYield;
+    }
+
+    public Integer getTomorrowOpenYield() {
+        //(tomorrowPrice-todayPrice)/todayPrice
+        tomorrowOpenYield= MyUtils.getIncreaseRateCent(getTomorrowOpenPrice(),getTodayOpenPrice()).intValue();
+        return tomorrowOpenYield;
+    }
+
+    public void setTomorrowOpenYield(Integer tomorrowOpenYield) {
+        this.tomorrowOpenYield = tomorrowOpenYield;
+    }
+
+    public Integer getTomorrowCloseYield() {
+        //(tomorrowPrice-todayPrice)/todayPrice
+        tomorrowCloseYield= MyUtils.getIncreaseRateCent(getTomorrowClosePrice(),getTodayOpenPrice()).intValue();
+        return tomorrowCloseYield;
+    }
+
+    public void setTomorrowCloseYield(Integer tomorrowCloseYield) {
+        this.tomorrowCloseYield = tomorrowCloseYield;
+    }
+
+    public Integer getFiveHighYield() {
+        fiveHighYield= MyUtils.getIncreaseRateCent(getFiveHighPrice(),getTodayOpenPrice()).intValue();
+        return fiveHighYield;
+    }
+
+    public void setFiveHighYield(Integer fiveHighYield) {
+        this.fiveHighYield = fiveHighYield;
+    }
+
+    public Integer getFiveLowYield() {
+        fiveLowYield=MyUtils.getIncreaseRateCent(getFiveLowPrice(),getTodayOpenPrice()).intValue();
+        return fiveLowYield;
+    }
+
+    public void setFiveLowYield(Integer fiveLowYield) {
+        this.fiveLowYield = fiveLowYield;
+    }
 
     public StockInfo() {
     }

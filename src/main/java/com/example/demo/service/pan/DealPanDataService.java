@@ -53,6 +53,7 @@ public class DealPanDataService extends QtService {
         if(yesterdayStocks!=null){
             for(StockInfo myStock :yesterdayStocks){
                 myStock.setTomorrowOpenPrice(getIntCurrentPrice(myStock.getCode()));
+                myStock.getTomorrowOpenYield();
                 stockInfoService.save(myStock);
             }
         }
@@ -63,6 +64,7 @@ public class DealPanDataService extends QtService {
         if(todayStocks!=null){
             for(StockInfo myStock :todayStocks){
                 myStock.setTodayClosePrice(getIntCurrentPrice(myStock.getCode()));
+                myStock.getTodayCloseYield();
                 stockInfoService.save(myStock);
             }
         }
@@ -70,6 +72,7 @@ public class DealPanDataService extends QtService {
         if(yesterdayStocks!=null){
             for(StockInfo myStock :yesterdayStocks){
                 myStock.setTomorrowClosePrice(getIntCurrentPrice(myStock.getCode()));
+                myStock.getTomorrowCloseYield();
                 stockInfoService.save(myStock);
             }
         }
@@ -87,9 +90,11 @@ public class DealPanDataService extends QtService {
                 log.info(xgbFiveUpStock.getShowCount()+xgbFiveUpStock.getCode()+",fiveStatistic High:"+xgbFiveUpStock.getFiveHighPrice()+",low:"+xgbFiveUpStock.getFiveLowPrice()+"==>new High:"+tinyInfoStock.getHighPrice()+",new Low:"+tinyInfoStock.getLowPrice());
                 if(tinyInfoStock.getHighPrice()>xgbFiveUpStock.getFiveHighPrice().intValue()){
                     xgbFiveUpStock.setFiveHighPrice(tinyInfoStock.getHighPrice());
+                    xgbFiveUpStock.getFiveHighYield();
                 }
                 if(tinyInfoStock.getLowPrice()>xgbFiveUpStock.getFiveLowPrice().intValue()){
                     xgbFiveUpStock.setFiveLowPrice(tinyInfoStock.getLowPrice());
+                    xgbFiveUpStock.getFiveLowYield();
                 }
                 if(xgbFiveUpStock.getTodayOpenPrice().intValue()==10){
                     xgbFiveUpStock.setTodayOpenPrice(tinyInfoStock.getOpenPrice());

@@ -57,6 +57,19 @@ public class HelloController {
     @Autowired
     private RestTemplate restTemplate;
     private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
+    @RequestMapping("/deal")
+    public String deal() {
+        List<StockInfo> ss = stockInfoRepository.findAll();
+        for(StockInfo s :ss){
+            s.getTodayCloseYield();
+            s.getTomorrowCloseYield();
+            s.getTomorrowOpenYield();
+            s.getFiveHighYield();
+            s.getFiveLowYield();
+            stockInfoRepository.save(s);
+        }
+        return "success:";
+    }
     @RequestMapping("/con")
     public String con() {
         String ss = dfcfService.currentContinueVal();
@@ -225,7 +238,7 @@ public class HelloController {
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         PRE_END=queryEnd;
 
-        List<StockInfo> fives = stockInfoService.findStockDayFivesByDayFormat(queryEnd);
+        List<StockInfo> fives = stockInfoService.findStockDayFivesByDayFormatTomorrowOpenYield(queryEnd);
         List<StockPlateSta> stockPlates =stockPlateStaRepository.findByDayFormatAndPlateType(queryEnd, 1);
 
         List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
@@ -237,7 +250,41 @@ public class HelloController {
         String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据=====>当前查询日期";
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
-        List<StockInfo> days = stockInfoService.findStockDaysByDayFormat(queryEnd);
+        List<StockInfo> days = stockInfoService.findStockDaysByDayFormatTomorrowOpenYield(queryEnd);
+        return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"<br>===>【竞价情况】:<br>"+days+"<br>"+fives;
+    }
+    @RequestMapping("/chance2/{end}")
+    String chance2(@PathVariable("end")String end) {
+        String queryEnd = end;
+        if("1".equals(end)){
+            if(isWorkday()){
+                queryEnd= MyUtils.getDayFormat();
+            }else {
+                queryEnd=MyUtils.getYesterdayDayFormat();
+            }
+        }else if("2".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+        }else if("3".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        }
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        PRE_END=queryEnd;
+
+        List<StockInfo> fives = stockInfoService.findStockDayFivesByDayFormatTodayCloseYield(queryEnd);
+        List<StockPlateSta> stockPlates =stockPlateStaRepository.findByDayFormatAndPlateType(queryEnd, 1);
+
+        List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
+        StockTruth stockTruth = null;
+        if(stockTruths==null){
+            stockTruth =new StockTruth();
+            stockTruths.add(stockTruth);
+        }
+        String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据=====>当前查询日期";
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
+        List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
+        List<StockInfo> days = stockInfoService.findStockDaysByDayFormatTodayCloseYield(queryEnd);
         return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"<br>===>【复盘】:<br>"+stockPlates+"<br>===>【竞价情况】:<br>"+days+"===>【近5天市场情况】:<br>"+temperaturesClose+"<br>"+fives;
     }
 
