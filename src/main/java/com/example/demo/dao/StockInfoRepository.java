@@ -23,6 +23,10 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     List<StockInfo> findByDayFormatOrderByOpenBidRateDesc(String dayFormat);
     StockInfo findByCodeAndDayFormatAndStockType(String code, String dayFormat,Integer stockType);
     List<StockInfo> findByDayFormatAndStockTypeOrderByOpenBidRate(String dayFormat,Integer stockType);
+
+    List<StockInfo> findFirst3ByDayFormatAndStockTypeOrderByTodayCloseYieldDesc(String dayFormat,Integer stockType);
+    List<StockInfo> findFirst3ByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(String dayFormat,Integer stockType);
+    List<StockInfo> findFirst3ByDayFormatOrderByFiveHighYieldDesc(String dayFormat);
     List<StockInfo> findByDayFormatAndStockTypeOrderByTodayCloseYieldDesc(String dayFormat,Integer stockType);
     List<StockInfo> findByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(String dayFormat,Integer stockType);
     List<StockInfo> findByDayFormatAndOpenBidRateLessThanOrderByOpenBidRateDesc(String dayFormat,int max);
