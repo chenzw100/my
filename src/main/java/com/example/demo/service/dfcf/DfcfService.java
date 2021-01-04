@@ -1,7 +1,10 @@
 package com.example.demo.service.dfcf;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.service.base.BaseService;
 import com.example.demo.utils.HttpClientUtil;
+import com.example.demo.utils.MyUtils;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,31 +12,21 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DfcfService extends BaseService {
-    private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
-    private static String current_Yesterday="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08151&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
+    private static String current_Continue="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
+    private static String current_Yesterday="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0815&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
 
     public String currentContinueVal() {
-        String str = HttpClientUtil.doGet(current_Continue);;
-        String[] stockObj = str.split(",");
-        if(stockObj.length<7){
-            log.error( ":err=" + str);
-            return "0";
-        }
-        str =stockObj[5];
-        return str;
+        Object str = getRequest(current_Continue);
+        JSONObject jsonObject = JSONObject.parseObject(str.toString());
+        int temp = jsonObject.getJSONObject("data").getInteger("f170");
+        MyUtils.getYuanByCent(temp);
+        return MyUtils.getYuanByCent(temp);
     }
     public String currentYesterdayVal() {
-        Object response =  getRequest(current_Yesterday);
-        if(response==null){
-            return "0";
-        }
-        String str = response.toString();
-        String[] stockObj = str.split(",");
-        if(stockObj.length<7){
-            log.error( ":err=" + str);
-            return "0";
-        }
-        str =stockObj[5];
-        return str;
+        Object str = getRequest(current_Yesterday);
+        JSONObject jsonObject = JSONObject.parseObject(str.toString());
+        int temp = jsonObject.getJSONObject("data").getInteger("f170");
+        MyUtils.getYuanByCent(temp);
+        return MyUtils.getYuanByCent(temp);
     }
 }
