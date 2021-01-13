@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,41 @@ public class StockInfoService {
 
     @Autowired
     StockInfoRepository stockInfoRepository;
+    public List<StockInfo> fupan(String dayFormat){
+        List<StockInfo> result =openTop3(dayFormat);
+        result.add(new StockInfo());
+        result.addAll(closeTop3(dayFormat));
+        return result;
+    }
+
+    //竞价前3
+    public List<StockInfo> openTop3(String dayFormat){
+        List<StockInfo> result = new ArrayList<>();
+        result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByOpenBidRateDesc(dayFormat,NumberEnum.StockType.STOCK_DAY.getCode()));
+        result.add(new StockInfo());
+        result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(dayFormat,NumberEnum.StockType.STOCK_DAY.getCode()));
+        result.add(new StockInfo());
+        result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByOpenBidRate(dayFormat,NumberEnum.StockType.STOCK_DAY.getCode()));
+        result.add(new StockInfo());
+        result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTomorrowOpenYield(dayFormat,NumberEnum.StockType.STOCK_DAY.getCode()));
+        return result;
+    }
+    //竞价末3
+    public List<StockInfo> closeTop3(String dayFormat){
+        List<StockInfo> result = new ArrayList<>();
+        result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTodayCloseYieldDesc(dayFormat,NumberEnum.StockType.STOCK_DAY.getCode()));
+        result.add(new StockInfo());
+        result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTomorrowCloseYieldDesc(dayFormat,NumberEnum.StockType.STOCK_DAY.getCode()));
+        result.add(new StockInfo());
+        result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTodayCloseYield(dayFormat,NumberEnum.StockType.STOCK_DAY.getCode()));
+        result.add(new StockInfo());
+        result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTomorrowCloseYield(dayFormat,NumberEnum.StockType.STOCK_DAY.getCode()));
+        return result;
+    }
+
+
+
+
     public StockInfo save(StockInfo stockInfo){
         return stockInfoRepository.save(stockInfo);
     }

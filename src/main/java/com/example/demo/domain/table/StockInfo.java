@@ -418,6 +418,9 @@ public class StockInfo implements Serializable {
 
 
     public String toString(){
+        if(code==null){
+            return "--<br>";
+        }
         StringBuilder sb = new StringBuilder();
         sb.append(NumberEnum.StockType.getStockType(getStockType())).append(code).append(name).append("[最高:").append(getFiveHighRate()).append("最低:").append(getFiveLowRate()).
                 append(",连板:").append(getContinuous()).append(",昨收:").append(MyUtils.getYuanByCent(getYesterdayClosePrice())).append("]竞价:").append(getTodayOpenRate()).
