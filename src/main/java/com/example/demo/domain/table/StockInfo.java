@@ -142,6 +142,9 @@ public class StockInfo implements Serializable {
 
     public StockInfo() {
     }
+    public StockInfo(String name) {
+        this.name = name;
+    }
 
     public StockInfo(String code, String name, Integer stockType){
         this.code =code;
@@ -419,7 +422,7 @@ public class StockInfo implements Serializable {
 
     public String toString(){
         if(code==null){
-            return "--<br>";
+            return name+"--<br>";
         }
         StringBuilder sb = new StringBuilder();
         sb.append(NumberEnum.StockType.getStockType(getStockType())).append(code).append(name).append("[最高:").append(getFiveHighRate()).append("最低:").append(getFiveLowRate()).

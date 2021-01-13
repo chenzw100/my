@@ -28,19 +28,19 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     //竞价前3
     List<StockInfo> findFirst3ByDayFormatAndStockTypeOrderByOpenBidRateDesc(String dayFormat,Integer stockType);
     //竞价前3
-    List<StockInfo> findFirst3ByDayFormatAndStockTypeOrderByOpenBidRate(String dayFormat,Integer stockType);
+    List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByOpenBidRate(String dayFormat,Integer stockType);
     //收盘前3
     List<StockInfo> findFirst3ByDayFormatAndStockTypeOrderByTodayCloseYieldDesc(String dayFormat,Integer stockType);
     //收盘前3
-    List<StockInfo> findFirst3ByDayFormatAndStockTypeOrderByTodayCloseYield(String dayFormat,Integer stockType);
+    List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByTodayCloseYield(String dayFormat,Integer stockType);
     //明日开盘前3
     List<StockInfo> findFirst3ByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(String dayFormat,Integer stockType);
     //明日开盘前3
-    List<StockInfo> findFirst3ByDayFormatAndStockTypeOrderByTomorrowOpenYield(String dayFormat,Integer stockType);
+    List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByTomorrowOpenYield(String dayFormat,Integer stockType);
     //明日收盘前3
     List<StockInfo> findFirst3ByDayFormatAndStockTypeOrderByTomorrowCloseYieldDesc(String dayFormat,Integer stockType);
     //明日收盘前3
-    List<StockInfo> findFirst3ByDayFormatAndStockTypeOrderByTomorrowCloseYield(String dayFormat,Integer stockType);
+    List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByTomorrowCloseYield(String dayFormat,Integer stockType);
 
     List<StockInfo> findFirst3ByDayFormatOrderByFiveHighYieldDesc(String dayFormat);
 
