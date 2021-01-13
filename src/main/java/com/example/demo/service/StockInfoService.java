@@ -180,6 +180,9 @@ public class StockInfoService {
     public List<StockInfo> findStockDayFivesByDayFormatTomorrowOpenYield(String dayFormat){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
     }
+    public List<StockInfo> findStockDayFivesHotSevenDesc(String dayFormat){
+        return stockInfoRepository.findByDayFormatAndStockTypeOrderByHotSevenDesc(dayFormat, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
+    }
     public List<StockInfo> findStockDayFivesByYesterdayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getYesterdayDayFormat(), NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
     }

@@ -52,7 +52,7 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     StockInfo save(StockInfo tgbStock);
     @Query(value="SELECT * from stock_info WHERE day_format BETWEEN ?1 AND ?2", nativeQuery = true)
     public List<StockInfo> fiveStatistic(String start, String end);
-    @Query(value="SELECT * FROM ( SELECT code, name,sum(hot_seven) as hot_seven,sum(hot_value)as hot_value, COUNT(id) as total_count from stock_info WHERE stock_type =10 and day_format BETWEEN ?1 AND ?2  GROUP BY code) as temp WHERE temp.total_count>2 ORDER BY total_count DESC ", nativeQuery = true)
+    @Query(value="SELECT * FROM ( SELECT code, name,sum(hot_seven) as hotSeven,sum(hot_value)as hotValue, COUNT(id) as totalCount from stock_info WHERE stock_type =10 and day_format BETWEEN ?1 AND ?2  GROUP BY code) as temp WHERE temp.totalCount>2 ORDER BY totalCount DESC ", nativeQuery = true)
     public List<MyTotalStock> fiveDayInfo(String start, String end);
     @Query(value="SELECT * from stock_info WHERE stock_type=40 and day_format BETWEEN ?1 AND ?2", nativeQuery = true)
     public List<StockInfo> fiveHeightSpace(String start, String end);
@@ -60,6 +60,8 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     List<StockInfo> findFirst3DistinctStockInfoByDayFormatOrderByOpenBidRateDesc(String dayFormat);
     //竞价末3
     List<StockInfo> findFirst3CodeDistinctByDayFormatOrderByOpenBidRate(String dayFormat);
+
+    List<StockInfo> findByDayFormatAndStockTypeOrderByHotSevenDesc(String dayFormat,Integer stockType);
 
 
 }

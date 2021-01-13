@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dao.*;
+import com.example.demo.domain.MyTotalStock;
 import com.example.demo.domain.SinaTinyInfoStock;
 import com.example.demo.domain.StaStockPlate;
 import com.example.demo.domain.StaStockPlateImpl;
@@ -15,6 +16,7 @@ import com.example.demo.task.PanService;
 import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -105,6 +107,31 @@ public class HelloController {
     public String pre() {
         panService.preTgb();
         return "pre success";
+    }
+    @RequestMapping("/doFive")
+    public String doFive() {
+        String end = MyUtils.getDayFormat();
+        String start =MyUtils.getPreFiveDayFormat();
+        List<MyTotalStock> totalStocks =  stockInfoService.fiveDayInfo(start, end);
+
+        while (totalStocks.size()>0){
+            for(MyTotalStock myTotalStock : totalStocks){
+                StockInfo stockInfo =stockInfoRepository.findByCodeAndDayFormatAndStockType(myTotalStock.getCode(),end,70);
+                if(stockInfo!=null && StringUtils.isNotEmpty(stockInfo.getCode())){
+                    stockInfo.setHotSort(myTotalStock.getTotalCount());
+                    stockInfo.setHotSeven(myTotalStock.getHotSeven());
+                    stockInfo.setHotValue(myTotalStock.getHotValue());
+                    stockInfoRepository.save(stockInfo);
+                }
+            }
+            Date endDate =  MyUtils.getFormatDate(end);
+            end =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+            start =MyUtils.getPreFiveDayFormat(endDate);
+            totalStocks =  stockInfoService.fiveDayInfo(start, end);
+            System.out.println("==========================>end:"+end);
+        }
+
+        return "doFive success";
     }
     @RequestMapping("/add/{code}")
     public String add(@PathVariable("code")String code) {
@@ -251,6 +278,38 @@ public class HelloController {
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
         List<StockInfo> days = stockInfoService.findStockDaysByDayFormatTomorrowOpenYield(queryEnd);
         return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"<br>===>【竞价情况】:<br>"+days+"<br>"+top3+"<br>"+fives+temperaturesClose;
+    }
+    @RequestMapping("/chance3/{end}")
+    String chance3(@PathVariable("end")String end) {
+        String queryEnd = end;
+        if("1".equals(end)){
+            if(isWorkday()){
+                queryEnd= MyUtils.getDayFormat();
+            }else {
+                queryEnd=MyUtils.getYesterdayDayFormat();
+            }
+        }else if("2".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+        }else if("3".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        }
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        PRE_END=queryEnd;
+
+        List<StockInfo> fives = stockInfoService.findStockDayFivesHotSevenDesc(queryEnd);
+
+        List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
+        StockTruth stockTruth = null;
+        if(stockTruths==null){
+            stockTruth =new StockTruth();
+            stockTruths.add(stockTruth);
+        }
+        String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据=====>当前查询日期";
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
+        List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
+        return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"<br>===>【竞价情况】:<br>"+temperaturesClose+fives;
     }
     @RequestMapping("/chance2/{end}")
     String chance2(@PathVariable("end")String end) {
