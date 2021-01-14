@@ -295,11 +295,14 @@ public class HelloController {
             Date endDate =  MyUtils.getFormatDate(PRE_END);
             queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
         }
+        Date yesterdayDate =  MyUtils.getFormatDate(PRE_END);
+        String queryYesterday =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(yesterdayDate));
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         PRE_END=queryEnd;
-
+        System.out.println("=============queryEnd = [" + queryEnd + "]"+"queryYesterday"+queryYesterday);
         List<StockInfo> fives = stockInfoService.findStockDayFivesHotSevenDesc(queryEnd);
-
+        List<StockInfo> yesterdayOpens = stockInfoService.findStockFivesTomorrowOpenYield(queryYesterday);
+        List<StockInfo> yesterdayCloses = stockInfoService.findStockFivesTomorrowCloseYield(queryYesterday);
         List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
         StockTruth stockTruth = null;
         if(stockTruths==null){
@@ -309,7 +312,7 @@ public class HelloController {
         String desc ="先趋势，后图形，再竞价》》提供20191015以后的数据=====>当前查询日期";
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
-        return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"===>【复盘情况】:<br>"+temperaturesClose+"===>【数据情况】:<br>"+fives;
+        return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"===>【早盘修复情况】:<br>"+yesterdayOpens+"===>【复盘情况】:<br>"+temperaturesClose+"===>【数据情况】:<br>"+fives+"===>【尾盘修复情况】:<br>"+yesterdayCloses;
     }
     @RequestMapping("/chance2/{end}")
     String chance2(@PathVariable("end")String end) {
