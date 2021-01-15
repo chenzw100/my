@@ -74,10 +74,10 @@ public class HelloController {
             Date endDate =  MyUtils.getFormatDate(PRE_END);
             queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
         }
+        PRE_END=queryEnd;
         Date yesterdayDate =  MyUtils.getFormatDate(PRE_END);
         String queryYesterday =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(yesterdayDate));
         Date endDate =  MyUtils.getFormatDate(queryEnd);
-        PRE_END=queryEnd;
         System.out.println("=============queryEnd = [" + queryEnd + "]"+"queryYesterday"+queryYesterday);
         List<StockInfo> fives = stockInfoService.findStockDayFivesHotSevenDesc(queryEnd);
         List<StockInfo> yesterdayOpens = stockInfoService.findStockFivesTomorrowOpenYield(queryYesterday);
@@ -124,10 +124,10 @@ public class HelloController {
             Date endDate =  MyUtils.getFormatDate(PRE_END);
             queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
         }
+        PRE_END=queryEnd;
         Date yesterdayDate =  MyUtils.getFormatDate(PRE_END);
         String queryYesterday =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(yesterdayDate));
         Date endDate =  MyUtils.getFormatDate(queryEnd);
-        PRE_END=queryEnd;
         System.out.println("=============queryEnd = [" + queryEnd + "]"+"queryYesterday"+queryYesterday);
         List<StockInfo> yesterdayOpens = stockInfoService.findStockDaysByDayFormatTomorrowOpenYield(queryYesterday);
         List<StockInfo> yesterdayCloses =stockInfoService.findStockDaysByDayFormatTomorrowCloseYield(queryYesterday);
