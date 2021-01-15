@@ -91,7 +91,21 @@ public class HelloController {
         String desc ="信念[人气反抽模式，条件行情转暖，且大跌过的人气票] 提供20191015以后的数据=====>当前查询日期";
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
-        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+"===>【早盘修复情况】:<br>"+yesterdayOpens+"===>【数据情况】:<br>"+fives+"===>【尾盘修复情况】:<br>"+yesterdayCloses;
+
+        List<StockTemperature> dayTemperatures=stockTemperatureRepository.findByDayFormat(queryEnd);
+        String preDate =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+        List<StockTemperature> preTemperatures=stockTemperatureRepository.findByDayFormat(preDate);
+        List<StockTemperature> temperatures = new ArrayList<>();
+        int i=0;
+        int size = preTemperatures.size();
+        for(StockTemperature st:dayTemperatures){
+            if(i<size){
+                temperatures.add(preTemperatures.get(i));
+            }
+            temperatures.add(st);
+            i++;
+        }
+        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+"===>【早盘修复情况】:<br>"+yesterdayOpens+"===>【数据情况】:<br>"+fives+"===>【尾盘修复情况】:<br>"+yesterdayCloses+"===>【盘面实时运行情况】:<br>"+temperatures;
     }
     @RequestMapping("/ideals1/{end}")
     String ideals1(@PathVariable("end")String end) {
@@ -118,9 +132,22 @@ public class HelloController {
         List<StockInfo> yesterdayCloses =stockInfoService.findStockDaysByDayFormatTomorrowCloseYield(queryYesterday);
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
         List<StockInfo> highCurrents = stockInfoService.fiveHeightSpace(start, queryEnd);
-        String desc ="信念[空间与新题材模式，条件双十逻辑，涨停倍增逻辑] 提供20191015以后的数据=====>当前查询日期";
+        String desc ="信念[空间与新题材模式，趋势持股看看一下，条件双十逻辑，涨停倍增逻辑] 提供20191015以后的数据=====>当前查询日期";
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
-        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+"===>【早盘冲击情况】:<br>"+yesterdayOpens+"===>【空间板数据情况】:<br>"+highCurrents+"===>【尾盘冲击情况】:<br>"+yesterdayCloses;
+        List<StockTemperature> dayTemperatures=stockTemperatureRepository.findByDayFormat(queryEnd);
+        String preDate =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+        List<StockTemperature> preTemperatures=stockTemperatureRepository.findByDayFormat(preDate);
+        List<StockTemperature> temperatures = new ArrayList<>();
+        int i=0;
+        int size = preTemperatures.size();
+        for(StockTemperature st:dayTemperatures){
+            if(i<size){
+                temperatures.add(preTemperatures.get(i));
+            }
+            temperatures.add(st);
+            i++;
+        }
+        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+"===>【早盘冲击情况】:<br>"+yesterdayOpens+"===>【空间板数据情况】:<br>"+highCurrents+"===>【尾盘冲击情况】:<br>"+yesterdayCloses+"===>【盘面实时运行情况】:<br>"+temperatures;
     }
 
     @RequestMapping("/deal")
