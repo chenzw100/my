@@ -106,7 +106,7 @@ public class HelloController {
             temperatures.add(st);
             i++;
         }
-        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+"===>【早盘修复情况】:<br>"+yesterdayOpens+"===>【数据情况】:<br>"+fives+"===>【尾盘修复情况】:<br>"+yesterdayCloses+"===>【盘面实时运行情况】:<br>"+temperatures;
+        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+queryEnd+"===>【早盘修复情况】:<br>"+yesterdayOpens+queryEnd+"===>【数据情况】:<br>"+fives+queryEnd+"===>【尾盘修复情况】:<br>"+yesterdayCloses+queryEnd+"===>【盘面实时运行情况】:<br>"+temperatures;
     }
     @RequestMapping("/ideals1/{end}")
     String ideals1(@PathVariable("end")String end) {
@@ -149,7 +149,7 @@ public class HelloController {
             temperatures.add(st);
             i++;
         }
-        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+"===>【早盘冲击情况】:<br>"+yesterdayOpens+"===>【空间板数据情况】:<br>"+highCurrents+"===>【尾盘冲击情况】:<br>"+yesterdayCloses+"===>【盘面实时运行情况】:<br>"+temperatures;
+        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+queryEnd+"===>【早盘冲击情况】:<br>"+yesterdayOpens+queryEnd+"===>【空间板数据情况】:<br>"+highCurrents+queryEnd+"===>【尾盘冲击情况】:<br>"+yesterdayCloses+queryEnd+"===>【盘面实时运行情况】:<br>"+temperatures;
     }
 
     @RequestMapping("/deal")
