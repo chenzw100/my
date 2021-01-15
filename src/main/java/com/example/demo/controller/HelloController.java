@@ -58,6 +58,71 @@ public class HelloController {
     private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
     private static String c_cUrl ="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
 
+    @RequestMapping("/ideals2/{end}")
+    String ideals2(@PathVariable("end")String end) {
+        String queryEnd = end;
+        if("1".equals(end)){
+            if(isWorkday()){
+                queryEnd= MyUtils.getDayFormat();
+            }else {
+                queryEnd=MyUtils.getYesterdayDayFormat();
+            }
+        }else if("2".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+        }else if("3".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        }
+        Date yesterdayDate =  MyUtils.getFormatDate(PRE_END);
+        String queryYesterday =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(yesterdayDate));
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        PRE_END=queryEnd;
+        System.out.println("=============queryEnd = [" + queryEnd + "]"+"queryYesterday"+queryYesterday);
+        List<StockInfo> fives = stockInfoService.findStockDayFivesHotSevenDesc(queryEnd);
+        List<StockInfo> yesterdayOpens = stockInfoService.findStockFivesTomorrowOpenYield(queryYesterday);
+        List<StockInfo> yesterdayCloses = stockInfoService.findStockFivesTomorrowCloseYield(queryYesterday);
+        List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
+        StockTruth stockTruth = null;
+        if(stockTruths==null){
+            stockTruth =new StockTruth();
+            stockTruths.add(stockTruth);
+        }
+        String desc ="信念[人气反抽模式，条件行情转暖，且大跌过的人气票] 提供20191015以后的数据=====>当前查询日期";
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
+        List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
+        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+"===>【早盘修复情况】:<br>"+yesterdayOpens+"===>【数据情况】:<br>"+fives+"===>【尾盘修复情况】:<br>"+yesterdayCloses;
+    }
+    @RequestMapping("/ideals1/{end}")
+    String ideals1(@PathVariable("end")String end) {
+        String queryEnd = end;
+        if("1".equals(end)){
+            if(isWorkday()){
+                queryEnd= MyUtils.getDayFormat();
+            }else {
+                queryEnd=MyUtils.getYesterdayDayFormat();
+            }
+        }else if("2".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+        }else if("3".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        }
+        Date yesterdayDate =  MyUtils.getFormatDate(PRE_END);
+        String queryYesterday =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(yesterdayDate));
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        PRE_END=queryEnd;
+        System.out.println("=============queryEnd = [" + queryEnd + "]"+"queryYesterday"+queryYesterday);
+        List<StockInfo> yesterdayOpens = stockInfoService.findStockDaysByDayFormatTomorrowOpenYield(queryYesterday);
+        List<StockInfo> yesterdayCloses =stockInfoService.findStockDaysByDayFormatTomorrowCloseYield(queryYesterday);
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
+        List<StockInfo> highCurrents = stockInfoService.fiveHeightSpace(start, queryEnd);
+        String desc ="信念[空间与新题材模式，条件双十逻辑，涨停倍增逻辑] 提供20191015以后的数据=====>当前查询日期";
+        List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
+        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+"===>【早盘冲击情况】:<br>"+yesterdayOpens+"===>【空间板数据情况】:<br>"+highCurrents+"===>【尾盘冲击情况】:<br>"+yesterdayCloses;
+    }
+
     @RequestMapping("/deal")
     public String deal() {
         List<StockInfo> ss = stockInfoRepository.findAll();

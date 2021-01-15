@@ -34,11 +34,11 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     //收盘前3
     List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByTodayCloseYield(String dayFormat,Integer stockType);
     //明日开盘前3
-    List<StockInfo> findFirst3ByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(String dayFormat,Integer stockType);
+    List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(String dayFormat,Integer stockType);
     //明日开盘前3
     List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByTomorrowOpenYield(String dayFormat,Integer stockType);
     //明日收盘前3
-    List<StockInfo> findFirst3ByDayFormatAndStockTypeOrderByTomorrowCloseYieldDesc(String dayFormat,Integer stockType);
+    List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByTomorrowCloseYieldDesc(String dayFormat,Integer stockType);
     //明日收盘前3
     List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByTomorrowCloseYield(String dayFormat,Integer stockType);
 
@@ -61,7 +61,7 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     //竞价末3
     List<StockInfo> findFirst3CodeDistinctByDayFormatOrderByOpenBidRate(String dayFormat);
 
-    List<StockInfo> findByDayFormatAndStockTypeOrderByHotSevenDesc(String dayFormat,Integer stockType);
+    List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByHotSevenDesc(String dayFormat,Integer stockType);
 
 
 }

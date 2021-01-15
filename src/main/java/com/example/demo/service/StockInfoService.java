@@ -37,7 +37,7 @@ public class StockInfoService {
         result.add(new StockInfo());
         result.addAll(stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByOpenBidRate(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo("昨天情况"));
-        result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(yesterday, NumberEnum.StockType.STOCK_DAY.getCode()));
+        result.addAll(stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(yesterday, NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo());
         result.addAll(stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTomorrowOpenYield(yesterday, NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo("收盘情况"));
@@ -45,7 +45,7 @@ public class StockInfoService {
         result.add(new StockInfo());
         result.addAll(stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTodayCloseYield(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo("昨天情况"));
-        result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTomorrowCloseYieldDesc(yesterday, NumberEnum.StockType.STOCK_DAY.getCode()));
+        result.addAll(stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTomorrowCloseYieldDesc(yesterday, NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo());
         result.addAll(stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTomorrowCloseYield(yesterday, NumberEnum.StockType.STOCK_DAY.getCode()));
         return result;
@@ -56,7 +56,7 @@ public class StockInfoService {
         List<StockInfo> result = new ArrayList<>();
         result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByOpenBidRateDesc(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo());
-        result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode()));
+        result.addAll(stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo());
         result.addAll(stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByOpenBidRate(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo());
@@ -68,7 +68,7 @@ public class StockInfoService {
         List<StockInfo> result = new ArrayList<>();
         result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTodayCloseYieldDesc(dayFormat,NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo());
-        result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTomorrowCloseYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode()));
+        result.addAll(stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTomorrowCloseYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo());
         result.addAll(stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTodayCloseYield(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo());
@@ -166,7 +166,10 @@ public class StockInfoService {
         return stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTodayCloseYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode());
     }
     public List<StockInfo> findStockDaysByDayFormatTomorrowOpenYield(String dayFormat){
-        return stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode());
+        return stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode());
+    }
+    public List<StockInfo> findStockDaysByDayFormatTomorrowCloseYield(String dayFormat){
+        return stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTomorrowCloseYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode());
     }
     public List<StockInfo> findStockDaysByYesterdayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getYesterdayDayFormat(), NumberEnum.StockType.STOCK_DAY.getCode());
@@ -198,13 +201,13 @@ public class StockInfoService {
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
     }
     public List<StockInfo> findStockDayFivesHotSevenDesc(String dayFormat){
-        return stockInfoRepository.findByDayFormatAndStockTypeOrderByHotSevenDesc(dayFormat, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
+        return stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByHotSevenDesc(dayFormat, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
     }
     public List<StockInfo> findStockFivesTomorrowOpenYield(String dayFormat){
-        return stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
+        return stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
     }
     public List<StockInfo> findStockFivesTomorrowCloseYield(String dayFormat){
-        return stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByTomorrowCloseYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
+        return stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTomorrowCloseYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
     }
     public List<StockInfo> findStockDayFivesByYesterdayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getYesterdayDayFormat(), NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
