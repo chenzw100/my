@@ -360,7 +360,7 @@ public class HelloController {
             Date endDate =  MyUtils.getFormatDate(PRE_END);
             queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
         }
-        Date yesterdayDate =  MyUtils.getFormatDate(PRE_END);
+        Date yesterdayDate =  MyUtils.getFormatDate(queryEnd);
         String queryYesterday =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(yesterdayDate));
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         PRE_END=queryEnd;
@@ -374,7 +374,7 @@ public class HelloController {
             stockTruth =new StockTruth();
             stockTruths.add(stockTruth);
         }
-        String desc ="先趋势，后图形，再竞价》》提供20191015以后的数据=====>当前查询日期";
+        String desc ="先趋势，后图形，再竞价,核心挂，当小心》》提供20191015以后的数据=====>当前查询日期";
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
         return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"===>【早盘修复情况】:<br>"+yesterdayOpens+"===>【复盘情况】:<br>"+temperaturesClose+"===>【数据情况】:<br>"+fives+"===>【尾盘修复情况】:<br>"+yesterdayCloses;
