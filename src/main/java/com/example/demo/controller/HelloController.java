@@ -93,6 +93,7 @@ public class HelloController {
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
 
         List<StockTemperature> dayTemperatures=stockTemperatureRepository.findByDayFormat(queryEnd);
+        endDate =  MyUtils.getFormatDate(queryEnd);
         String preDate =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
         List<StockTemperature> preTemperatures=stockTemperatureRepository.findByDayFormat(preDate);
         List<StockTemperature> temperatures = new ArrayList<>();
@@ -135,6 +136,7 @@ public class HelloController {
         String desc ="信念[空间与新题材模式，趋势持股看看一下，条件双十逻辑，涨停倍增逻辑] 提供20191015以后的数据=====>当前查询日期";
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
         List<StockTemperature> dayTemperatures=stockTemperatureRepository.findByDayFormat(queryEnd);
+        endDate =  MyUtils.getFormatDate(queryEnd);
         String preDate =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
         List<StockTemperature> preTemperatures=stockTemperatureRepository.findByDayFormat(preDate);
         List<StockTemperature> temperatures = new ArrayList<>();
