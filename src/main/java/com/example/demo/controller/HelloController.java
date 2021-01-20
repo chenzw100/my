@@ -81,7 +81,23 @@ public class HelloController {
         System.out.println("=============queryEnd = [" + queryEnd + "]"+"queryYesterday"+queryYesterday);
         List<StockInfo> fives = stockInfoService.findStockDayFivesHotSevenDesc(queryEnd);
         List<StockInfo> yesterdayOpens = stockInfoService.findStockFivesTomorrowOpenYield(queryYesterday);
+        List<StockInfo> yesterdayOpensResult = new ArrayList<>();
+        for(StockInfo stockInfo :yesterdayOpens){
+            yesterdayOpensResult.add(stockInfo);
+            StockInfo stockInfoOpen = stockInfoService.findFirst1ByCodeAndDayFormat(stockInfo.getCode(),queryEnd);
+            if(stockInfoOpen!=null){
+                yesterdayOpensResult.add(stockInfoOpen);
+            }
+        }
         List<StockInfo> yesterdayCloses = stockInfoService.findStockFivesTomorrowCloseYield(queryYesterday);
+        List<StockInfo> yesterdayClosesResult = new ArrayList<>();
+        for(StockInfo stockInfo :yesterdayCloses){
+            yesterdayClosesResult.add(stockInfo);
+            StockInfo stockInfoOpen = stockInfoService.findFirst1ByCodeAndDayFormat(stockInfo.getCode(),queryEnd);
+            if(stockInfoOpen!=null){
+                yesterdayClosesResult.add(stockInfoOpen);
+            }
+        }
         List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
         StockTruth stockTruth = null;
         if(stockTruths==null){
@@ -106,7 +122,7 @@ public class HelloController {
             temperatures.add(st);
             i++;
         }
-        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+queryEnd+"===>【早盘修复情况】:<br>"+yesterdayOpens+queryEnd+"===>【数据情况】:<br>"+fives+queryEnd+"===>【尾盘修复情况】:<br>"+yesterdayCloses+queryEnd+"===>【盘面实时运行情况】:<br>"+temperatures;
+        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+queryEnd+"===>【早盘修复情况】:<br>"+yesterdayOpensResult+queryEnd+"===>【数据情况】:<br>"+fives+queryEnd+"===>【尾盘修复情况】:<br>"+yesterdayClosesResult+queryEnd+"===>【盘面实时运行情况】:<br>"+temperatures;
     }
     @RequestMapping("/ideals1/{end}")
     String ideals1(@PathVariable("end")String end) {
@@ -130,7 +146,23 @@ public class HelloController {
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         System.out.println("=============queryEnd = [" + queryEnd + "]"+"queryYesterday"+queryYesterday);
         List<StockInfo> yesterdayOpens = stockInfoService.findStockDaysByDayFormatTomorrowOpenYield(queryYesterday);
-        List<StockInfo> yesterdayCloses =stockInfoService.findStockDaysByDayFormatTomorrowCloseYield(queryYesterday);
+        List<StockInfo> yesterdayOpensResult = new ArrayList<>();
+        for(StockInfo stockInfo :yesterdayOpens){
+            yesterdayOpensResult.add(stockInfo);
+            StockInfo stockInfoOpen = stockInfoService.findFirst1ByCodeAndDayFormat(stockInfo.getCode(),queryEnd);
+            if(stockInfoOpen!=null){
+                yesterdayOpensResult.add(stockInfoOpen);
+            }
+        }
+        List<StockInfo> yesterdayCloses = stockInfoService.findStockFivesTomorrowCloseYield(queryYesterday);
+        List<StockInfo> yesterdayClosesResult = new ArrayList<>();
+        for(StockInfo stockInfo :yesterdayCloses){
+            yesterdayClosesResult.add(stockInfo);
+            StockInfo stockInfoOpen = stockInfoService.findFirst1ByCodeAndDayFormat(stockInfo.getCode(),queryEnd);
+            if(stockInfoOpen!=null){
+                yesterdayClosesResult.add(stockInfoOpen);
+            }
+        }
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
         List<StockInfo> highCurrents = stockInfoService.fiveHeightSpace(start, queryEnd);
         String desc ="信念[空间与新题材模式，趋势持股看看一下，条件双十逻辑，涨停倍增逻辑] 提供20191015以后的数据=====>当前查询日期";
@@ -149,7 +181,7 @@ public class HelloController {
             temperatures.add(st);
             i++;
         }
-        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+queryEnd+"===>【早盘冲击情况】:<br>"+yesterdayOpens+queryEnd+"===>【空间板数据情况】:<br>"+highCurrents+queryEnd+"===>【尾盘冲击情况】:<br>"+yesterdayCloses+queryEnd+"===>【盘面实时运行情况】:<br>"+temperatures;
+        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+queryEnd+"===>【早盘冲击情况】:<br>"+yesterdayOpensResult+queryEnd+"===>【空间板数据情况】:<br>"+highCurrents+queryEnd+"===>【尾盘冲击情况】:<br>"+yesterdayClosesResult+queryEnd+"===>【盘面实时运行情况】:<br>"+temperatures;
     }
 
     @RequestMapping("/deal")

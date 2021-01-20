@@ -78,6 +78,9 @@ public class StockInfoService {
 
 
 
+    public StockInfo findFirst1ByCodeAndDayFormat(String code, String dayFormat){
+       return stockInfoRepository.findFirst1ByCodeAndDayFormat(code,dayFormat);
+    }
 
     public StockInfo save(StockInfo stockInfo){
         return stockInfoRepository.save(stockInfo);
