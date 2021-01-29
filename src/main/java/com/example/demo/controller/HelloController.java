@@ -144,7 +144,18 @@ public class HelloController {
         Date yesterdayDate =  MyUtils.getFormatDate(PRE_END);
         String queryYesterday =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(yesterdayDate));
         Date endDate =  MyUtils.getFormatDate(queryEnd);
+        List<StockInfo> dayOpens = stockInfoService.findStockDaysByDayFormatOpen(queryEnd,NumberEnum.StockType.STOCK_DAY.getCode());
+        List<StockInfo> fiveOpens = stockInfoService.findStockDaysByDayFormatOpen(queryEnd, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
         System.out.println("=============queryEnd = [" + queryEnd + "]"+"queryYesterday"+queryYesterday);
+        List<StockInfo> yesterdayOpensFive = stockInfoService.findStockFivesTomorrowOpenYield(queryYesterday);
+        List<StockInfo> yesterdayOpensResultFive = new ArrayList<>();
+        for(StockInfo stockInfo :yesterdayOpensFive){
+            yesterdayOpensResultFive.add(stockInfo);
+            StockInfo stockInfoOpen = stockInfoService.findFirst1ByCodeAndDayFormat(stockInfo.getCode(),queryEnd);
+            if(stockInfoOpen!=null){
+                yesterdayOpensResultFive.add(stockInfoOpen);
+            }
+        }
         List<StockInfo> yesterdayOpens = stockInfoService.findStockDaysByDayFormatTomorrowOpenYield(queryYesterday);
         List<StockInfo> yesterdayOpensResult = new ArrayList<>();
         for(StockInfo stockInfo :yesterdayOpens){
@@ -172,16 +183,33 @@ public class HelloController {
         String preDate =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
         List<StockTemperature> preTemperatures=stockTemperatureRepository.findByDayFormat(preDate);
         List<StockTemperature> temperatures = new ArrayList<>();
+        List<StockTemperature> temperaturesFives = new ArrayList<>();
         int i=0;
         int size = preTemperatures.size();
         for(StockTemperature st:dayTemperatures){
             if(i<size){
                 temperatures.add(preTemperatures.get(i));
+                if(i<5){
+                    temperaturesFives.add(preTemperatures.get(i));
+                    temperaturesFives.add(st) ;
+                }
             }
+
             temperatures.add(st);
             i++;
         }
-        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+queryEnd+"===>【早盘冲击情况】:<br>"+yesterdayOpensResult+queryEnd+"===>【空间板数据情况】:<br>"+highCurrents+queryEnd+"===>【尾盘冲击情况】:<br>"+yesterdayClosesResult+queryEnd+"===>【盘面实时运行情况】:<br>"+temperatures;
+        StringBuffer sb = new StringBuffer();
+        sb.append(desc).
+                append(queryEnd).append("===>【复盘情况】:<br>").append(temperaturesClose).
+                append(queryEnd).append("===>【应变决策情况】:<br>").append(temperaturesFives).
+                append(queryEnd).append("===>【早盘当日冲击情况】:<br>").append(yesterdayOpensResult).
+                append(queryEnd).append("===>【早盘当日最强竞价】:<br>").append(dayOpens).
+                append(queryEnd).append("===>【早盘五日最强竞价】:<br>").append(fiveOpens).
+                append(queryEnd).append("===>【早盘五日冲击情况】:<br>").append(yesterdayOpensResultFive).
+                append(queryEnd).append("===>【空间板数据情况】:<br>").append(highCurrents).
+                append(queryEnd).append("===>【尾盘当日冲击情况】:<br>").append(yesterdayClosesResult).
+                append(queryEnd).append("===>【盘面实时运行情况】:<br>").append(temperatures);
+        return sb.toString();
     }
 
     @RequestMapping("/deal")

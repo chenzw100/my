@@ -33,7 +33,7 @@ public class StockInfoService {
         Date endDate =  MyUtils.getFormatDate(dayFormat);
         String yesterday =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
         List<StockInfo> result = new ArrayList<>();
-        result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByOpenBidRateDesc(dayFormat,NumberEnum.StockType.STOCK_DAY.getCode()));
+        result.addAll(stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByOpenBidRateDesc(dayFormat,NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo());
         result.addAll(stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByOpenBidRate(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo("昨天情况"));
@@ -54,7 +54,7 @@ public class StockInfoService {
     //竞价前3
     public List<StockInfo> openTop3(String dayFormat){
         List<StockInfo> result = new ArrayList<>();
-        result.addAll(stockInfoRepository.findFirst3ByDayFormatAndStockTypeOrderByOpenBidRateDesc(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode()));
+        result.addAll(stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByOpenBidRateDesc(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo());
         result.addAll(stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode()));
         result.add(new StockInfo());
@@ -159,6 +159,10 @@ public class StockInfoService {
     }
 
     //---STOCK_DAY---start ---
+    public List<StockInfo> findStockDaysByDayFormatOpen(String dayFormat,int type){
+        return stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByOpenBidRateDesc(dayFormat, type);
+    }
+
     public List<StockInfo> findStockDaysByTodayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DAY.getCode());
     }
