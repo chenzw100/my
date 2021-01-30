@@ -176,6 +176,7 @@ public class HelloController {
         }
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
         List<StockInfo> highCurrents = stockInfoService.fiveHeightSpace(start, queryEnd);
+        List<StockInfo> kpls = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
         String desc ="信念[空间与新题材模式，趋势持股看看一下，条件双十逻辑，涨停倍增逻辑] 提供20191015以后的数据=====>当前查询日期";
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
         List<StockTemperature> dayTemperatures=stockTemperatureRepository.findByDayFormat(queryEnd);
@@ -201,12 +202,13 @@ public class HelloController {
         StringBuffer sb = new StringBuffer();
         sb.append(desc).
                 append(queryEnd).append("===>【复盘情况】:<br>").append(temperaturesClose).
+                append(queryEnd).append("===>【空间板数据情况】:<br>").append(highCurrents).
+                append(queryEnd).append("===>【灵魂股情况】:<br>").append(kpls).
                 append(queryEnd).append("===>【应变决策情况】:<br>").append(temperaturesFives).
                 append(queryEnd).append("===>【早盘当日冲击情况】:<br>").append(yesterdayOpensResult).
                 append(queryEnd).append("===>【早盘当日最强竞价】:<br>").append(dayOpens).
                 append(queryEnd).append("===>【早盘五日最强竞价】:<br>").append(fiveOpens).
                 append(queryEnd).append("===>【早盘五日冲击情况】:<br>").append(yesterdayOpensResultFive).
-                append(queryEnd).append("===>【空间板数据情况】:<br>").append(highCurrents).
                 append(queryEnd).append("===>【尾盘当日冲击情况】:<br>").append(yesterdayClosesResult).
                 append(queryEnd).append("===>【盘面实时运行情况】:<br>").append(temperatures);
         return sb.toString();

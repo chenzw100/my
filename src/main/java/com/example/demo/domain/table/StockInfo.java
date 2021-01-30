@@ -11,6 +11,15 @@ import java.io.Serializable;
  * 昨天，今天，明天
  * 今天竞价涨幅，相对于昨天收盘的涨幅 (todayOpenPrice-yesterdayPrice)/yesterdayPrice
  * 明天竞价涨幅，相对于今天开盘的涨幅 (tomorrowPrice-todayOpenPrice)/todayOpenPrice;此处就代表了盈利幅度
+ *
+ SELECT id,day_format,today_open_price,today_close_price,today_close_yield,tomorrow_open_price,tomorrow_close_price
+ FROM stock_info s WHERE day_format ='20200410' and `name` ='云内动力';
+
+ UPDATE stock_info SET tomorrow_open_price=1069, tomorrow_close_price=1181
+ WHERE  day_format ='20200403' and `name` ='继峰股份';
+
+ UPDATE stock_info SET today_open_price=1089,today_close_price=1201,day_format='20200407'
+ WHERE  id=29855
  */
 @Entity(name="stock_info")
 public class StockInfo implements Serializable {
