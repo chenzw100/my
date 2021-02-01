@@ -11,6 +11,7 @@ import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockPlateService;
 import com.example.demo.service.dfcf.DfcfService;
 import com.example.demo.service.sina.SinaService;
+import com.example.demo.service.xgb.XgbCurrentService;
 import com.example.demo.service.xgb.XgbService;
 import com.example.demo.task.PanService;
 import com.example.demo.utils.ChineseWorkDay;
@@ -42,6 +43,8 @@ public class HelloController {
     PanService panService;
     @Autowired
     XgbService xgbService;
+    @Autowired
+    XgbCurrentService xgbCurrentService;
 
     @Autowired
     StockInfoRepository stockInfoRepository;
@@ -259,6 +262,11 @@ public class HelloController {
         return "add success";
     }
 
+    @RequestMapping("/xxx")
+    public String xxx() {
+        xgbCurrentService.closeNewAndNearly();
+        return "pre success";
+    }
     @RequestMapping("/pre")
     public String pre() {
         panService.preTgb();
@@ -486,23 +494,68 @@ public class HelloController {
             Date endDate =  MyUtils.getFormatDate(PRE_END);
             queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
         }
-        Date endDate =  MyUtils.getFormatDate(queryEnd);
         PRE_END=queryEnd;
-
-        List<StockInfo> fives = stockInfoService.findStockDayFivesByDayFormatTodayCloseYield(queryEnd);
-        List<StockPlateSta> stockPlates =stockPlateStaRepository.findByDayFormatAndPlateType(queryEnd, 1);
-
-        List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
-        StockTruth stockTruth = null;
-        if(stockTruths==null){
-            stockTruth =new StockTruth();
-            stockTruths.add(stockTruth);
+        Date yesterdayDate =  MyUtils.getFormatDate(PRE_END);
+        String queryYesterday =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(yesterdayDate));
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        List<StockInfo> dayOpens = stockInfoService.findStockDaysByDayFormatOpen(queryEnd,NumberEnum.StockType.STOCK_DAY.getCode());
+        System.out.println("=============queryEnd = [" + queryEnd + "]"+"queryYesterday"+queryYesterday);
+        List<StockInfo> yesterdayOpens = stockInfoService.findStockDaysByDayFormatTomorrowOpenYield(queryYesterday);
+        List<StockInfo> yesterdayOpensResult = new ArrayList<>();
+        for(StockInfo stockInfo :yesterdayOpens){
+            yesterdayOpensResult.add(stockInfo);
+            StockInfo stockInfoOpen = stockInfoService.findFirst1ByCodeAndDayFormat(stockInfo.getCode(),queryEnd);
+            if(stockInfoOpen!=null){
+                yesterdayOpensResult.add(stockInfoOpen);
+            }
         }
-        String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据=====>当前查询日期";
+        List<StockInfo> yesterdayCloses = stockInfoService.findStockFivesTomorrowCloseYield(queryYesterday);
+        List<StockInfo> yesterdayClosesResult = new ArrayList<>();
+        for(StockInfo stockInfo :yesterdayCloses){
+            yesterdayClosesResult.add(stockInfo);
+            StockInfo stockInfoOpen = stockInfoService.findFirst1ByCodeAndDayFormat(stockInfo.getCode(),queryEnd);
+            if(stockInfoOpen!=null){
+                yesterdayClosesResult.add(stockInfoOpen);
+            }
+        }
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
-        List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
-        List<StockInfo> days = stockInfoService.fupan(queryEnd);
-        return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"<br>===>【复盘】:<br>"+stockPlates+"<br>===>【竞价情况】:<br>"+days+"===>【近5天市场情况】:<br>"+temperaturesClose+"<br>"+fives;
+        List<StockInfo> highCurrents = stockInfoService.fiveHeightSpace(start, queryEnd);
+        List<StockInfo> kpls = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
+        List<StockInfo> news = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_NEW.getCode());
+        List<StockInfo> nearlys = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_NEARLY.getCode());
+        String desc ="信念[空间与新题材模式，趋势持股看看一下，条件双十逻辑，涨停倍增逻辑] 提供20191015以后的数据=====>当前查询日期";
+        List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
+        List<StockTemperature> dayTemperatures=stockTemperatureRepository.findByDayFormat(queryEnd);
+        endDate =  MyUtils.getFormatDate(queryEnd);
+        String preDate =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+        List<StockTemperature> preTemperatures=stockTemperatureRepository.findByDayFormat(preDate);
+        List<StockTemperature> temperatures = new ArrayList<>();
+        List<StockTemperature> temperaturesFives = new ArrayList<>();
+        int i=0;
+        int size = preTemperatures.size();
+        for(StockTemperature st:dayTemperatures){
+            if(i<size){
+                temperatures.add(preTemperatures.get(i));
+                if(i<5){
+                    temperaturesFives.add(preTemperatures.get(i));
+                    temperaturesFives.add(st) ;
+                }
+            }
+            temperatures.add(st);
+            i++;
+        }
+        StringBuffer sb = new StringBuffer();
+        sb.append(desc).
+                append(queryEnd).append("===>【复盘情况】:<br>").append(temperaturesClose).
+                append(queryEnd).append("===>【空间板数据情况】:<br>").append(highCurrents).
+                append(queryEnd).append("===>【灵魂股情况】:<br>").append(kpls).
+                append(queryEnd).append("===>【应变决策情况】:<br>").append(temperaturesFives).
+                append(queryEnd).append("===>【早盘当日冲击情况】:<br>").append(yesterdayOpensResult).
+                append(queryEnd).append("===>【早盘当日最强竞价】:<br>").append(dayOpens).
+                append(queryEnd).append("===>【新股】:<br>").append(news).
+                append(queryEnd).append("===>【次新股】:<br>").append(nearlys).
+                append(queryEnd).append("===>【盘面实时运行情况】:<br>").append(temperatures);
+        return sb.toString();
     }
 
     @RequestMapping("/risk/{end}")

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.dao.StockLimitUpRepository;
 import com.example.demo.dao.StockTemperatureRepository;
+import com.example.demo.domain.SinaTinyInfoStock;
 import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockLimitUp;
 import com.example.demo.domain.table.StockPlate;
@@ -13,9 +14,11 @@ import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockPlateService;
 import com.example.demo.service.dfcf.DfcfService;
 import com.example.demo.service.qt.QtService;
+import com.example.demo.service.sina.SinaService;
 import com.example.demo.utils.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -30,6 +33,8 @@ public class XgbCurrentService extends QtService {
     private static String limit_up="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=limit_up";
     private static String limit_up_broken ="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=limit_up_broken";
     private static String super_stock ="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=super_stock";
+    private static String new_stock ="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=new_stock";
+    private static String nearly_stock ="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=nearly_stock";
     private static String market_temperature="https://flash-api.xuangubao.cn/api/market_indicator/line?fields=market_temperature,limit_up_broken_count,limit_up_broken_ratio,rise_count,fall_count,limit_down_count,limit_up_count,yesterday_limit_up_avg_pcp";
 
    // private static String limit_down="https://flash-api.xuangubao.cn/api/pool/detail?pool_name=limit_down";
@@ -40,6 +45,8 @@ public class XgbCurrentService extends QtService {
     @Autowired
     DfcfService dfcfService;
     @Autowired
+    SinaService sinaService;
+    @Autowired
     StockTemperatureRepository stockTemperatureRepository;
     @Autowired
     StockLimitUpRepository stockLimitUpRepository;
@@ -49,6 +56,8 @@ public class XgbCurrentService extends QtService {
     StockPlateService stockPlateService;
 
     private static int downCount =0,downCountCYB=0;
+    private static int downNewCount =0,superNewCount=0;
+    private static int downNearlyCount =0,superNearlyCount=0;
     private static int  upCount = 0,upCountCYB=0;
     private static int superCount=0,superCountCYB=0;
     private static int superUpCount=0,superUpCountCYB=0;
@@ -225,6 +234,7 @@ public class XgbCurrentService extends QtService {
         }
     }
 
+
     public void platesClose(){
         Object response = getRequest(plates_url);
         JSONArray array = JSONObject.parseObject(response.toString()).getJSONObject("data").getJSONArray("items");
@@ -257,5 +267,101 @@ public class XgbCurrentService extends QtService {
             log.info("-->plate："+stockPlate.toString());
             stockPlateService.save(stockPlate);
         }
+    }
+    public void closeNewAndNearly(){
+        nearlyStockBefore();
+        newStockBefore();
+    }
+    public void newStockBefore(){
+        Object response = getRequest(new_stock);
+        JSONArray array = JSONObject.parseObject(response.toString()).getJSONArray("data");
+        log.info("-->super"+array.size());
+        for(int i=0;i<array.size();i++){
+            JSONObject jsonStock =  array.getJSONObject(i);
+            String changePercent = jsonStock.getString("change_percent");
+            int cp =MyUtils.getCentByYuanStr(changePercent);
+            //log.info(name+"-->super"+cp);
+            if(cp<-8){
+                downNewCount++;
+                String codeStr = jsonStock.getString("symbol");
+                add(codeStr,NumberEnum.StockType.STOCK_NEW.getCode());
+
+            }else if(cp>10) {
+                superNewCount++;
+                String codeStr = jsonStock.getString("symbol");
+                add(codeStr,NumberEnum.StockType.STOCK_NEW.getCode());
+            }
+
+
+        }
+    }
+    public void nearlyStockBefore(){
+        Object response = getRequest(nearly_stock);
+        JSONArray array = JSONObject.parseObject(response.toString()).getJSONArray("data");
+        log.info("-->super"+array.size());
+        for(int i=0;i<array.size();i++){
+            JSONObject jsonStock =  array.getJSONObject(i);
+            String changePercent = jsonStock.getString("change_percent");
+            int cp =MyUtils.getCentByYuanStr(changePercent);
+            //log.info(name+"-->super"+cp);
+            if(cp<-8){
+                downNearlyCount++;
+                String codeStr = jsonStock.getString("symbol");
+                add(codeStr,NumberEnum.StockType.STOCK_NEARLY.getCode());
+
+            }else if(cp>10) {
+                superNearlyCount++;
+                String codeStr = jsonStock.getString("symbol");
+                add(codeStr,NumberEnum.StockType.STOCK_NEARLY.getCode());
+            }
+
+
+        }
+    }
+    public void add(String codeStr,Integer type) {
+        String code = codeStr.substring(0, 6);
+        if (codeStr.contains("Z")) {
+            code = "sz" + code;
+        } else {
+            code = "sh" + code;
+        }
+        SinaTinyInfoStock sinaStock = sinaService.getTiny(code);
+        if (sinaStock == null) {
+            return ;
+        }
+        StockInfo myStock = new StockInfo(code, sinaStock.getName(), type);
+        myStock.setYesterdayClosePrice(sinaStock.getYesterdayPrice());
+        myStock.setTodayOpenPrice(sinaStock.getOpenPrice());
+        myStock.setTodayClosePrice(sinaStock.getCurrentPrice());
+        myStock.getTodayCloseYield();
+        myStock.setContinuous(1);
+        myStock.setOpenCount(-1);
+        myStock.setHotSort(-1);
+        myStock.setOneFlag(-1);
+        StockInfo fiveTgbStockTemp =stockInfoService.findStockKplByCodeAndYesterdayFormat(myStock.getCode());
+        if(fiveTgbStockTemp!=null){
+            myStock.setShowCount(fiveTgbStockTemp.getShowCount() + 1);
+        }else {
+            myStock.setShowCount(1);
+        }
+        List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myStock.getCode(),MyUtils.getDayFormat(MyUtils.getYesterdayDate()));
+        if(xgbStocks!=null && xgbStocks.size()>0){
+            StockLimitUp xgbStock =xgbStocks.get(0);
+            myStock.setPlateName(xgbStock.getPlateName());
+            myStock.setOneFlag(xgbStock.getOpenCount());
+            myStock.setContinuous(xgbStock.getContinueBoardCount());
+            myStock.setLimitUp(1);
+        }else {
+            xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(myStock.getCode());
+            if(xgbStocks!=null && xgbStocks.size()>0){
+                myStock.setPlateName(xgbStocks.get(0).getPlateName());
+            }else {
+                myStock.setPlateName("");
+            }
+            myStock.setOneFlag(1);
+            myStock.setContinuous(0);
+            myStock.setLimitUp(0);
+        }
+        stockInfoService.save(myStock);
     }
 }

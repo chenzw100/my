@@ -47,6 +47,8 @@ public class NumberEnum {
         STOCK_CURRENT_FIVE(60,"五日实时"),
         STOCK_DAY_FIVE(70,"五日当天"),
         STOCK_KPL(80,"聚焦"),
+        STOCK_NEARLY(90,"次新股"),
+        STOCK_NEW(100,"新股"),
         ;
 
         private StockType(int code, String desc) {

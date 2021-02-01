@@ -79,6 +79,7 @@ public class PanService {
             dealPanDataService.close();
             xgbCurrentService.closePan();
             xgbService.closePan();
+            xgbCurrentService.closeNewAndNearly();
         }
     }
     //盘中每小时处理数据
