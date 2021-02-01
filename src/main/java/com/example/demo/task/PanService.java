@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class PanService {
     Log log = LogFactory.getLog(PanService.class);
     private static final String tgbCron = "58 10  8 ? * MON-FRI";
-    private static final String openCron = "50 25 9 ? * MON-FRI";
+    private static final String openCron = "30 25 9 ? * MON-FRI";
     private static final String closeCron ="58 2 15 ? * MON-FRI";
     //private static final String choiceMy="1 1 9 ? * MON-FRI";
     //private static final String currentTimeCron="1 55 0/1 ? * MON-FRI";
@@ -29,7 +29,7 @@ public class PanService {
     private static final String temperatureCron3="10 30 9,14 ? * MON-FRI";
     private static final String temperatureCron4="10 01 10 ? * MON-FRI";
     private static final String temperatureCron5="10 33 9 ? * MON-FRI";
-    private static final String temperatureOpenCron="59 25 9 ? * MON-FRI";
+    private static final String temperatureOpenCron="39 25 9 ? * MON-FRI";
     @Autowired
     DealPanDataService dealPanDataService;
     @Autowired
