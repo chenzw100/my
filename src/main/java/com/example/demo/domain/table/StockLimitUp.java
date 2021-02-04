@@ -197,7 +197,8 @@ public class StockLimitUp implements Serializable {
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append(code).append(name).append(",open:").append(getOpenCount()).append(",continue:").append(getContinueBoardCount()).append(",price:").append(MyUtils.getYuanByCent(getYesterdayClosePrice())).append(plateName);
+        sb.append(code).append(name).append(dayFormat).
+                append(",open:").append(getOpenCount()).append(",continue:").append(getContinueBoardCount()).append(",price:").append(MyUtils.getYuanByCent(getYesterdayClosePrice())).append(plateName).append("<br>");
         return sb.toString();
     }
     public StockInfo toStockLimitUpFive(){

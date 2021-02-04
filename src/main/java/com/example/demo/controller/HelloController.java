@@ -19,9 +19,7 @@ import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -61,6 +59,32 @@ public class HelloController {
     private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
     private static String c_cUrl ="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
 
+    @RequestMapping("/high/{code}")
+    @ResponseBody
+    String high(@PathVariable("code")String code){
+        if (code.indexOf("6") == 0) {
+            code = "sh" + code;
+        } else {
+            code = "sz" + code;
+        }
+        List<StockLimitUp> stockLimitUps = stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(code);
+        List<StockLimitUp> stockUps = new ArrayList<>();
+        for(StockLimitUp stockLimitUp :stockLimitUps){
+            stockUps.add(stockLimitUp);
+            List<StockPlateSta> stockPlates =stockPlateStaRepository.findByDayFormatAndPlateType(stockLimitUp.getDayFormat(), 1);
+            for(StockPlateSta stockPlateSta:stockPlates){
+                StockLimitUp sp = new StockLimitUp();
+                sp.setCode("-板块-");
+                sp.setYesterdayClosePrice(100);
+                sp.setContinueBoardCount(1);
+                sp.setPlateName(stockPlateSta.getDescription());
+                sp.setName(stockPlateSta.getPlateName());
+                sp.setDayFormat(stockPlateSta.getDayFormat());
+                stockUps.add(sp);
+            }
+        }
+        return stockUps.toString();
+    }
     @RequestMapping("/ideals2/{end}")
     String ideals2(@PathVariable("end")String end) {
         String queryEnd = end;
