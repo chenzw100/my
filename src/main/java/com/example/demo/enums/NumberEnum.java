@@ -146,4 +146,42 @@ public class NumberEnum {
             return "";
         }
     }
+
+    public enum MoodType{
+        RISING(1,"情绪上升红盘"),
+        HIGH_SIDEWAYS(2,"情绪高位红盘"),
+        DOWN(3,"情绪下跌红盘"),
+        LOW_SIDEWAYS(4,"情绪低位红盘"),
+        CONTINUOUS(5,"情绪连续红盘"),
+        JUMP_EMPTY(6,"情绪跳空红盘"),
+        DOWN_DOWN(7,"情绪绿盘");
+
+        private MoodType(int code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+        private int code;
+        private String desc;
+        public int getCode() {
+            return code;
+        }
+        public void setCode(int code) {
+            this.code = code;
+        }
+        public String getDesc() {
+            return desc;
+        }
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        public static String getMoodType(int code){
+            for(PlateType d : PlateType.values()){
+                if(d.getCode()==code){
+                    return d.getDesc();
+                }
+            }
+            return "";
+        }
+    }
 }

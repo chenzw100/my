@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dao.*;
 import com.example.demo.domain.table.StockInfo;
+import com.example.demo.domain.table.StockMood;
 import com.example.demo.domain.table.StockTemperature;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.StockInfoService;
@@ -47,6 +48,9 @@ public class ClassifyController {
     StockTruthRepository stockTruthRepository;
     @Autowired
     StockPlateStaRepository stockPlateStaRepository;
+    @Autowired
+    StockMoodRepository stockMoodRepository;
+
 
 
     @RequestMapping("my/{c}/{end}")
@@ -61,8 +65,9 @@ public class ClassifyController {
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
         StringBuffer sb = new StringBuffer();
         String desc =week+"信念[空间与新题材模式，趋势持股看看一下，条件双十逻辑，涨停倍增逻辑] 提供20191015以后的数据=====>当前查询日期";
+        StockMood stockMood =stockMoodRepository.findByDayFormat(queryEnd);
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
-        sb.append(desc).append(queryEnd).append("===>【复盘情况】:<br>").append(temperaturesClose);
+        sb.append(desc).append(stockMood).append(queryEnd).append("===>【复盘情况】:<br>").append(temperaturesClose);
         switch(c){
             case 1 :
                 List<StockInfo> news = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_NEW.getCode());
