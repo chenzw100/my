@@ -20,6 +20,11 @@ public class MyUtils {
         return date;
 
     }
+    public static String getWeek(Date date){
+        SimpleDateFormat dateFm = new SimpleDateFormat("EEEE");
+        String currSun = dateFm.format(date);
+        return currSun;
+    }
     public static Date getFormatDate(String format)  {
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");

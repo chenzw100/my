@@ -230,4 +230,8 @@ public class StockInfoService {
         return stockInfoRepository.findByCodeAndDayFormatAndStockType(code,MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_KPL.getCode());
     }
 
+    public List<StockInfo> find2DayHot(String dayFormat){
+       return stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByHotSort(dayFormat,NumberEnum.StockType.STOCK_DAY.getCode());
+    }
+
 }

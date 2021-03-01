@@ -149,7 +149,11 @@ public class HelloController {
             temperatures.add(st);
             i++;
         }
-        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+queryEnd+"===>【早盘修复情况】:<br>"+yesterdayOpensResult+queryEnd+"===>【数据情况】:<br>"+fives+queryEnd+"===>【尾盘修复情况】:<br>"+yesterdayClosesResult+queryEnd+"===>【盘面实时运行情况】:<br>"+temperatures;
+        return desc+queryEnd+"===>【复盘情况】:<br>"+temperaturesClose+queryEnd
+                +"===>【早盘修复情况】:<br>"+yesterdayOpensResult+queryEnd+
+                "===>【数据情况】:<br>"+fives+queryEnd+"" +
+                "===>【尾盘修复情况】:<br>"+yesterdayClosesResult+queryEnd+
+                "===>【盘面实时运行情况】:<br>"+temperatures;
     }
     @RequestMapping("/ideals1/{end}")
     String ideals1(@PathVariable("end")String end) {

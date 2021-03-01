@@ -282,6 +282,7 @@ public class StockTemperature {
     public String toString(){
         StringBuilder sb = new StringBuilder();
         String dateStr = DateFormatUtils.format(getCreated(), "MM-dd HH:mm");
+
         sb.append(dateStr);
         sb.append("[上证:").append(getTradeVal()).append("亿、创:").append(getTradeCYBVal()).append("亿][强:").append(getSuperUpCount()).append(",大阳:").append(getSuperCount())
         .append(",正:").append(getContinueCount()).append("] [负:").append(getStrongDowns()).append(", 跌:").append(getLimitDown())

@@ -434,7 +434,7 @@ public class StockInfo implements Serializable {
             return name+"--<br>";
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(dayFormat).append(name).append("[最高:").append(getFiveHighRate()).append("最低:").append(getFiveLowRate()).
+        sb.append(dayFormat).append(NumberEnum.StockType.getStockType(stockType)).append(code).append(name).append("[最高:").append(getFiveHighRate()).append("最低:").append(getFiveLowRate()).
                 append(",连板:").append(getContinuous()).append(",昨收:").append(MyUtils.getYuanByCent(getYesterdayClosePrice())).append("]竞价:").append(getTodayOpenRate()).
                 append(",收盘:").append(getTodayCloseRate()).
                 append(",明天:").append(getTomorrowOpenRate()).append(":").append(getTomorrowCloseRate()).

@@ -63,6 +63,6 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     List<StockInfo> findFirst3CodeDistinctByDayFormatOrderByOpenBidRate(String dayFormat);
 
     List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByHotSevenDesc(String dayFormat,Integer stockType);
-
+    List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByHotSort(String dayFormat,Integer stockType);
 
 }

@@ -36,6 +36,7 @@ public class MyChineseWorkDay {
      */
     public static boolean isLawHoliday() throws Exception {
 
+
         if (lawHolidays.contains(calendar)) {
             return true;
         }
@@ -105,9 +106,14 @@ public class MyChineseWorkDay {
      * @return
      * @throws Exception
      */
-    public static boolean isWorkday() throws Exception {
+    public static boolean isWorkday() {
+        try {
+            return !(isHoliday());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
 
-        return !(isHoliday());
     }
 
     public static int getTotalDays() {

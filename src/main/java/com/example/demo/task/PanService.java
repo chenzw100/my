@@ -6,6 +6,7 @@ import com.example.demo.service.tgb.TgbService;
 import com.example.demo.service.xgb.XgbCurrentService;
 import com.example.demo.service.xgb.XgbService;
 import com.example.demo.utils.ChineseWorkDay;
+import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -133,14 +134,6 @@ public class PanService {
     }*/
 
     public boolean isWorkday(){
-        ChineseWorkDay chineseWorkDay = new ChineseWorkDay(MyUtils.getCurrentDate());
-        try {
-            if(chineseWorkDay.isWorkday()){
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        return MyChineseWorkDay.isWorkday();
     }
 }

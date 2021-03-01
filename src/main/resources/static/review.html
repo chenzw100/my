@@ -11,6 +11,7 @@
 </style>
 <div class="container">
     <div class="">
+        <input type="text" value="4" id="c" >
         <input type="text" value="1" id="dateEnd" onkeyup="onKeyUpEnter(event)">
         <input type="button" value="确定" id="search" onclick="getSelect()"  />
     </div>
@@ -47,8 +48,12 @@
         if(end==undefined || end==""){
             end="1";
         }
+        var c = $("#c").val();
+        if(c==undefined || c==""){
+            c="1";
+        }
         $.ajax({
-            url : 'review/'+end,
+            url : 'my/'+c+'/'+end,
             dataType : 'json',
             type : 'get',
             async : false,
