@@ -295,6 +295,7 @@ public class XgbCurrentService extends QtService {
 
         }
     }
+
     public void nearlyStockBefore(){
         Object response = getRequest(nearly_stock);
         JSONArray array = JSONObject.parseObject(response.toString()).getJSONArray("data");
