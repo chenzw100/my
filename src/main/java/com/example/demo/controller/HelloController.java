@@ -61,18 +61,19 @@ public class HelloController {
     private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
     private static String c_cUrl ="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
 
-    @RequestMapping("/mood/{info}")
-    public String mood(@PathVariable("info")Integer info) {
+    @RequestMapping("/mood/{info}/{masterLine}")
+    public String mood(@PathVariable("info")Integer info,@PathVariable("masterLine")String masterLine) {
         if (info ==0) {
             return "success";
         }
         StockMood stockTruth = new StockMood();
         stockTruth.setMoodType(info);
+        stockTruth.setMasterLine(masterLine);
         stockMoodRepository.save(stockTruth);
         return "add success";
     }
-    @RequestMapping("/mood/{dayFormat}/{info}")
-    public String mood(@PathVariable("info")Integer info,@PathVariable("dayFormat")String dayFormat) {
+    @RequestMapping("/mood/{dayFormat}/{info}/{masterLine}")
+    public String mood(@PathVariable("info")Integer info,@PathVariable("dayFormat")String dayFormat,@PathVariable("masterLine")String masterLine) {
         if (info ==0) {
             return "success"+dayFormat;
         }
