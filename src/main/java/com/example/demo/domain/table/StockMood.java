@@ -22,8 +22,19 @@ public class StockMood implements Serializable {
     private Long id;
     @Column(nullable = false,columnDefinition="varchar(10) COMMENT 'yyyymmdd'")
     private String dayFormat;
+    @Column(nullable = false,columnDefinition="varchar(50) COMMENT 'master1'")
+    private String masterLine;
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT ''")
     private Integer moodType;
+
+    public String getMasterLine() {
+        return masterLine;
+    }
+
+    public void setMasterLine(String masterLine) {
+        this.masterLine = masterLine;
+    }
+
     public StockMood(){
         this.dayFormat = MyUtils.getDayFormat();
         this.moodType = NumberEnum.MoodType.DOWN_DOWN.getCode();
@@ -56,8 +67,8 @@ public class StockMood implements Serializable {
     @Override
     public String toString() {
         if(moodType==null || moodType==0){
-            return "";
+            return "主线:"+masterLine ;
         }
-        return  NumberEnum.MoodType.getMoodType(moodType) ;
+        return  "【"+NumberEnum.MoodType.getMoodType(moodType)+"主线:"+masterLine +"】";
     }
 }

@@ -63,7 +63,7 @@ public class HelloController {
 
     @RequestMapping("/mood/{info}")
     public String mood(@PathVariable("info")Integer info) {
-        if ("1".equals(info)) {
+        if (info ==0) {
             return "success";
         }
         StockMood stockTruth = new StockMood();
@@ -73,7 +73,7 @@ public class HelloController {
     }
     @RequestMapping("/mood/{dayFormat}/{info}")
     public String mood(@PathVariable("info")Integer info,@PathVariable("dayFormat")String dayFormat) {
-        if ("1".equals(dayFormat)) {
+        if ("0".equals(dayFormat)) {
             return "success"+dayFormat;
         }
         StockMood stockTruth = new StockMood();

@@ -64,7 +64,7 @@ public class ClassifyController {
         System.out.println("=============queryEnd = [" + queryEnd + "]"+"queryYesterday"+queryYesterday);
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
         StringBuffer sb = new StringBuffer();
-        String desc =week+"信念[空间与新题材模式，趋势持股看看一下，条件双十逻辑，涨停倍增逻辑] 提供20191015以后的数据=====>当前查询日期";
+        String desc =week+"信念[空间与新题材模式，趋势持股看看一下，条件双十逻辑，涨停倍增逻辑] 提供20191015以后的数据=====>当前查询日期<br>";
         StockMood stockMood =stockMoodRepository.findByDayFormat(queryEnd);
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
         sb.append(desc).append(stockMood).append(queryEnd).append("===>【复盘情况】:<br>").append(temperaturesClose);

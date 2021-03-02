@@ -176,7 +176,7 @@ public class NumberEnum {
         }
 
         public static String getMoodType(int code){
-            for(PlateType d : PlateType.values()){
+            for(MoodType d : MoodType.values()){
                 if(d.getCode()==code){
                     return d.getDesc();
                 }
