@@ -80,6 +80,7 @@ public class HelloController {
         StockMood stockTruth = new StockMood();
         stockTruth.setMoodType(info);
         stockTruth.setDayFormat(dayFormat);
+        stockTruth.setMasterLine(masterLine);
         stockMoodRepository.save(stockTruth);
         return "add success";
     }

@@ -166,9 +166,8 @@ public class ChartsController {
     }
 
     public boolean isWorkday(){
-        ChineseWorkDay chineseWorkDay = new ChineseWorkDay(MyUtils.getCurrentDate());
         try {
-            if(chineseWorkDay.isWorkday()){
+            if(MyChineseWorkDay.isWorkday()){
                 return true;
             }
         } catch (Exception e) {
