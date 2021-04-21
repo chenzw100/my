@@ -39,7 +39,7 @@ public class TgbService extends QtService {
     //获取24小时的热搜数据
     public void dayDate(){
         try {
-            Document doc = Jsoup.connect("https://www.taoguba.com.cn/hotPop").get();
+            Document doc = Jsoup.connect("https://www.taoguba.com.cn/search/hotPop").get();
             Elements elements = doc.getElementsByClass("tbleft");
             for(int i=10;i<20;i++){
                 Element element = elements.get(i);
@@ -101,7 +101,7 @@ public class TgbService extends QtService {
     public void currentDate(){
         try {
             //log.info("==>currentDate start:");
-            Document doc = Jsoup.connect("https://www.taoguba.com.cn/hotPop").get();
+            Document doc = Jsoup.connect("https://www.taoguba.com.cn/search/hotPop").get();
             Elements elements = doc.getElementsByClass("tbleft");
             for(int i=0;i<10;i++){
                 Element element = elements.get(i);
