@@ -1,5 +1,6 @@
 package com.example.demo.utils;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 
 import java.math.BigDecimal;
@@ -88,6 +89,25 @@ public class MyUtils {
         System.out.println(percent.format(b.doubleValue()));
         */
 
+    }
+    public static Integer getYuanByFen(int cent){
+        return new BigDecimal(cent).divide(new BigDecimal(100), 0, RoundingMode.HALF_UP).intValue();
+        /*Double faultRate = Double.parseDouble(sinaPriceStr);
+        BigDecimal a = BigDecimal.valueOf(faultRate);
+        BigDecimal b =a.setScale(2, RoundingMode.HALF_UP);//保留两位小数；
+        System.out.println("结果是"+b);
+        //下面将结果转化成百分比
+        NumberFormat percent = NumberFormat.getPercentInstance();
+        percent.setMaximumFractionDigits(2);
+        System.out.println(percent.format(b.doubleValue()));
+        */
+
+    }
+    public static int getYuanPriceStr(String sinaPriceStr){
+        if(StringUtils.isBlank(sinaPriceStr)){
+            return 0;
+        }
+        return new BigDecimal(Double.parseDouble(sinaPriceStr)).setScale(0, RoundingMode.HALF_UP).intValue();
     }
 
     public static BigDecimal getIncreaseRate(int increase,int base){
