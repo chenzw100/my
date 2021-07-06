@@ -10,7 +10,7 @@ import java.util.List;
  * JpaRepository default method
  */
 public interface StockYybRepository extends JpaRepository<StockYyb,Long> {
-    List<StockYyb> findByDayFormatAndCode(String dayFormat,String code);
+    List<StockYyb> findByDayFormatAndCodeAndYybId(String dayFormat,String code,Integer ybId);
 
 
 

@@ -20,7 +20,7 @@ import java.util.List;
 public class DfcfService extends BaseService {
     private static String current_Continue="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
     private static String current_Yesterday="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0815&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
-    private static String current_yyb="https://datainterface3.eastmoney.com/EM_DataCenter_V3/api/YYBJXMX/GetYYBJXMX?js=jQuery11230423145167159211_1625532378383&sortfield=&sortdirec=-1&pageSize=50&tkn=eastmoney&salesCode=80623462&tdir=&dayNum=&cfg=yybjymx&endDateTime=2021-07-06&startDateTime=2020-07-06&pageNum=";
+    private static String current_yyb="https://datainterface3.eastmoney.com/EM_DataCenter_V3/api/YYBJXMX/GetYYBJXMX?js=jQuery112307119371614566392_1625561877508&sortfield=&sortdirec=-1&pageSize=50&tkn=eastmoney&salesCode=80131791&tdir=&dayNum=&startDateTime=2019-07-06&endDateTime=2020-07-06&cfg=yybjymx&pageNum=";
 
     @Autowired
     StockYybRepository stockYybRepository;
@@ -41,6 +41,10 @@ public class DfcfService extends BaseService {
     public void currentYyb(Integer page) {
         Object result = getRequest(current_yyb+page);
         String str=result.toString();
+        if(str.length()<100){
+            System.out.println("result = [" + str + "]");
+            return;
+        }
         int index = str.indexOf("(");
         str = str.substring(index+1,str.length()-1);
         JSONObject jsonObject = JSONObject.parseObject(str);
@@ -54,8 +58,9 @@ public class DfcfService extends BaseService {
             StockYyb stockYyb = new StockYyb();
             stockYyb.setDayFormat(d[22]);
             stockYyb.setCode(d[10]);
+            stockYyb.setYybId(Integer.parseInt(d[29]));
 
-            List<StockYyb> stockYybList =stockYybRepository.findByDayFormatAndCode(stockYyb.getDayFormat(),stockYyb.getCode());
+            List<StockYyb> stockYybList =stockYybRepository.findByDayFormatAndCodeAndYybId(stockYyb.getDayFormat(),stockYyb.getCode(),stockYyb.getYybId());
             if(stockYybList!=null &&stockYybList.size()>0){
                 stockYyb= stockYybList.get(0);
             }
@@ -67,7 +72,6 @@ public class DfcfService extends BaseService {
 
             stockYyb.setName(d[8]);
             stockYyb.setYybName(d[5]);
-            stockYyb.setYybId(Integer.parseInt(d[29]));
             stockYyb.setTradeAmount(MyUtils.getYuanPriceStr(d[0]));
             stockYyb.setSumAmount(MyUtils.getYuanPriceStr(d[17]));
             stockYyb.setOneDay(MyUtils.getYuanPriceStr(d[30]));
@@ -86,7 +90,7 @@ public class DfcfService extends BaseService {
         }
     }
     public void yyb(){
-        for (int i=1;i<10;i++){
+        for (int i=1;i<11;i++){
             currentYyb(i);
         }
     }
