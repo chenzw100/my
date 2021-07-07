@@ -27,6 +27,8 @@ public class StockYyb implements Serializable {
     private Long id;
     @Column(nullable = false,columnDefinition="varchar(100)")
     private String yybName;
+    @Column(nullable = false,columnDefinition="varchar(20) COMMENT '柚子'")
+    private String yzName;
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT 'yybId'")
     private Integer yybId;
     @Column(nullable = false,columnDefinition="varchar(10) COMMENT 'yyyymmdd'")
@@ -57,6 +59,14 @@ public class StockYyb implements Serializable {
 
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '688'")
     private Integer yn;
+
+    public String getYzName() {
+        return yzName;
+    }
+
+    public void setYzName(String yzName) {
+        this.yzName = yzName;
+    }
 
     public Integer getYn() {
         return yn;
