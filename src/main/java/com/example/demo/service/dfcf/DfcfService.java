@@ -198,6 +198,7 @@ public class DfcfService extends BaseService {
                     }
                     stockYybInfo.setCode(code);
                     stockYybInfo.setYesterdayClosePrice(qtService.getIntCurrentPrice(stockYybInfo.getCode()));
+                    stockYybInfoRepository.save(stockYybInfo);
                 }
             }catch (Exception e){
                 e.getMessage();

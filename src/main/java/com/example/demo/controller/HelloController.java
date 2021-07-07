@@ -72,7 +72,7 @@ public class HelloController {
     }
     @RequestMapping("/yyb1/{yybId}")
     public String yyb1(@PathVariable("yybId")Integer yybId) {
-        dfcfService.currentYybJob(yybId);
+        dfcfService.yybJob();
         return "yyb success";
     }
     @RequestMapping("/mood/{info}/{masterLine}")
