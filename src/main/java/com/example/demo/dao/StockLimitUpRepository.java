@@ -22,5 +22,6 @@ public interface StockLimitUpRepository extends JpaRepository<StockLimitUp,Long>
     List<StockLimitUp> findByDayFormatAndContinueBoardCountGreaterThan(String dayFormat, int min);
     StockLimitUp save(StockLimitUp xgbStock);
     List<StockLimitUp> findByCodeAndPlateNameIsNotNullOrderByIdDesc(String code);
+    StockLimitUp findTop1ByCodeAndPlateNameIsNotNullOrderByIdDesc(String code);
 
 }

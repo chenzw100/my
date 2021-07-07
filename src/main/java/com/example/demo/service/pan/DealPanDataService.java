@@ -20,6 +20,8 @@ public class DealPanDataService extends QtService {
     StockInfoService stockInfoService;
     @Autowired
     StockLimitUpRepository stockLimitUpRepository;
+    @Autowired
+    StockYybInfoRepository stockYybInfoRepository;
 
     @Autowired
     SinaService sinaService;
@@ -28,6 +30,7 @@ public class DealPanDataService extends QtService {
         PRICE_CACHE.clear();
         log.info("data open start");
         openStockInfo();
+        openStockYybInfo();
         log.info("data open end");
         PRICE_CACHE.clear();
     }
@@ -37,6 +40,7 @@ public class DealPanDataService extends QtService {
         log.info("data close start");
         fiveStatistic();
         closeStockInfo();
+        closeStockYybInfo();
         log.info("data close end");
         SINA_CACHE.clear();
         PRICE_CACHE.clear();
@@ -58,6 +62,30 @@ public class DealPanDataService extends QtService {
             }
         }
     }
+    private void openStockYybInfo(){
+        List<StockYybInfo> todayStocks = stockYybInfoRepository.findByDayFormat(MyUtils.getDayFormat());
+        if(todayStocks!=null){
+            for(StockYybInfo myStock :todayStocks){
+                myStock.setTodayOpenPrice(getIntCurrentPrice(myStock.getCode()));
+                stockYybInfoRepository.save(myStock);
+            }
+        }
+        List<StockYybInfo> yesterdayStocks = stockYybInfoRepository.findByDayFormat(MyUtils.getYesterdayDayFormat());
+        if(yesterdayStocks!=null){
+            for(StockYybInfo myStock :yesterdayStocks){
+                myStock.setTomorrowOpenPrice(getIntCurrentPrice(myStock.getCode()));
+                myStock.getTomorrowOpenYield();
+                stockYybInfoRepository.save(myStock);
+            }
+        }
+        List<StockYybInfo> threeStocks = stockYybInfoRepository.findByDayFormat(MyUtils.getPre2DayFormat());
+        if(yesterdayStocks!=null){
+            for(StockYybInfo myStock :threeStocks){
+                myStock.setThreeOpenPrice(getIntCurrentPrice(myStock.getCode()));
+                stockYybInfoRepository.save(myStock);
+            }
+        }
+    }
 
     private void closeStockInfo(){
         List<StockInfo> todayStocks = stockInfoService.findStockInfosByTodayFormat();
@@ -74,6 +102,30 @@ public class DealPanDataService extends QtService {
                 myStock.setTomorrowClosePrice(getIntCurrentPrice(myStock.getCode()));
                 myStock.getTomorrowCloseYield();
                 stockInfoService.save(myStock);
+            }
+        }
+    }
+
+    private void closeStockYybInfo(){
+        List<StockYybInfo> todayStocks = stockYybInfoRepository.findByDayFormat(MyUtils.getDayFormat());
+        if(todayStocks!=null){
+            for(StockYybInfo myStock :todayStocks){
+                myStock.setTodayClosePrice(getIntCurrentPrice(myStock.getCode()));
+                stockYybInfoRepository.save(myStock);
+            }
+        }
+        List<StockYybInfo> yesterdayStocks = stockYybInfoRepository.findByDayFormat(MyUtils.getYesterdayDayFormat());
+        if(yesterdayStocks!=null){
+            for(StockYybInfo myStock :yesterdayStocks){
+                myStock.setTomorrowClosePrice(getIntCurrentPrice(myStock.getCode()));
+                stockYybInfoRepository.save(myStock);
+            }
+        }
+        List<StockYybInfo> threeStocks = stockYybInfoRepository.findByDayFormat(MyUtils.getPre2DayFormat());
+        if(yesterdayStocks!=null){
+            for(StockYybInfo myStock :threeStocks){
+                myStock.setThreeClosePrice(getIntCurrentPrice(myStock.getCode()));
+                stockYybInfoRepository.save(myStock);
             }
         }
     }
