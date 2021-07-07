@@ -57,8 +57,19 @@ public class StockYyb implements Serializable {
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第三十天'")
     private Integer thirtyDay;
 
+    @Column(nullable = true,columnDefinition="varchar(200) COMMENT '板块'")
+    private String plateName;
+
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '688'")
     private Integer yn;
+
+    public String getPlateName() {
+        return plateName;
+    }
+
+    public void setPlateName(String plateName) {
+        this.plateName = plateName;
+    }
 
     public String getYzName() {
         return yzName;

@@ -2,13 +2,16 @@ package com.example.demo.service.dfcf;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.dao.StockLimitUpRepository;
 import com.example.demo.dao.StockYybRepository;
+import com.example.demo.domain.table.StockLimitUp;
 import com.example.demo.domain.table.StockYyb;
 import com.example.demo.enums.YybEnum;
 import com.example.demo.service.base.BaseService;
 import com.example.demo.utils.HttpClientUtil;
 import com.example.demo.utils.MyUtils;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +30,9 @@ public class DfcfService extends BaseService {
     private static String five_day_url="https://datainterface3.eastmoney.com/EM_DataCenter_V3/api/YYBJXMX/GetYYBJXMX?js=jQuery112308524302760036775_1625625265638&sortfield=&sortdirec=-1&pageSize=50&pageNum=1&tkn=eastmoney&tdir=&dayNum=&cfg=yybjymx&startDateTime=";
     @Autowired
     StockYybRepository stockYybRepository;
+    @Autowired
+    StockLimitUpRepository stockLimitUpRepository;
+
     public String currentContinueVal() {
         Object str = getRequest(current_Continue);
         JSONObject jsonObject = JSONObject.parseObject(str.toString());
@@ -167,12 +173,29 @@ public class DfcfService extends BaseService {
             stockYyb.setTenDay(MyUtils.getYuanPriceStr(d[4]));
             stockYyb.setTwentyDay(MyUtils.getYuanPriceStr(d[2]));
             stockYyb.setThirtyDay(MyUtils.getYuanPriceStr(d[18]));
-            System.out.println(stockYyb.toString());
+            //System.out.println(stockYyb.toString());
+            if(StringUtils.isBlank(stockYyb.getPlateName())){
+                stockYyb.setPlateName(getPlateName(stockYyb.getCode()));
+            }
             try {
                 stockYybRepository.save(stockYyb);
             }catch (Exception e){
                 e.getMessage();
             }
         }
+    }
+
+    private String getPlateName(String code){
+        if (code.indexOf("6") == 0) {
+            code = "sh" + code;
+        } else {
+            code = "sz" + code;
+        }
+        String plateName="";
+        StockLimitUp  xgbStock =stockLimitUpRepository.findTop1ByCodeAndPlateNameIsNotNullOrderByIdDesc(code);
+        if(xgbStock!=null ) {
+            plateName = xgbStock.getPlateName();
+        }
+        return plateName;
     }
 }
