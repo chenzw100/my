@@ -116,10 +116,13 @@ public class StockYybInfo implements Serializable {
     public StockYybInfo(){
         this.dayFormat = MyUtils.getTomorrowDayFormat();
         this.yesterdayClosePrice=10;
-        this.todayOpenPrice=10;
-        this.todayClosePrice=10;
-        this.tomorrowOpenPrice=10;
-        this.tomorrowClosePrice=10;
+        this.setTodayOpenPrice(10);
+        this.setTodayClosePrice(10);
+        this.setTomorrowOpenPrice(10);
+        this.setTomorrowClosePrice(10);
+        this.setThreeOpenPrice(10);
+        this.setThreeClosePrice(10);
+
     }
 
 
