@@ -42,14 +42,29 @@ public class StockYybInfo implements Serializable {
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '明天收盘'")
     private Integer tomorrowClosePrice;
 
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第三日开盘'")
+    private Integer threeOpenPrice;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第三日收盘'")
+    private Integer threeClosePrice;
+
     @Column(nullable = false,columnDefinition="int(11) DEFAULT 0 COMMENT '开盘竞价'")
     private Integer todayOpenRate;
+    @Column(nullable = false,columnDefinition="int(11) DEFAULT 0 COMMENT '开盘竞价'")
+    private Integer tomorrowOpenRate;
+
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '收盘收益'")
     private Integer todayCloseYield;
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '明日开盘收益'")
     private Integer tomorrowOpenYield;
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '明日收盘收益'")
     private Integer tomorrowCloseYield;
+
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '明日收盘收益'")
+    private Integer tomorrowCloseRate;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第三日开盘收益'")
+    private Integer threeOpenYield;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第三日收盘收益'")
+    private Integer threeCloseYield;
 
     public String getDayFormat() {
         return dayFormat;
@@ -141,6 +156,7 @@ public class StockYybInfo implements Serializable {
     public void setTomorrowOpenPrice(Integer tomorrowOpenPrice) {
         this.tomorrowOpenPrice = tomorrowOpenPrice;
         this.tomorrowOpenYield= MyUtils.getIncreaseRateCent(this.tomorrowOpenPrice,this.todayOpenPrice).intValue();
+
     }
 
     public Integer getTomorrowClosePrice() {
@@ -150,6 +166,7 @@ public class StockYybInfo implements Serializable {
     public void setTomorrowClosePrice(Integer tomorrowClosePrice) {
         this.tomorrowClosePrice = tomorrowClosePrice;
         this.tomorrowCloseYield= MyUtils.getIncreaseRateCent(this.tomorrowClosePrice,this.todayOpenPrice).intValue();
+        this.tomorrowOpenRate= MyUtils.getIncreaseRateCent(this.tomorrowClosePrice,this.tomorrowOpenPrice).intValue();
     }
 
     public Integer getTodayOpenRate() {
@@ -175,5 +192,55 @@ public class StockYybInfo implements Serializable {
 
     public void setStockYybId(Long stockYybId) {
         this.stockYybId = stockYybId;
+    }
+
+    public Integer getThreeOpenPrice() {
+        return threeOpenPrice;
+    }
+
+    public void setThreeOpenPrice(Integer threeOpenPrice) {
+        this.threeOpenPrice = threeOpenPrice;
+        this.threeOpenYield= MyUtils.getIncreaseRateCent(this.threeOpenPrice,this.tomorrowOpenPrice).intValue();
+    }
+
+    public Integer getThreeClosePrice() {
+        return threeClosePrice;
+    }
+
+    public void setThreeClosePrice(Integer threeClosePrice) {
+        this.threeClosePrice = threeClosePrice;
+        this.threeCloseYield= MyUtils.getIncreaseRateCent(this.threeClosePrice,this.tomorrowOpenPrice).intValue();
+    }
+
+    public Integer getTomorrowOpenRate() {
+        return tomorrowOpenRate;
+    }
+
+    public void setTomorrowOpenRate(Integer tomorrowOpenRate) {
+        this.tomorrowOpenRate = tomorrowOpenRate;
+    }
+
+    public Integer getTomorrowCloseRate() {
+        return tomorrowCloseRate;
+    }
+
+    public void setTomorrowCloseRate(Integer tomorrowCloseRate) {
+        this.tomorrowCloseRate = tomorrowCloseRate;
+    }
+
+    public Integer getThreeOpenYield() {
+        return threeOpenYield;
+    }
+
+    public void setThreeOpenYield(Integer threeOpenYield) {
+        this.threeOpenYield = threeOpenYield;
+    }
+
+    public Integer getThreeCloseYield() {
+        return threeCloseYield;
+    }
+
+    public void setThreeCloseYield(Integer threeCloseYield) {
+        this.threeCloseYield = threeCloseYield;
     }
 }
