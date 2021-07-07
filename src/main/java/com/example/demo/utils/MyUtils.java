@@ -50,6 +50,9 @@ public class MyUtils {
     public static String getTomorrowDayFormat(){
         return DateFormatUtils.format(MyChineseWorkDay.nextWorkDay(), "yyyyMMdd");
     }
+    public static String getPre2DayFormat(){
+        return getDayFormat(MyChineseWorkDay.preDaysWorkDay(2, new Date()));
+    }
     public static String getDayHHFormat(Date date){
         return DateFormatUtils.format(date, "MMdd HH");
     }

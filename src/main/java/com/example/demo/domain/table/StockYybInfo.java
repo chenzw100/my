@@ -159,6 +159,7 @@ public class StockYybInfo implements Serializable {
     public void setTomorrowOpenPrice(Integer tomorrowOpenPrice) {
         this.tomorrowOpenPrice = tomorrowOpenPrice;
         this.tomorrowOpenYield= MyUtils.getIncreaseRateCent(this.tomorrowOpenPrice,this.todayOpenPrice).intValue();
+        this.tomorrowOpenRate= MyUtils.getIncreaseRateCent(this.tomorrowOpenPrice,this.todayClosePrice).intValue();
 
     }
 
@@ -169,7 +170,7 @@ public class StockYybInfo implements Serializable {
     public void setTomorrowClosePrice(Integer tomorrowClosePrice) {
         this.tomorrowClosePrice = tomorrowClosePrice;
         this.tomorrowCloseYield= MyUtils.getIncreaseRateCent(this.tomorrowClosePrice,this.todayOpenPrice).intValue();
-        this.tomorrowOpenRate= MyUtils.getIncreaseRateCent(this.tomorrowClosePrice,this.tomorrowOpenPrice).intValue();
+        this.tomorrowCloseRate= MyUtils.getIncreaseRateCent(this.tomorrowClosePrice,this.tomorrowOpenPrice).intValue();
     }
 
     public Integer getTodayOpenRate() {
