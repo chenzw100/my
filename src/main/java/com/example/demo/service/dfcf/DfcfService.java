@@ -3,11 +3,14 @@ package com.example.demo.service.dfcf;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.dao.StockLimitUpRepository;
+import com.example.demo.dao.StockYybInfoRepository;
 import com.example.demo.dao.StockYybRepository;
 import com.example.demo.domain.table.StockLimitUp;
 import com.example.demo.domain.table.StockYyb;
+import com.example.demo.domain.table.StockYybInfo;
 import com.example.demo.enums.YybEnum;
 import com.example.demo.service.base.BaseService;
+import com.example.demo.service.qt.QtService;
 import com.example.demo.utils.HttpClientUtil;
 import com.example.demo.utils.MyUtils;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes;
@@ -29,9 +32,13 @@ public class DfcfService extends BaseService {
 
     private static String five_day_url="https://datainterface3.eastmoney.com/EM_DataCenter_V3/api/YYBJXMX/GetYYBJXMX?js=jQuery112308524302760036775_1625625265638&sortfield=&sortdirec=-1&pageSize=50&pageNum=1&tkn=eastmoney&tdir=&dayNum=&cfg=yybjymx&startDateTime=";
     @Autowired
+    QtService qtService;
+    @Autowired
     StockYybRepository stockYybRepository;
     @Autowired
     StockLimitUpRepository stockLimitUpRepository;
+    @Autowired
+    StockYybInfoRepository stockYybInfoRepository;
 
     public String currentContinueVal() {
         Object str = getRequest(current_Continue);
@@ -179,6 +186,19 @@ public class DfcfService extends BaseService {
             }
             try {
                 stockYybRepository.save(stockYyb);
+                StockYybInfo stockYybInfo = stockYybInfoRepository.findTop1ByStockYybId(stockYyb.getId());
+                if(stockYybInfo == null){
+                    stockYybInfo=new StockYybInfo();
+                    stockYybInfo.setStockYybId(stockYyb.getId());
+                    String code = stockYyb.getCode();
+                    if (code.indexOf("6") == 0) {
+                        code = "sh" + code;
+                    } else {
+                        code = "sz" + code;
+                    }
+                    stockYybInfo.setCode(code);
+                    stockYybInfo.setYesterdayClosePrice(qtService.getIntCurrentPrice(stockYybInfo.getCode()));
+                }
             }catch (Exception e){
                 e.getMessage();
             }
