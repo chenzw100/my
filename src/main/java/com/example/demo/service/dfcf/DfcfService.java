@@ -165,6 +165,8 @@ public class DfcfService extends BaseService {
             }
             if(stockYyb.getCode().indexOf("688")==0){
                 stockYyb.setYn(-1);
+            }else if(stockYyb.getCode().indexOf("900")==0) {
+                stockYyb.setYn(-2);
             }else {
                 stockYyb.setYn(1);
             }
