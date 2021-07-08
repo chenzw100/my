@@ -65,12 +65,12 @@ public class HelloController {
         StockLimitUp stockLimitUp = stockLimitUpRepository.findTop1ByCodeAndPlateNameIsNotNullOrderByIdDesc(code);
         return "yyb success";
     }
-    @RequestMapping("/yyb/{yybId}")
+    @RequestMapping("/yybTest/{yybId}")
     public String yyb(@PathVariable("yybId")Integer yybId) {
         dfcfService.yyb(yybId);
         return "yyb success";
     }
-    @RequestMapping("/yyb1/{yybId}")
+    @RequestMapping("/yybTest1/{yybId}")
     public String yyb1(@PathVariable("yybId")Integer yybId) {
         dfcfService.yybJob();
         return "yyb success";
