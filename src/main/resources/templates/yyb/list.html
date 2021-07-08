@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div th:include="head :: header"></div>
+<body>
+<div th:include="menu :: menu"></div>
+<h2>公司人员管理 --- 员工管理-【新增用户，密码默认 123456】</h2>
+<div>
+    <div style="padding:5px 0;">
+        <span>日期:</span> <input class="easyui-textbox" type="text"  name="dayFormat" id="dayFormat" >
+        &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
+    </div>
+
+</div>
+<table id="dg" title="人才库"
+       toolbar="#toolbar" pagination="true" idField="id"
+       rownumbers="true" fitColumns="true" singleSelect="true">
+    <thead>
+    <tr>
+        <th data-options="field:'dayFormat',align:'center'">日期</th>
+        <th data-options="field:'yzName',align:'center'">游资</th>
+        <th data-options="field:'name',align:'center'">名称</th>
+    </tr>
+    </thead>
+</table>
+
+<script type="text/javascript">
+    $(function(){
+        $('#dg').edatagrid({
+            url:'/yyb/list.action'
+
+        });
+    });
+    $("#query").click(function () {
+        $('#dg').datagrid('load', {
+
+        });
+    })
+
+
+</script>
+
+</body>
+</html>
