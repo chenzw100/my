@@ -169,13 +169,13 @@ public class DfcfRecordService extends BaseService {
             Date threeDate = threeWorkDay.nextWorkDay(tomorrowDate);
 
 
-            String start = MyUtils.getDayFormat(yesterdayDate);
+            String start = stockYyb.getDayFormat();
             String end = MyUtils.getDayFormat(threeDate);
 
 
             HashMap<String, JSONArray> map = getHistory(stockYyb.getCode(),start,end);
-            JSONArray yesterday = map.get(MyUtils.getDayFormat(yesterdayDate));
-            JSONArray today = map.get(stockYyb.getDayFormat());
+            JSONArray yesterday = map.get(stockYyb.getDayFormat());
+            JSONArray today = map.get(MyUtils.getDayFormat(now));
             JSONArray tomorrow =map.get(MyUtils.getDayFormat(tomorrowDate));
             JSONArray three = map.get(MyUtils.getDayFormat(threeDate));
             try {
