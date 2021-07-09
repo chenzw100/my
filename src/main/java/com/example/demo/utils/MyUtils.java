@@ -35,11 +35,25 @@ public class MyUtils {
         }
         return new Date();
     }
+
+    public static Date getFormat2Date(String format)  {
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            return simpleDateFormat.parse(format);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new Date();
+    }
     public static Date getYesterdayDate(){
         return MyChineseWorkDay.preWorkDay();
     }
     public static Date getTomorrowDate(){
         return MyChineseWorkDay.nextWorkDay();
+    }
+
+    public static String get2DayFormat(String dayFormat){
+       return MyUtils.getDayFormat(MyUtils.getFormat2Date(dayFormat));
     }
     public static String getDayFormat(){
         return DateFormatUtils.format(getCurrentDate(), "yyyyMMdd");
@@ -143,9 +157,8 @@ public class MyUtils {
         //System.out.println(MyUtils.getIncreaseRate(302,309).multiply(new BigDecimal(100)).setScale(0, RoundingMode.HALF_UP));
         //System.out.println(MyUtils.getIncreaseRateCent(302, 309).intValue());
         //System.out.println(MyUtils.getAverageRateCent(-8000, 10).toString());
-        int cp =MyUtils.getCentBy4Point("0.0996");
-        String sy ="300265";
-
-        System.out.println("cp:"+sy.indexOf("2300"));
+       /* int cp =MyUtils.getCentBy4Point("0.0996");
+        String sy ="300265";*/
+        System.out.println( MyUtils.getDayFormat(MyUtils.getFormat2Date("2021-07-08")));
     }
 }

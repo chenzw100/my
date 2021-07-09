@@ -7,6 +7,7 @@ import java.util.*;
  * Created by laikui on 2018/12/14.
  */
 public class ChineseWorkDay {
+    public static final long hour24 = 24*60*60*1000;
     private  String calendar;
     private  Date date;
     public ChineseWorkDay(Date date){
@@ -15,14 +16,53 @@ public class ChineseWorkDay {
         this.date = date;
     }
     // 法律规定的放假日期
-    private List<String> lawHolidays = new ArrayList<String>(Arrays.asList("2018-12-31", "2019-01-01", "2019-02-04", "2019-02-05","2019-02-06", "2019-02-07", "2019-02-08", "2019-04-05","2019-05-01", "2019-06-07", "2019-09-13", "2019-10-01","2019-10-02", "2019-10-03", "2019-10-04",
-            "2019-10-07","2020-01-01","2020-01-24","2020-01-25","2020-01-26","2020-01-27","2020-01-28","2020-01-29","2020-01-30","2020-04-04","2020-04-05","2020-04-06","2020-05-01","2020-05-02","2020-05-03","2020-05-04","2020-05-05",
-            "2020-06-25","2020-06-26","2020-10-01","2020-10-02","2020-10-03","2020-10-04","2020-10-05","2020-10-06","2020-10-07","2020-10-08","2021-01-02","2021-01-01",
-            "2021-01-03","2021-02-11","2021-02-12","2021-02-13","2021-02-14","2021-02-15","2021-02-16","2021-02-17"));
+    private static List<String> lawHolidays = new ArrayList<String>(Arrays.asList(
+            "2018-12-31", "2019-01-01", "2019-02-04", "2019-02-05",
+            "2019-02-06", "2019-02-07", "2019-02-08", "2019-04-05","2019-05-01", "2019-06-07", "2019-09-13", "2019-10-01","2019-10-02", "2019-10-03", "2019-10-04", "2019-10-07",
+            "2020-01-24","2020-01-27","2020-01-28","2020-01-29","2020-01-30","2020-01-31","2020-04-06","2020-05-01","2020-05-04","2020-05-05","2020-06-25","2020-06-26","2020-10-01","2020-10-02","2020-10-05","2020-10-06","2020-10-07","2020-10-08",
+            "2021-01-01","2021-02-11","2021-02-12","2021-02-15","2021-02-16","2021-02-17","2021-04-05","2021-05-03","2021-05-04","2021-05-05","2021-06-14","2021-09-20","2021-09-21","2021-10-01","2021-10-04","2021-10-05","2021-10-06","2021-10-07"));
     // 由于放假需要额外工作的周末
     private List<String> extraWorkdays = new ArrayList<String>(Arrays.asList(
             "2018-01-01"));
 
+    public Date preWorkDay(Date dateSet){
+        try {
+            date.setTime(dateSet.getTime()-hour24);
+            MyChineseWorkDay.setDate(date);
+            while (isHoliday()){
+                date.setTime(date.getTime()-hour24);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("上一个交易日:"+MyUtils.getDayFormat(date));;
+        return date;
+    }
+    public Date preDaysWorkDay(int days,Date now){
+        for(int i=0;i<days;i++){
+            now=preWorkDay(now);
+        }
+        return now;
+    }
+    public Date nextWorkDay(Date dateSet){
+        try {
+            date.setTime(dateSet.getTime()+hour24);
+            MyChineseWorkDay.setDate(date);
+            while (isHoliday()){
+                date.setTime(date.getTime()+hour24);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("下一个交易日:"+MyUtils.getDayFormat(date));;
+        return date;
+    }
+    public Date nextDaysWorkDay(int days,Date now){
+        for(int i=0;i<days;i++){
+            now=nextWorkDay(now);
+        }
+        return now;
+    }
     /**
      * 判断是否是法定假日
      *
