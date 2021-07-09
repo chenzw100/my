@@ -160,13 +160,13 @@ public class DfcfRecordService extends BaseService {
             if (StringUtils.isBlank(stockYyb.getPlateName())) {
                 stockYyb.setPlateName(getPlateName(stockYyb.getCode()));
             }
-            Date now = MyUtils.getFormatDate(stockYyb.getDayFormat());
-            ChineseWorkDay yesterdayWorkDay = new ChineseWorkDay(new Date());
-            Date yesterdayDate = yesterdayWorkDay.preWorkDay(now);
+            Date yesterdayDate = MyUtils.getFormatDate(stockYyb.getDayFormat());
+            ChineseWorkDay nowWorkDay = new ChineseWorkDay(new Date());
+            Date now = nowWorkDay.nextWorkDay(yesterdayDate);
             ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(new Date());
             Date tomorrowDate = tomorrowWorkDay.nextWorkDay(now);
             ChineseWorkDay threeWorkDay = new ChineseWorkDay(new Date());
-            Date threeDate = threeWorkDay.nextDaysWorkDay(2,now);
+            Date threeDate = threeWorkDay.nextWorkDay(tomorrowDate);
 
 
             String start = MyUtils.getDayFormat(yesterdayDate);

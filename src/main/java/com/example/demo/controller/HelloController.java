@@ -66,9 +66,9 @@ public class HelloController {
     private RestTemplate restTemplate;
     private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
     private static String c_cUrl ="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
-    @RequestMapping("/tes3")
-    public String tes3() {
-        dfcfRecordService.yyb(80623462);
+    @RequestMapping("/tes3/{code}")
+    public String tes3(@PathVariable("code")Integer code) {
+        dfcfRecordService.yyb(code);
         return "deal success";
     }
     @RequestMapping("/tes2")
