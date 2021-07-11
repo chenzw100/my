@@ -3,52 +3,30 @@ package com.example.demo.domain.table;
 
 import com.example.demo.utils.MyUtils;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
  *
 
  */
-@Entity(name="stock_yz_record")
-public class StockYZRecord implements Serializable {
+@Entity(name="stock_info_record")
+public class StockInfoRecord implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT 'yybId'")
-    private Integer yybId;
     @Column(nullable = false,columnDefinition="varchar(10) COMMENT 'yyyymmdd'")
     private String dayFormat;
     @Column(nullable = false,columnDefinition="varchar(8)")
     private String code;
     @Column(nullable = false,columnDefinition="varchar(8)")
     private String name;
-    @Column(nullable = false,columnDefinition="varchar(20) COMMENT '柚子'")
-    private String yzName;
-    @Column(nullable = false,columnDefinition="varchar(200) COMMENT '柚子'")
-    private String yybName;
     @Column(nullable = true,columnDefinition="varchar(200) COMMENT '板块'")
     private String plateName;
-    @Column(nullable = false,columnDefinition="int(11) DEFAULT 0 COMMENT '上榜后第一天收盘'")
-    private Integer oneDay;
-    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第二天'")
-    private Integer twoDay;
-    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第三天'")
-    private Integer threeDay;
-
-    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第五天'")
-    private Integer fiveDay;
-    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第十天'")
-    private Integer tenDay;
-    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第二十天'")
-    private Integer twentyDay;
-    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第三十天'")
-    private Integer thirtyDay;
-    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '净额'")
-    private Integer sumAmount;
-    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '买入'")
-    private Integer tradeAmount;
 
     @Column(nullable = false,columnDefinition="int(11) DEFAULT 0 COMMENT '第一次开盘竞价'")
     private Integer oneOpenRate;
@@ -107,6 +85,8 @@ public class StockYZRecord implements Serializable {
 
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '688'")
     private Integer yn;
+
+
 
     public Integer getTomorrowHighPrice() {
         return tomorrowHighPrice;
@@ -172,85 +152,7 @@ public class StockYZRecord implements Serializable {
         this.yn = yn;
     }
 
-    public String getYybName() {
-        return yybName;
-    }
 
-    public void setYybName(String yybName) {
-        this.yybName = yybName;
-    }
-
-    public Integer getTwoDay() {
-        return twoDay;
-    }
-
-    public void setTwoDay(Integer twoDay) {
-        this.twoDay = twoDay;
-    }
-
-    public Integer getThreeDay() {
-        return threeDay;
-    }
-
-    public void setThreeDay(Integer threeDay) {
-        this.threeDay = threeDay;
-    }
-
-    public Integer getFiveDay() {
-        return fiveDay;
-    }
-
-    public void setFiveDay(Integer fiveDay) {
-        this.fiveDay = fiveDay;
-    }
-
-    public Integer getTenDay() {
-        return tenDay;
-    }
-
-    public void setTenDay(Integer tenDay) {
-        this.tenDay = tenDay;
-    }
-
-    public Integer getTwentyDay() {
-        return twentyDay;
-    }
-
-    public void setTwentyDay(Integer twentyDay) {
-        this.twentyDay = twentyDay;
-    }
-
-    public Integer getThirtyDay() {
-        return thirtyDay;
-    }
-
-    public void setThirtyDay(Integer thirtyDay) {
-        this.thirtyDay = thirtyDay;
-    }
-
-    public Integer getTradeAmount() {
-        return tradeAmount;
-    }
-
-    public void setTradeAmount(Integer tradeAmount) {
-        this.tradeAmount = tradeAmount;
-    }
-
-    public Integer getSumAmount() {
-        return sumAmount;
-    }
-
-    public void setSumAmount(Integer sumAmount) {
-        this.sumAmount = sumAmount;
-    }
-
-    public Integer getYybId() {
-        return yybId;
-    }
-
-    public void setYybId(Integer yybId) {
-        this.yybId = yybId;
-    }
 
     public String getDayFormat() {
         return dayFormat;
@@ -276,13 +178,7 @@ public class StockYZRecord implements Serializable {
         this.name = name;
     }
 
-    public String getYzName() {
-        return yzName;
-    }
 
-    public void setYzName(String yzName) {
-        this.yzName = yzName;
-    }
 
     public String getPlateName() {
         return plateName;
@@ -292,13 +188,7 @@ public class StockYZRecord implements Serializable {
         this.plateName = plateName;
     }
 
-    public Integer getOneDay() {
-        return oneDay;
-    }
 
-    public void setOneDay(Integer oneDay) {
-        this.oneDay = oneDay;
-    }
 
     public Integer getOneOpenRate() {
         return oneOpenRate;

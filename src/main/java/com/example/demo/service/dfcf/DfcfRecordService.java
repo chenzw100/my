@@ -181,18 +181,34 @@ public class DfcfRecordService extends BaseService {
             try {
                 Integer yesterdayClosePrice =MyUtils.getCentByYuanStr(yesterday.getString(2));
                 stockYyb.setYesterdayClosePrice(yesterdayClosePrice);
+
                 Integer todayOpenPrice =MyUtils.getCentByYuanStr(today.getString(1));
                 stockYyb.setTodayOpenPrice(todayOpenPrice);
                 Integer todayClosePrice=MyUtils.getCentByYuanStr(today.getString(2));
                 stockYyb.setTodayClosePrice(todayClosePrice);
+                Integer todayLowePrice=MyUtils.getCentByYuanStr(today.getString(5));
+                stockYyb.setTodayLowPrice(todayLowePrice);
+                Integer todayHighPrice =MyUtils.getCentByYuanStr(today.getString(6));
+                stockYyb.setTodayHighPrice(todayHighPrice);
+
                 Integer tomorrowOpenPrice=MyUtils.getCentByYuanStr(tomorrow.getString(1));
                 stockYyb.setTomorrowOpenPrice(tomorrowOpenPrice);
                 Integer tomorrowClosePrice=MyUtils.getCentByYuanStr(tomorrow.getString(2));
                 stockYyb.setTomorrowClosePrice(tomorrowClosePrice);
+                Integer tomorrowLowePrice=MyUtils.getCentByYuanStr(tomorrow.getString(5));
+                stockYyb.setTomorrowLowPrice(tomorrowLowePrice);
+                Integer tomorrowHighPrice =MyUtils.getCentByYuanStr(tomorrow.getString(6));
+                stockYyb.setTomorrowHighPrice(tomorrowHighPrice);
+
                 Integer threeOpenPrice=MyUtils.getCentByYuanStr(three.getString(1));
                 stockYyb.setThreeOpenPrice(threeOpenPrice);
                 Integer threeClosePrice=MyUtils.getCentByYuanStr(three.getString(2));
                 stockYyb.setThreeClosePrice(threeClosePrice);
+                Integer threeLowePrice=MyUtils.getCentByYuanStr(three.getString(5));
+                stockYyb.setThreeLowPrice(threeLowePrice);
+                Integer threeHighPrice=MyUtils.getCentByYuanStr(three.getString(6));
+                stockYyb.setThreeHighPrice(threeHighPrice);
+
                 stockYyb.toString();
                 stockYZRecordRepository.save(stockYyb);
                 System.out.println("result = [" + stockYyb.toString() + "]");
