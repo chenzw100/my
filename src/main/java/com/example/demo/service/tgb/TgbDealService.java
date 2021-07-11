@@ -134,6 +134,7 @@ public class TgbDealService extends QtService {
                 stockInfoRecord.setThreeHighPrice(threeHighPrice);
 
                 stockInfoRecord.toString();
+
                 stockInfoRecordRepository.save(stockInfoRecord);
                 System.out.println("result = [" + stockInfoRecord.toString() + "]");
             } catch (Exception e) {
