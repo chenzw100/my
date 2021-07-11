@@ -33,7 +33,7 @@ import java.util.Map;
 public class DfcfRecordService extends BaseService {
     private static String current_Continue="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
     private static String current_Yesterday="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0815&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
-    private static String current_yyb="https://datainterface3.eastmoney.com/EM_DataCenter_V3/api/YYBJXMX/GetYYBJXMX?js=jQuery112307119371614566392_1625561877508&sortfield=&sortdirec=-1&pageSize=50&tkn=eastmoney&tdir=&dayNum=&startDateTime=2020-07-06&endDateTime=2021-07-06&cfg=yybjymx&salesCode=";
+    private static String current_yyb="https://datainterface3.eastmoney.com/EM_DataCenter_V3/api/YYBJXMX/GetYYBJXMX?js=jQuery112307119371614566392_1625561877508&sortfield=&sortdirec=-1&pageSize=50&tkn=eastmoney&tdir=&dayNum=&startDateTime=2020-01-06&endDateTime=2021-07-09&cfg=yybjymx&salesCode=";
 
     private static String five_day_url="https://datainterface3.eastmoney.com/EM_DataCenter_V3/api/YYBJXMX/GetYYBJXMX?js=jQuery112308524302760036775_1625625265638&sortfield=&sortdirec=-1&pageSize=50&pageNum=1&tkn=eastmoney&tdir=&dayNum=&cfg=yybjymx&startDateTime=";
     private static String history_url ="https://q.stock.sohu.com/hisHq?code=cn_";
@@ -64,14 +64,32 @@ public class DfcfRecordService extends BaseService {
         return map;
     }
 
-    public void currentYyb(Integer ybbId,Integer page) {
+    public boolean currentYyb(Integer ybbId,Integer page) {
         Object result = getRequest(current_yyb+ybbId+"&pageNum="+page);
-        dealInfo(result);
+        return dealInfo(result);
     }
     public void yyb(Integer yybId){
-        for (int i=1;i<21;i++){
-            currentYyb(yybId,i);
+        boolean f=true;
+
+        int i=1;
+        while (f){
+            f=currentYyb(yybId,i);
+            i++;
             System.out.println("=============="+i);
+        }
+    }
+    public void yybJob2(){
+
+        for (YybEnum.YzName yzName:YybEnum.YzName.values()){
+            int i=1;
+            boolean f=true;
+            System.out.println(f+yzName.getDesc()+" start yzName end=============="+i);
+            while (f){
+                f=currentYyb(yzName.getCode(),i);
+                i++;
+                System.out.println(yzName.getDesc()+" yzName =============="+i);
+            }
+            System.out.println(yzName.getDesc()+" yzName end=============="+i);
         }
     }
     public void yybJob(){
@@ -82,13 +100,13 @@ public class DfcfRecordService extends BaseService {
         }
     }
 
-    public void currentYybJob(Integer ybbId) {
+    public boolean currentYybJob(Integer ybbId) {
         String endDay = MyUtils.getDayFormat2(new Date());
         String startDay =MyUtils.getPreTwoMonthDayFormat();
         String url = startDay+"&endDateTime="+endDay+"&salesCode="+ybbId;
         System.out.println("url = [" + url + "]");
         Object result = getRequest(five_day_url+url);
-        dealInfo(result);
+       return dealInfo(result);
 
     }
 
@@ -106,11 +124,11 @@ public class DfcfRecordService extends BaseService {
         return plateName;
     }
 
-    public void dealInfo(Object result) {
+    public boolean dealInfo(Object result) {
         String str = result.toString();
         if (str.length() < 2000) {
-            System.out.println("result =================================== [" + str + "]");
-            return;
+            System.out.println("result 111=================================== [" + str + "]");
+            return false;
         }
         int index = str.indexOf("(");
         str = str.substring(index + 1, str.length() - 1);
@@ -125,7 +143,7 @@ public class DfcfRecordService extends BaseService {
                 System.out.println(d[29] + d[5] + ",买入" + d[0] + ",净额" + d[17] + ",code" + d[10] + "日期" + d[22] + d[8] + ",一" + d[30] + ",二" + d[13] + "三" + d[6] + "五" + d[11] + "十" + d[4] + "二十" + d[2] + "三十" + d[18]);
             } catch (Exception e) {
                 e.getMessage();
-                return;
+                continue;
             }
 
             StockYZRecord stockYyb = new StockYZRecord();
@@ -216,6 +234,8 @@ public class DfcfRecordService extends BaseService {
                 System.out.println("error -------------"+stockYyb.getDayFormat()+",code="+stockYyb.getCode());
                 e.getMessage();
             }
+
         }
+        return true;
     }
 }

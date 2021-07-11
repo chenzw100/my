@@ -12,7 +12,7 @@ import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.qt.QtService;
 import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -98,6 +98,9 @@ public class TgbDealService extends QtService {
 
 
             HashMap<String, JSONArray> map = getHistory(stockInfoRecord.getCode(),start,end);
+            if(map==null){
+                continue;
+            }
             JSONArray yesterday = map.get(MyUtils.getDayFormat(yesterdayDate));
             JSONArray today = map.get(MyUtils.getDayFormat(now));
             JSONArray tomorrow =map.get(MyUtils.getDayFormat(tomorrowDate));
@@ -147,6 +150,9 @@ public class TgbDealService extends QtService {
         String url = history_url+code+"&start="+start+"&end="+end;
         System.out.println("history_url = [" + url + "]");
         Object result = getRequest(url);
+        if(result.toString().length()<100){
+            return null;
+        }
         JSONObject jsonObject = (JSONObject) JSONArray.parseArray(result.toString()).get(0);
         JSONArray jsonArray = jsonObject.getJSONArray("hq");
         HashMap<String,JSONArray> map =new HashMap<>();

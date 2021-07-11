@@ -78,9 +78,9 @@ public class HelloController {
         }
         return "tgb3 deal success";
     }
-    @RequestMapping("/tes3/{code}")
-    public String tes3(@PathVariable("code")Integer code) {
-        dfcfRecordService.yyb(code);
+    @RequestMapping("/tes33")
+    public String tes3() {
+        dfcfRecordService.yybJob2();
         return "deal success";
     }
     @RequestMapping("/tes2")
