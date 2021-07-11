@@ -71,7 +71,11 @@ public class HelloController {
     private static String c_cUrl ="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
     @RequestMapping("/tgb3")
     public String tgb3() {
-        tgbDealService.dayDate();
+        try {
+            tgbDealService.dayDate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "tgb3 deal success";
     }
     @RequestMapping("/tes3/{code}")

@@ -34,7 +34,7 @@ public class TgbDealService extends QtService {
     @Autowired
     StockLimitUpRepository stockLimitUpRepository;
     //获取24小时的热搜数据
-    public void dayDate(){
+    public void dayDate() throws Exception {
         List<StockInfo> infos = stockInfoRepository.findByStockTypeOrderByDayFormatDesc(NumberEnum.StockType.STOCK_DAY.getCode());
         for (StockInfo s:infos){
             StockInfoRecord stockInfoRecord = new StockInfoRecord();
@@ -44,7 +44,6 @@ public class TgbDealService extends QtService {
             }else {
                 stockInfoRecord.setPlateName(s.getPlateName());
             }
-            stockInfoRecord.setYesterdayClosePrice(s.getYesterdayClosePrice());
             stockInfoRecord.setCode(s.getCode().substring(2,8));
 
 
@@ -52,11 +51,17 @@ public class TgbDealService extends QtService {
             if (stockYyb1 != null ) {
                 stockInfoRecord = stockYyb1;
             }
-            if (stockInfoRecord.getCode().indexOf("688") == 0) {
+            if (stockInfoRecord.getCode().startsWith("688")) {
                 stockInfoRecord.setYn(-1);
-            } else if (stockInfoRecord.getCode().indexOf("900") == 0) {
+            } else if (stockInfoRecord.getCode().startsWith("900")) {
                 stockInfoRecord.setYn(-2);
-            } else {
+            } else if(stockInfoRecord.getCode().startsWith("k")) {
+                System.out.println("kCode = [" + stockInfoRecord.getCode() + "]");
+                continue;
+            }else if(stockInfoRecord.getCode().startsWith("1")) {
+                System.out.println("kCode1 = [" + stockInfoRecord.getCode() + "]");
+                continue;
+            }else {
                 stockInfoRecord.setYn(1);
             }
             stockInfoRecord.setName(s.getName());
@@ -72,24 +77,34 @@ public class TgbDealService extends QtService {
             Date threeDate = threeWorkDay.nextWorkDay(tomorrowDate);*/
 
             Date now = MyUtils.getFormatDate(stockInfoRecord.getDayFormat());
+            ChineseWorkDay todayWorkDay = new ChineseWorkDay(now);
+            if(todayWorkDay.isHoliday()){
+                System.out.println("isHoliday = [" + stockInfoRecord.getDayFormat() + "]");
+                continue;
+            }
+
+            ChineseWorkDay yesterdayWorkDay = new ChineseWorkDay(new Date());
+            Date yesterdayDate = yesterdayWorkDay.preWorkDay(now);
+
             ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(new Date());
             Date tomorrowDate = tomorrowWorkDay.nextWorkDay(now);
+
             ChineseWorkDay threeWorkDay = new ChineseWorkDay(new Date());
             Date threeDate = threeWorkDay.nextWorkDay(tomorrowDate);
 
 
-            String start = stockInfoRecord.getDayFormat();
+            String start = MyUtils.getDayFormat(yesterdayDate);
             String end = MyUtils.getDayFormat(threeDate);
 
 
             HashMap<String, JSONArray> map = getHistory(stockInfoRecord.getCode(),start,end);
-           /* JSONArray yesterday = map.get(stockInfoRecord.getDayFormat());*/
-            JSONArray today = map.get(start);
+            JSONArray yesterday = map.get(MyUtils.getDayFormat(yesterdayDate));
+            JSONArray today = map.get(MyUtils.getDayFormat(now));
             JSONArray tomorrow =map.get(MyUtils.getDayFormat(tomorrowDate));
             JSONArray three = map.get(MyUtils.getDayFormat(threeDate));
             try {
-                /*Integer yesterdayClosePrice =MyUtils.getCentByYuanStr(yesterday.getString(2));
-                stockInfoRecord.setYesterdayClosePrice(yesterdayClosePrice);*/
+                Integer yesterdayClosePrice =MyUtils.getCentByYuanStr(yesterday.getString(2));
+                stockInfoRecord.setYesterdayClosePrice(yesterdayClosePrice);
 
                 Integer todayOpenPrice =MyUtils.getCentByYuanStr(today.getString(1));
                 stockInfoRecord.setTodayOpenPrice(todayOpenPrice);
