@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.dfcf.DfcfService;
+import com.example.demo.service.dfcf.DfcfYybRecordJobService;
 import com.example.demo.service.pan.DealPanDataService;
 import com.example.demo.service.tgb.TgbService;
 import com.example.demo.service.xgb.XgbCurrentService;
@@ -28,6 +29,7 @@ public class PanService {
     private static final String openCron = "30 25 9 ? * MON-FRI";
     private static final String closeCron ="58 2 15 ? * MON-FRI";
     private static final String closeYybCron ="5 2 17 ? * MON-FRI";
+    private static final String closeYybJobCron ="1 32 17 ? * MON-FRI";
     //private static final String choiceMy="1 1 9 ? * MON-FRI";
     //private static final String currentTimeCron="1 55 0/1 ? * MON-FRI";
     private static final String temperatureCron="10 35 9,10,11,13,14 ? * MON-FRI";
@@ -46,6 +48,16 @@ public class PanService {
     XgbCurrentService xgbCurrentService;
     @Autowired
     DfcfService dfcfService;
+    @Autowired
+    DfcfYybRecordJobService dfcfYybRecordJobService;
+    //营业部处理
+    @Scheduled(cron = closeYybJobCron)
+    public void yyb2Job(){
+        //获取数据
+        if(isWorkday()){
+            dfcfYybRecordJobService.yybJob();
+        }
+    }
     //营业部处理
     @Scheduled(cron = closeYybCron)
     public void yybJob(){

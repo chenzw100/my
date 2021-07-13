@@ -2,10 +2,8 @@ package com.example.demo.service.dfcf;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.demo.dao.StockLimitUpRepository;
-import com.example.demo.dao.StockYZRecordRepository;
-import com.example.demo.dao.StockYybInfoRecordRepository;
-import com.example.demo.dao.StockYybInfoRepository;
+import com.example.demo.dao.*;
+import com.example.demo.domain.StockYybInfoJob;
 import com.example.demo.domain.StockYybInfoRecord;
 import com.example.demo.domain.table.StockLimitUp;
 import com.example.demo.domain.table.StockYZRecord;
@@ -37,7 +35,7 @@ import java.util.List;
  * 连续三个交易日内，涨幅偏离值累计达到20%的证券
  */
 @Component
-public class DfcfYybRecordService extends BaseService {
+public class DfcfYybRecordJobService extends BaseService {
     private static String current_Continue="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
     private static String current_Yesterday="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0815&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
     private static String current_yyb="https://datainterface3.eastmoney.com/EM_DataCenter_V3/api/YYBJXMX/GetYYBJXMX?js=jQuery112307119371614566392_1625561877508&sortfield=&sortdirec=-1&pageSize=50&tkn=eastmoney&tdir=&dayNum=&startDateTime=2020-01-01&endDateTime=2021-07-09&cfg=yybjymx&salesCode=";
@@ -48,11 +46,10 @@ public class DfcfYybRecordService extends BaseService {
     @Autowired
     QtService qtService;
     @Autowired
-    StockYybInfoRecordRepository stockYybInfoRecordRepository;
+    StockYybInfoJobRepository stockYybInfoJobRepository;
     @Autowired
     StockLimitUpRepository stockLimitUpRepository;
-    @Autowired
-    StockYybInfoRepository stockYybInfoRepository;
+
 
     public HashMap<String,JSONArray> getHistory(String code,String start,String end){
         String url = history_url+code+"&start="+start+"&end="+end;
@@ -103,17 +100,18 @@ public class DfcfYybRecordService extends BaseService {
         YybEnum.YzName.values();
         for (YybEnum.YzName yzName:YybEnum.YzName.values()){
             currentYybJob(yzName.getCode());
-            System.out.println(yzName.getCode()+"========+++======"+yzName.name());
+            System.out.println(yzName.getCode()+"====new ====+++======"+yzName.name());
         }
     }
 
     public boolean currentYybJob(Integer ybbId) {
         String endDay = MyUtils.getDayFormat2(new Date());
-        String startDay =MyUtils.getPreTwoMonthDayFormat();
+        //String startDay =MyUtils.getPreTwoMonthDayFormat();
+        String startDay =MyUtils.getPreFiveDayFormat();
         String url = startDay+"&endDateTime="+endDay+"&salesCode="+ybbId;
         System.out.println("url = [" + url + "]");
         Object result = getRequest(five_day_url+url);
-       return dealInfo(result);
+        return dealInfo(result);
 
     }
 
@@ -161,7 +159,7 @@ public class DfcfYybRecordService extends BaseService {
                 continue;
             }
 
-            StockYybInfoRecord stockYyb = new StockYybInfoRecord();
+            StockYybInfoJob stockYyb = new StockYybInfoJob();
             stockYyb.setDayFormat(MyUtils.get2DayFormat(d[22]));
             stockYyb.setCode(d[10]);
             stockYyb.setYybId(Integer.parseInt(d[29]));
@@ -172,7 +170,7 @@ public class DfcfYybRecordService extends BaseService {
                 stockYyb.setYzType(YybEnum.YzType.THREE.getCode());
             }
 
-            StockYybInfoRecord stockYybList = stockYybInfoRecordRepository.findTop1ByYybIdAndYzTypeAndCodeAndDayFormat(stockYyb.getYybId(), stockYyb.getYzType(),stockYyb.getCode(), stockYyb.getDayFormat());
+            StockYybInfoJob stockYybList = stockYybInfoJobRepository.findTop1ByYybIdAndYzTypeAndCodeAndDayFormat(stockYyb.getYybId(), stockYyb.getYzType(),stockYyb.getCode(), stockYyb.getDayFormat());
             if (stockYybList != null) {
                 if(stockYybList.getThreeClosePrice()!=null && stockYybList.getThreeClosePrice()>20){
                     continue;
@@ -217,9 +215,6 @@ public class DfcfYybRecordService extends BaseService {
 
             HashMap<String, JSONArray> map = getHistory(stockYyb.getCode(),start,end);
             JSONArray three = map.get(MyUtils.getDayFormat(threeDate));
-            if(three==null){
-                continue;
-            }
             JSONArray yesterday = map.get(stockYyb.getDayFormat());
             JSONArray today = map.get(MyUtils.getDayFormat(now));
             JSONArray tomorrow =map.get(MyUtils.getDayFormat(tomorrowDate));
@@ -233,6 +228,10 @@ public class DfcfYybRecordService extends BaseService {
                 stockYyb.setYesterdayTurnover(MyUtils.getCentByYuanStr(yesterday.getString(8)));
                 stockYyb.setYesterdayVolume(yesterday.getInteger(7));
 
+                if(today==null){
+                    stockYybInfoJobRepository.save(stockYyb);
+                    continue;
+                }
                 Integer todayOpenPrice =MyUtils.getCentByYuanStr(today.getString(1));
                 stockYyb.setTodayOpenPrice(todayOpenPrice);
                 Integer todayClosePrice=MyUtils.getCentByYuanStr(today.getString(2));
@@ -248,6 +247,10 @@ public class DfcfYybRecordService extends BaseService {
                 stockYyb.setTodayTurnover(MyUtils.getCentByYuanStr(today.getString(8)));
                 stockYyb.setTodayVolume(today.getInteger(7));
 
+                if(tomorrow == null){
+                    stockYybInfoJobRepository.save(stockYyb);
+                    continue;
+                }
                 Integer tomorrowOpenPrice=MyUtils.getCentByYuanStr(tomorrow.getString(1));
                 stockYyb.setTomorrowOpenPrice(tomorrowOpenPrice);
                 Integer tomorrowClosePrice=MyUtils.getCentByYuanStr(tomorrow.getString(2));
@@ -263,6 +266,10 @@ public class DfcfYybRecordService extends BaseService {
                 stockYyb.setTomorrowTurnover(MyUtils.getCentByYuanStr(tomorrow.getString(8)));
                 stockYyb.setTomorrowVolume(tomorrow.getInteger(7));
 
+                if(three==null){
+                    stockYybInfoJobRepository.save(stockYyb);
+                    continue;
+                }
                 Integer threeOpenPrice=MyUtils.getCentByYuanStr(three.getString(1));
                 stockYyb.setThreeOpenPrice(threeOpenPrice);
                 Integer threeClosePrice=MyUtils.getCentByYuanStr(three.getString(2));
@@ -279,7 +286,7 @@ public class DfcfYybRecordService extends BaseService {
                 stockYyb.setThreeVolume(three.getInteger(7));
 
                 stockYyb.toString();
-                stockYybInfoRecordRepository.save(stockYyb);
+                stockYybInfoJobRepository.save(stockYyb);
                 System.out.println("success result = [" + stockYyb.toString() + "]");
             } catch (Exception e) {
                 System.out.println("error -------------"+stockYyb.getDayFormat()+",code="+stockYyb.getCode());
