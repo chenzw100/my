@@ -45,5 +45,37 @@ public class YybEnum {
             return "";
         }
     }
+    public enum YzType{
+        ONE(1,"1天"),
+        THREE(3,"3天");
+
+        private YzType(int code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+        private int code;
+        private String desc;
+        public int getCode() {
+            return code;
+        }
+        public void setCode(int code) {
+            this.code = code;
+        }
+        public String getDesc() {
+            return desc;
+        }
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        public static String getDesc(int code){
+            for(YzType d : YzType.values()){
+                if(d.getCode()==code){
+                    return d.getDesc();
+                }
+            }
+            return "";
+        }
+    }
 
 }
