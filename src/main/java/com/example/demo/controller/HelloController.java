@@ -12,6 +12,7 @@ import com.example.demo.service.StockPlateService;
 import com.example.demo.service.StockYybRecordService;
 import com.example.demo.service.dfcf.DfcfRecordService;
 import com.example.demo.service.dfcf.DfcfService;
+import com.example.demo.service.dfcf.DfcfYybRecordDealService;
 import com.example.demo.service.dfcf.DfcfYybRecordService;
 import com.example.demo.service.sina.SinaService;
 import com.example.demo.service.tgb.TgbDealService;
@@ -69,9 +70,20 @@ public class HelloController {
     @Autowired
     DfcfYybRecordService dfcfYybRecordService;
     @Autowired
+    DfcfYybRecordDealService dfcfYybRecordDealService;
+    @Autowired
     private RestTemplate restTemplate;
     private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
     private static String c_cUrl ="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
+    @RequestMapping("/test321")
+    public String test321() {
+        try {
+            dfcfYybRecordDealService.deal();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "test321 deal success";
+    }
     @RequestMapping("/tgb3")
     public String tgb3() {
         try {

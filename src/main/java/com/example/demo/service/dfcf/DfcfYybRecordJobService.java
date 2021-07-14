@@ -33,6 +33,8 @@ import java.util.List;
  * ====25
  * 非ST、*ST和S证券连续三个交易日内收盘价格涨幅偏离值累计达到20%的证券
  * 连续三个交易日内，涨幅偏离值累计达到20%的证券
+ *
+ * https://q.stock.sohu.com/hisHq?code=cn_002340&start=20210708&end=20210709
  */
 @Component
 public class DfcfYybRecordJobService extends BaseService {
@@ -106,8 +108,8 @@ public class DfcfYybRecordJobService extends BaseService {
 
     public boolean currentYybJob(Integer ybbId) {
         String endDay = MyUtils.getDayFormat2(new Date());
-        //String startDay =MyUtils.getPreTwoMonthDayFormat();
-        String startDay =MyUtils.getPreFiveDayFormat();
+        String startDay =MyUtils.getPreTwoMonthDayFormat();
+        //String startDay =MyUtils.getPreFiveDayFormat();
         String url = startDay+"&endDateTime="+endDay+"&salesCode="+ybbId;
         System.out.println("url = [" + url + "]");
         Object result = getRequest(five_day_url+url);
@@ -131,7 +133,7 @@ public class DfcfYybRecordJobService extends BaseService {
 
     public boolean dealInfo(Object result) {
         String str = result.toString();
-        if (str.length() < 900) {
+        if (str.length() < 700) {
             System.out.println("result 111=================================== [" + str + "]");
             return false;
         }

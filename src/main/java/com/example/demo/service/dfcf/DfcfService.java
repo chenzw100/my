@@ -133,7 +133,7 @@ public class DfcfService extends BaseService {
         System.out.println("url = [" + url + "]");
         Object result = getRequest(five_day_url+url);
         String str=result.toString();
-        if(str.length()<2000){
+        if(str.length()<700){
             System.out.println("result =================================== [" + str + "]");
             return;
         }
