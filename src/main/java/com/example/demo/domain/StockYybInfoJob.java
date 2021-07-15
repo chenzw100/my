@@ -638,6 +638,9 @@ public class StockYybInfoJob implements Serializable {
         this.oneNextOpenIncomeRate = MyUtils.getIncreaseRateCent(this.threeOpenPrice,this.todayOpenPrice).intValue();
         this.oneNextCloseIncomeRate = MyUtils.getIncreaseRateCent(this.threeClosePrice,this.todayOpenPrice).intValue();
         return "StockYybRecord{" +
+                "dayFormat=" + dayFormat +
+                "name=" + name +
+                "yybName=" + yybName +
                 "oneOpenRate=" + oneOpenRate +
                 ", twoOpenRate=" + twoOpenRate +
                 ", oneCloseRate=" + oneCloseRate +
@@ -660,4 +663,14 @@ public class StockYybInfoJob implements Serializable {
         this.twoOpenRate = MyUtils.getIncreaseRateCent(this.tomorrowOpenPrice,this.todayClosePrice).intValue();
         this.twoCloseRate = MyUtils.getIncreaseRateCent(this.tomorrowClosePrice,this.tomorrowOpenPrice).intValue();
     }
+    public String toInfo() {
+        return
+                "[id=" + id +
+                "dayFormat=" + dayFormat +
+                "name=" + name +
+                "yzName=" + yzName +
+                "yesterdayGains=" + yesterdayGains
+               ;
+    }
+
 }

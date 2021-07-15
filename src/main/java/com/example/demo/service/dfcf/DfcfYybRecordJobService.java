@@ -111,7 +111,7 @@ public class DfcfYybRecordJobService extends BaseService {
         String startDay =MyUtils.getPreTwoMonthDayFormat();
         //String startDay =MyUtils.getPreFiveDayFormat();
         String url = startDay+"&endDateTime="+endDay+"&salesCode="+ybbId;
-        System.out.println("url = [" + url + "]");
+        log.info("url = [" +five_day_url+ url + "]");
         Object result = getRequest(five_day_url+url);
         return dealInfo(result);
 
@@ -134,7 +134,8 @@ public class DfcfYybRecordJobService extends BaseService {
     public boolean dealInfo(Object result) {
         String str = result.toString();
         if (str.length() < 700) {
-            System.out.println("result 111=================================== [" + str + "]");
+            log.info("结果:"+str);
+           // System.out.println("result 111=================================== [" + str + "]");
             return false;
         }
         int index = str.indexOf("(");
@@ -142,11 +143,13 @@ public class DfcfYybRecordJobService extends BaseService {
         JSONObject jsonObject = JSONObject.parseObject(str);
         JSONArray jsonArray = jsonObject.getJSONArray("Data");
         if(jsonArray == null){
-            System.out.println("result 222=================================== [" + str + "]");
+            log.info("结果2:"+str);
+           // System.out.println("result 222=================================== [" + str + "]");
             return true;
         }
         if(jsonArray.size() == 0){
-            System.out.println("result 333=================================== [" + str + "]");
+            log.info("结果3:"+str);
+            //System.out.println("result 333=================================== [" + str + "]");
             return false;
         }
         jsonObject = (JSONObject) jsonArray.get(0);
@@ -175,6 +178,7 @@ public class DfcfYybRecordJobService extends BaseService {
             StockYybInfoJob stockYybList = stockYybInfoJobRepository.findTop1ByYybIdAndYzTypeAndCodeAndDayFormat(stockYyb.getYybId(), stockYyb.getYzType(),stockYyb.getCode(), stockYyb.getDayFormat());
             if (stockYybList != null) {
                 if(stockYybList.getThreeClosePrice()!=null && stockYybList.getThreeClosePrice()>20){
+                    log.info(stockYybList.toInfo()+"已有数据Id,"+stockYybList.getId());
                     continue;
                 }
                 stockYyb = stockYybList;
@@ -231,6 +235,7 @@ public class DfcfYybRecordJobService extends BaseService {
                 stockYyb.setYesterdayVolume(yesterday.getInteger(7));
 
                 if(today==null){
+                    log.info(stockYyb.toInfo()+"新数据创建,"+stockYyb.getYesterdayClosePrice());
                     stockYybInfoJobRepository.save(stockYyb);
                     continue;
                 }
@@ -251,6 +256,7 @@ public class DfcfYybRecordJobService extends BaseService {
 
                 if(tomorrow == null){
                     stockYyb.toOneDay();
+                    log.info(stockYyb.toInfo()+"更新今日竞价数据,"+stockYyb.getOneOpenRate());
                     stockYybInfoJobRepository.save(stockYyb);
                     continue;
                 }
@@ -270,7 +276,9 @@ public class DfcfYybRecordJobService extends BaseService {
                 stockYyb.setTomorrowVolume(tomorrow.getInteger(7));
 
                 if(three==null){
+                    stockYyb.toOneDay();
                     stockYyb.toOneIncome();
+                    log.info(stockYyb.toInfo()+"更新明日竞价数据,"+stockYyb.getTwoOpenRate());
                     stockYybInfoJobRepository.save(stockYyb);
                     continue;
                 }
@@ -291,7 +299,7 @@ public class DfcfYybRecordJobService extends BaseService {
 
                 stockYyb.toString();
                 stockYybInfoJobRepository.save(stockYyb);
-                System.out.println("success result = [" + stockYyb.toString() + "]");
+                log.info("总更新竞价数据,"+stockYyb.getTwoOpenRate());
             } catch (Exception e) {
                 System.out.println("error -------------"+stockYyb.getDayFormat()+",code="+stockYyb.getCode());
                 e.getMessage();
