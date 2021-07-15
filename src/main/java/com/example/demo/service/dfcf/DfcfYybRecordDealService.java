@@ -39,7 +39,7 @@ public class DfcfYybRecordDealService extends BaseService {
 
 
     public List<StockYybInfoRecord>  getAll(){
-      return  stockYybInfoRecordRepository.findByYybIdOrderByDayFormatAscYzTypeAsc(YybEnum.YzName.zsyx.getCode());
+      return  stockYybInfoRecordRepository.findByYybIdOrderByDayFormatAscYzTypeAsc(YybEnum.YzName.xhgm.getCode());
     }
     public void deal(){
         List<StockYybInfoRecord> list = getAll();

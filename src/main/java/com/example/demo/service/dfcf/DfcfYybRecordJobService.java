@@ -250,6 +250,7 @@ public class DfcfYybRecordJobService extends BaseService {
                 stockYyb.setTodayVolume(today.getInteger(7));
 
                 if(tomorrow == null){
+                    stockYyb.toOneDay();
                     stockYybInfoJobRepository.save(stockYyb);
                     continue;
                 }
@@ -269,6 +270,7 @@ public class DfcfYybRecordJobService extends BaseService {
                 stockYyb.setTomorrowVolume(tomorrow.getInteger(7));
 
                 if(three==null){
+                    stockYyb.toOneIncome();
                     stockYybInfoJobRepository.save(stockYyb);
                     continue;
                 }
