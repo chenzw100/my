@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.enums.NumberEnum;
+import com.example.demo.service.dfcf.DfcfPankService;
 import com.example.demo.service.dfcf.DfcfService;
 import com.example.demo.service.dfcf.DfcfYybRecordJobService;
 import com.example.demo.service.pan.DealPanDataService;
@@ -30,6 +31,7 @@ public class PanService {
     private static final String closeCron ="58 2 15 ? * MON-FRI";
     private static final String closeYybCron ="5 2 17 ? * MON-FRI";
     private static final String closeYybJobCron ="45 01 18 ? * MON-FRI";
+    private static final String closeTradeJobCron ="55 31 18 ? * MON-FRI";
     //private static final String choiceMy="1 1 9 ? * MON-FRI";
     //private static final String currentTimeCron="1 55 0/1 ? * MON-FRI";
     private static final String temperatureCron="10 35 9,10,11,13,14 ? * MON-FRI";
@@ -50,6 +52,16 @@ public class PanService {
     DfcfService dfcfService;
     @Autowired
     DfcfYybRecordJobService dfcfYybRecordJobService;
+    @Autowired
+    DfcfPankService dfcfPankService;
+    //营业部处理
+    @Scheduled(cron = closeTradeJobCron)
+    public void tradeJob(){
+        //获取数据
+        if(isWorkday()){
+            dfcfPankService.getList();
+        }
+    }
     //营业部处理
     @Scheduled(cron = closeYybJobCron)
     public void yyb2Job(){
