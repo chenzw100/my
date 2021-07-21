@@ -29,7 +29,7 @@ public class PanService {
     private static final String openCron = "30 25 9 ? * MON-FRI";
     private static final String closeCron ="58 2 15 ? * MON-FRI";
     private static final String closeYybCron ="5 2 17 ? * MON-FRI";
-    private static final String closeYybJobCron ="5 0 18 ? * MON-FRI";
+    private static final String closeYybJobCron ="45 01 18 ? * MON-FRI";
     //private static final String choiceMy="1 1 9 ? * MON-FRI";
     //private static final String currentTimeCron="1 55 0/1 ? * MON-FRI";
     private static final String temperatureCron="10 35 9,10,11,13,14 ? * MON-FRI";
