@@ -17,6 +17,6 @@ public interface StockTradeValInfoJobRepository extends JpaRepository<StockTrade
     @Query(value="SELECT * from stock_trade_val_info_job WHERE day_format BETWEEN ?1 AND ?2", nativeQuery = true)
     public List<StockTradeValInfoJob> threeStatistic(String start, String end);
     public List<StockTradeValInfoJob> findByOneNextCloseIncomeRateIsNull();
-
+    public List<StockTradeValInfoJob> findByOneOpenIncomeRateIsNull();
 
 }

@@ -23,7 +23,7 @@ import java.util.List;
  * Created by laikui on 2019/9/2.
  */
 @Component
-public class DfcfPankService extends BaseService {
+public class DfcfPankService extends QtService {
     private static String current_Continue="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
     private static String current_Yesterday="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0815&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
     private static String current_yyb="https://datainterface3.eastmoney.com/EM_DataCenter_V3/api/YYBJXMX/GetYYBJXMX?js=jQuery112307119371614566392_1625561877508&sortfield=&sortdirec=-1&pageSize=50&tkn=eastmoney&tdir=&dayNum=&startDateTime=2020-07-06&endDateTime=2021-07-06&cfg=yybjymx&salesCode=";
@@ -228,5 +228,20 @@ public class DfcfPankService extends BaseService {
         }
 
         return map;
+    }
+
+    public void oneOpenIncomeRate(){
+        List<StockTradeValInfoJob> list = stockTradeValInfoJobRepository.findByOneOpenIncomeRateIsNull();
+        for(StockTradeValInfoJob s: list){
+            String code =s.getCode();
+            if (code.indexOf("6") == 0) {
+                code = "sh" + code;
+            } else {
+                code = "sz" + code;
+            }
+            s.setTodayOpenPrice(getIntCurrentPrice(code));
+            s.toOneOpen();
+            stockTradeValInfoJobRepository.save(s);
+        }
     }
 }

@@ -31,7 +31,7 @@ public class PanService {
     private static final String closeCron ="58 2 15 ? * MON-FRI";
     private static final String closeYybCron ="5 2 17 ? * MON-FRI";
     private static final String closeYybJobCron ="45 01 18 ? * MON-FRI";
-    private static final String closeTradeJobCron ="55 31 18 ? * MON-FRI";
+    private static final String closeTradeJobCron ="55 02 18 ? * MON-FRI";
     //private static final String choiceMy="1 1 9 ? * MON-FRI";
     //private static final String currentTimeCron="1 55 0/1 ? * MON-FRI";
     private static final String temperatureCron="10 35 9,10,11,13,14 ? * MON-FRI";
@@ -59,7 +59,7 @@ public class PanService {
     public void tradeJob(){
         //获取数据
         if(isWorkday()){
-            dfcfPankService.getList();
+            dfcfPankService.getAllList();
         }
     }
     //营业部处理
@@ -100,6 +100,7 @@ public class PanService {
     public void openPan(){
         if(isWorkday()){
             dealPanDataService.open();
+            dfcfPankService.oneOpenIncomeRate();
 
         }
     }
