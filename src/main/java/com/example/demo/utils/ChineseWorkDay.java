@@ -10,10 +10,11 @@ public class ChineseWorkDay {
     public static final long hour24 = 24*60*60*1000;
     private  String calendar;
     private  Date date;
-    public ChineseWorkDay(Date date){
+    public ChineseWorkDay(Date date1){
+        this.date = new Date(date1.getTime());
+        System.out.printf(String.valueOf(date1==date));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         this.calendar= sdf.format(date);
-        this.date = date;
     }
     // 法律规定的放假日期
     private static List<String> lawHolidays = new ArrayList<String>(Arrays.asList(
