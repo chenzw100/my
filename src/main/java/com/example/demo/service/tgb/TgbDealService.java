@@ -83,14 +83,14 @@ public class TgbDealService extends QtService {
                 continue;
             }
 
-            ChineseWorkDay yesterdayWorkDay = new ChineseWorkDay(new Date());
-            Date yesterdayDate = yesterdayWorkDay.preWorkDay(now);
+            ChineseWorkDay yesterdayWorkDay = new ChineseWorkDay(now);
+            Date yesterdayDate = yesterdayWorkDay.preWorkDay();
 
-            ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(new Date());
-            Date tomorrowDate = tomorrowWorkDay.nextWorkDay(now);
+            ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(now);
+            Date tomorrowDate = tomorrowWorkDay.nextWorkDay();
 
-            ChineseWorkDay threeWorkDay = new ChineseWorkDay(new Date());
-            Date threeDate = threeWorkDay.nextWorkDay(tomorrowDate);
+            ChineseWorkDay threeWorkDay = new ChineseWorkDay(tomorrowDate);
+            Date threeDate = threeWorkDay.nextWorkDay();
 
 
             String start = MyUtils.getDayFormat(yesterdayDate);

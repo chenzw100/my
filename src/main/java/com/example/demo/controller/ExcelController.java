@@ -5,6 +5,7 @@ import com.example.demo.domain.StockTradeValInfoJob;
 import com.example.demo.exception.NormalException;
 import com.example.demo.utils.FileExcelUtil;
 import com.example.demo.utils.MyUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,23 +35,40 @@ public class ExcelController {
         for(StockTradeValInfoJob stockZy :personList){
             i++;
             System.out.println(i+"《===============第，导入数据的电话【"+stockZy.getCode()+"】");
+            int temp= 6-stockZy.getCode().length();
+            if(temp>0){
+                if(temp==5){
+                    stockZy.setCode("00000"+stockZy.getCode());
+                }else if(temp==4){
+                    stockZy.setCode("0000"+stockZy.getCode());
+                }
+                else if(temp==3){
+                    stockZy.setCode("000"+stockZy.getCode());
+                }
+                else if(temp==2){
+                    stockZy.setCode("00"+stockZy.getCode());
+                }
+                else if(temp==1){
+                    stockZy.setCode("0"+stockZy.getCode());
+                }
+            }
             stockZy.setCode(stockZy.getCode().substring(0,6));
-            stockZy.setYesterdayClosePrice(MyUtils.getCentByYuanStr(stockZy.getYesterdayClosePriceStr()));
-            stockZy.setYesterdayGains(MyUtils.getCentByYuanStr(stockZy.getYesterdayGainsStr()));
             stockZy.setYn(1);
             String yesterdayVolumeStr =stockZy.getYesterdayVolumeStr();
             if(yesterdayVolumeStr.lastIndexOf("亿")>0){
                 yesterdayVolumeStr=yesterdayVolumeStr.substring(0,yesterdayVolumeStr.length()-1);
-                Integer yestemp =MyUtils.getCentByYuanStr(yesterdayVolumeStr)*100000;
+                Integer yestemp =MyUtils.getCentByYuanStr(yesterdayVolumeStr)*100;
                 stockZy.setYesterdayVolume(yestemp);
             }else {
-                yesterdayVolumeStr=yesterdayVolumeStr.substring(0,yesterdayVolumeStr.length()-1);
-                Integer yestemp =MyUtils.getCentByYuanStr(yesterdayVolumeStr.replace(",",""));
+                yesterdayVolumeStr=yesterdayVolumeStr.substring(0,yesterdayVolumeStr.length()-4);
+                Integer yestemp =Integer.parseInt(yesterdayVolumeStr.replace(",",""));
                 stockZy.setYesterdayVolume(yestemp);
             }
             String tradeAmountStr =stockZy.getTradeAmountStr();
-            tradeAmountStr =tradeAmountStr.substring(0,tradeAmountStr.length()-4);
-            stockZy.setTradeAmount(Integer.parseInt(tradeAmountStr));
+            if(StringUtils.isNotBlank(tradeAmountStr)){
+                tradeAmountStr =tradeAmountStr.substring(0,tradeAmountStr.length()-4);
+                stockZy.setTradeAmount(Integer.parseInt(tradeAmountStr));
+            }
 
             String yesterdayTurnoverStr =stockZy.getYesterdayTurnoverStr();
             yesterdayTurnoverStr =yesterdayTurnoverStr.substring(0,yesterdayTurnoverStr.length()-4);
@@ -62,7 +80,7 @@ public class ExcelController {
             }
         }
         //TODO 保存数据库
-        return "导入数据一共【"+personList.size()+"】行,已存在的手机号未再次导入";
+        return "导入数据一共【"+personList.size()+"】行";
     }
 
 

@@ -25,12 +25,14 @@ public class ChineseWorkDay {
     private List<String> extraWorkdays = new ArrayList<String>(Arrays.asList(
             "2018-01-01"));
 
-    public Date preWorkDay(Date dateSet){
+    public Date preWorkDay(){
         try {
-            date.setTime(dateSet.getTime()-hour24);
-            MyChineseWorkDay.setDate(date);
+            date.setTime(date.getTime()-hour24);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            calendar= sdf.format(date);
             while (isHoliday()){
                 date.setTime(date.getTime()-hour24);
+                calendar= sdf.format(date);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,16 +42,18 @@ public class ChineseWorkDay {
     }
     public Date preDaysWorkDay(int days,Date now){
         for(int i=0;i<days;i++){
-            now=preWorkDay(now);
+            now=preWorkDay();
         }
         return now;
     }
-    public Date nextWorkDay(Date dateSet){
+    public Date nextWorkDay(){
         try {
-            date.setTime(dateSet.getTime()+hour24);
-            MyChineseWorkDay.setDate(date);
+            date.setTime(date.getTime()+hour24);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            calendar= sdf.format(date);
             while (isHoliday()){
                 date.setTime(date.getTime()+hour24);
+                calendar= sdf.format(date);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,7 +63,7 @@ public class ChineseWorkDay {
     }
     public Date nextDaysWorkDay(int days,Date now){
         for(int i=0;i<days;i++){
-            now=nextWorkDay(now);
+            now=nextWorkDay();
         }
         return now;
     }

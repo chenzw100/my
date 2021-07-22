@@ -92,7 +92,12 @@ public class DfcfPankService extends BaseService {
         }
         return plateName;
     }
-
+    public void getAllList(){
+        List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByOneNextCloseIncomeRateIsNull();
+        for(StockTradeValInfoJob s:list){
+            dealJob(s);
+        }
+    }
     public void getList(){
         Date now = new Date();
         ChineseWorkDay nowWorkDay = new ChineseWorkDay(now);
@@ -104,12 +109,12 @@ public class DfcfPankService extends BaseService {
     }
     public void dealJob(StockTradeValInfoJob stockYyb ){
         Date yesterdayDate = MyUtils.getFormatDate(stockYyb.getDayFormat());
-        ChineseWorkDay nowWorkDay = new ChineseWorkDay(new Date());
-        Date now = nowWorkDay.nextWorkDay(yesterdayDate);
-        ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(new Date());
-        Date tomorrowDate = tomorrowWorkDay.nextWorkDay(now);
-        ChineseWorkDay threeWorkDay = new ChineseWorkDay(new Date());
-        Date threeDate = threeWorkDay.nextWorkDay(tomorrowDate);
+        ChineseWorkDay nowWorkDay = new ChineseWorkDay(yesterdayDate);
+        Date now = nowWorkDay.nextWorkDay();
+        ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(now);
+        Date tomorrowDate = tomorrowWorkDay.nextWorkDay();
+        ChineseWorkDay threeWorkDay = new ChineseWorkDay(tomorrowDate);
+        Date threeDate = threeWorkDay.nextWorkDay();
 
 
         String start = stockYyb.getDayFormat();

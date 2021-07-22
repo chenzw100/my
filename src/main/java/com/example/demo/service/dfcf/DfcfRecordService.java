@@ -180,11 +180,11 @@ public class DfcfRecordService extends BaseService {
             }
             Date yesterdayDate = MyUtils.getFormatDate(stockYyb.getDayFormat());
             ChineseWorkDay nowWorkDay = new ChineseWorkDay(new Date());
-            Date now = nowWorkDay.nextWorkDay(yesterdayDate);
+            Date now = nowWorkDay.nextWorkDay();
             ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(new Date());
-            Date tomorrowDate = tomorrowWorkDay.nextWorkDay(now);
+            Date tomorrowDate = tomorrowWorkDay.nextWorkDay();
             ChineseWorkDay threeWorkDay = new ChineseWorkDay(new Date());
-            Date threeDate = threeWorkDay.nextWorkDay(tomorrowDate);
+            Date threeDate = threeWorkDay.nextWorkDay();
 
 
             String start = stockYyb.getDayFormat();

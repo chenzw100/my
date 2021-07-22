@@ -44,13 +44,13 @@ public class StockHistoryService extends BaseService {
         stockYyb.setName("上证");
         stockYyb.setDayFormat(dayFormat);
         Date yesterdayDate = MyUtils.getFormatDate(stockYyb.getDayFormat());
-        ChineseWorkDay nowWorkDay = new ChineseWorkDay(new Date());
-        Date now = nowWorkDay.nextWorkDay(yesterdayDate);
+        ChineseWorkDay nowWorkDay = new ChineseWorkDay(yesterdayDate);
+        Date now = nowWorkDay.nextWorkDay();
         String resultNowDay=MyUtils.getDayFormat(now);
-        ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(new Date());
-        Date tomorrowDate = tomorrowWorkDay.nextWorkDay(now);
-        ChineseWorkDay threeWorkDay = new ChineseWorkDay(new Date());
-        Date threeDate = threeWorkDay.nextWorkDay(tomorrowDate);
+        ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(now);
+        Date tomorrowDate = tomorrowWorkDay.nextWorkDay();
+        ChineseWorkDay threeWorkDay = new ChineseWorkDay(tomorrowDate);
+        Date threeDate = threeWorkDay.nextWorkDay();
 
         JSONArray three = map.get(MyUtils.getDayFormat(threeDate));
         JSONArray yesterday = map.get(stockYyb.getDayFormat());
