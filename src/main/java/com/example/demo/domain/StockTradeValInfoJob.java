@@ -591,6 +591,12 @@ public class StockTradeValInfoJob implements Serializable {
         this.twoOpenRate = MyUtils.getIncreaseRateCent(this.tomorrowOpenPrice,this.todayClosePrice).intValue();
         this.twoCloseRate = MyUtils.getIncreaseRateCent(this.tomorrowClosePrice,this.tomorrowOpenPrice).intValue();
     }
+    public void toOneIncomeOpen() {
+        this.oneOpenIncomeRate = MyUtils.getIncreaseRateCent(this.tomorrowOpenPrice,this.todayOpenPrice).intValue();
+    }
+    public void toOneNextOpenIncomeRateOpen() {
+        this.oneNextOpenIncomeRate = MyUtils.getIncreaseRateCent(this.threeOpenPrice,this.todayOpenPrice).intValue();
+    }
     public String toInfo() {
         return
                 "[id=" + id +

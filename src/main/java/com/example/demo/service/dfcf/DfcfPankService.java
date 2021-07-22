@@ -231,7 +231,7 @@ public class DfcfPankService extends QtService {
     }
 
     public void oneOpenIncomeRate(){
-        List<StockTradeValInfoJob> list = stockTradeValInfoJobRepository.findByOneOpenIncomeRateIsNull();
+        List<StockTradeValInfoJob> list = stockTradeValInfoJobRepository.findByOneOpenRateIsNull();
         for(StockTradeValInfoJob s: list){
             String code =s.getCode();
             if (code.indexOf("6") == 0) {
@@ -241,6 +241,30 @@ public class DfcfPankService extends QtService {
             }
             s.setTodayOpenPrice(getIntCurrentPrice(code));
             s.toOneOpen();
+            stockTradeValInfoJobRepository.save(s);
+        }
+        list = stockTradeValInfoJobRepository.findByOneOpenIncomeRateIsNull();
+        for(StockTradeValInfoJob s: list){
+            String code =s.getCode();
+            if (code.indexOf("6") == 0) {
+                code = "sh" + code;
+            } else {
+                code = "sz" + code;
+            }
+            s.setTomorrowOpenPrice(getIntCurrentPrice(code));
+            s.toOneIncomeOpen();
+            stockTradeValInfoJobRepository.save(s);
+        }
+        list = stockTradeValInfoJobRepository.findByOneNextCloseIncomeRateIsNull();
+        for(StockTradeValInfoJob s: list){
+            String code =s.getCode();
+            if (code.indexOf("6") == 0) {
+                code = "sh" + code;
+            } else {
+                code = "sz" + code;
+            }
+            s.setThreeOpenPrice(getIntCurrentPrice(code));
+            s.toOneNextOpenIncomeRateOpen();
             stockTradeValInfoJobRepository.save(s);
         }
     }

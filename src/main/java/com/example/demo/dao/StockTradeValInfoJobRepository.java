@@ -18,5 +18,6 @@ public interface StockTradeValInfoJobRepository extends JpaRepository<StockTrade
     public List<StockTradeValInfoJob> threeStatistic(String start, String end);
     public List<StockTradeValInfoJob> findByOneNextCloseIncomeRateIsNull();
     public List<StockTradeValInfoJob> findByOneOpenIncomeRateIsNull();
-
+    public List<StockTradeValInfoJob> findByOneOpenRateIsNull();
+    public List<StockTradeValInfoJob> findByOneNextOpenIncomeRateIsNull();
 }
