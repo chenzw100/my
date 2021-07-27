@@ -22,7 +22,7 @@ public class StockTradeValInfoJob implements Serializable {
 
 
     @Excel(name = "排名类型", orderNum = "0")
-    @Column(nullable = true,columnDefinition="varchar(200) COMMENT '排名类型'")
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '排名类型'")
     private Integer rankType;
     @Column(nullable = false,columnDefinition="varchar(10) COMMENT 'yyyymmdd'")
     @Excel(name = "日期", orderNum = "1")
@@ -34,7 +34,7 @@ public class StockTradeValInfoJob implements Serializable {
     @Column(nullable = false,columnDefinition="varchar(8)")
     private String name;
     @Excel(name = "排名", orderNum = "4")
-    @Column(nullable = true,columnDefinition="varchar(200) COMMENT '排名'")
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '排名'")
     private Integer rank;
     @Excel(name = "成交额(元)", orderNum = "5")
     @Transient

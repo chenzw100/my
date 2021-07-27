@@ -34,7 +34,7 @@ public class ExcelController {
         int i =0;
         for(StockTradeValInfoJob stockZy :personList){
             i++;
-            System.out.println(i+"《===============第，导入数据的电话【"+stockZy.getCode()+"】");
+
             int temp= 6-stockZy.getCode().length();
             if(temp>0){
                 if(temp==5){
@@ -54,10 +54,11 @@ public class ExcelController {
             }
             stockZy.setCode(stockZy.getCode().substring(0,6));
             stockZy.setYn(1);
+            System.out.println(i+"《===============第，导入数据的电话【"+stockZy.getCode()+"】");
             String yesterdayVolumeStr =stockZy.getYesterdayVolumeStr();
             if(yesterdayVolumeStr.lastIndexOf("亿")>0){
                 yesterdayVolumeStr=yesterdayVolumeStr.substring(0,yesterdayVolumeStr.length()-1);
-                Integer yestemp =MyUtils.getCentByYuanStr(yesterdayVolumeStr)*100;
+                Integer yestemp =MyUtils.getCentByYuanStr(yesterdayVolumeStr.replace(",",""))*100;
                 stockZy.setYesterdayVolume(yestemp);
             }else {
                 yesterdayVolumeStr=yesterdayVolumeStr.substring(0,yesterdayVolumeStr.length()-4);
@@ -67,7 +68,7 @@ public class ExcelController {
             String tradeAmountStr =stockZy.getTradeAmountStr();
             if(StringUtils.isNotBlank(tradeAmountStr)){
                 tradeAmountStr =tradeAmountStr.substring(0,tradeAmountStr.length()-4);
-                stockZy.setTradeAmount(Integer.parseInt(tradeAmountStr));
+                stockZy.setTradeAmount(Integer.parseInt(tradeAmountStr.replace(",","")));
             }
 
             String yesterdayTurnoverStr =stockZy.getYesterdayTurnoverStr();

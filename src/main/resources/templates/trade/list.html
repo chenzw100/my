@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div th:include="head :: header"></div>
+<body>
+<div th:include="menu :: menu"></div>
+<h2>公司交易管理 --- 交易管理-【交易】</h2>
+<div>
+    <div style="padding:5px 0;">
+        <span>日期:</span> <input class="easyui-textbox" type="text"  name="dayFormat" id="dayFormat" >
+        &nbsp;<span>板块:</span> <input class="easyui-textbox" type="text"  name="plateName" id="plateName" >
+        &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
+    </div>
+
+</div>
+<table id="dg" title="人才库"
+       toolbar="#toolbar" pagination="true" idField="id"
+       rownumbers="true" fitColumns="true" singleSelect="true">
+    <thead>
+    <tr>
+        <th data-options="field:'dayFormat',align:'center'">日期</th>
+        <th data-options="field:'code',align:'center'">代码</th>
+        <th data-options="field:'name',align:'center'">名称</th>
+        <th data-options="field:'plateName',align:'center'">板块</th>
+        <th data-options="field:'oneNextCloseIncomeRate',align:'center'">再次收益</th>
+    </tr>
+    </thead>
+</table>
+
+<script type="text/javascript">
+    $(function(){
+        $('#dg').edatagrid({
+            pageSize:100,
+            pageList:[100,500,1000,1500],
+            url:'/trade/list.action'
+
+        });
+    });
+    $("#query").click(function () {
+        $('#dg').datagrid('load', {
+            plateName: $("#plateName").val(),
+        });
+    })
+
+
+</script>
+
+</body>
+</html>
