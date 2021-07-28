@@ -22,6 +22,9 @@
         <th data-options="field:'name',align:'center'">名称</th>
         <th data-options="field:'plateName',align:'center'">板块</th>
         <th data-options="field:'oneNextCloseIncomeRate',align:'center'">再次收益</th>
+        <th data-options="field:'yesterdayTurnover',align:'center'">成交额</th>
+        <th data-options="field:'tradeAmount',align:'center'">流通</th>
+        <th data-options="field:'yesterdayClosePrice',align:'center'">昨日价</th>
     </tr>
     </thead>
 </table>
@@ -30,7 +33,7 @@
     $(function(){
         $('#dg').edatagrid({
             pageSize:100,
-            pageList:[100,500,1000,1500],
+            pageList:[100,200],
             url:'/trade/list.action'
 
         });

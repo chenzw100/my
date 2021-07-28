@@ -23,5 +23,6 @@ public interface StockTradeValInfoJobRepository extends JpaRepository<StockTrade
     public List<StockTradeValInfoJob> findByOneOpenIncomeRateIsNull();
     public List<StockTradeValInfoJob> findByOneOpenRateIsNull();
     public List<StockTradeValInfoJob> findByOneNextOpenIncomeRateIsNull();
-    Page<StockTradeValInfoJob> findByRankTypeAndPlateNameContaining(Integer rankType,String plateName, Pageable pageable);
+    Page<StockTradeValInfoJob> findTop50ByRankTypeAndPlateNameContainingOrderByDayFormatDesc(Integer rankType,String plateName, Pageable pageable);
+    Page<StockTradeValInfoJob> findTop50ByRankType(Integer rankType, Pageable pageable);
 }

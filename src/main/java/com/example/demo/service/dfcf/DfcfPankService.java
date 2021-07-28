@@ -122,6 +122,9 @@ public class DfcfPankService extends QtService {
 
 
         HashMap<String, JSONArray> map = getHistory(stockYyb.getCode(),start,end);
+        if(map==null){
+            return;
+        }
         JSONArray three = map.get(MyUtils.getDayFormat(threeDate));
         JSONArray yesterday = map.get(stockYyb.getDayFormat());
         JSONArray today = map.get(MyUtils.getDayFormat(now));
@@ -142,7 +145,7 @@ public class DfcfPankService extends QtService {
             stockYyb.setYesterdayVolume(yesterday.getInteger(7));
 
             if(today==null){
-                log.info(stockYyb.toInfo()+"新数据创建,"+stockYyb.getYesterdayClosePrice());
+                log.info(stockYyb.toInfo()+"没有今日数据,"+stockYyb.getYesterdayClosePrice());
                 stockTradeValInfoJobRepository.save(stockYyb);
                 return;
             }
@@ -163,7 +166,7 @@ public class DfcfPankService extends QtService {
 
             if(tomorrow == null){
                 stockYyb.toOneDay();
-                log.info(stockYyb.toInfo()+"更新今日竞价数据,"+stockYyb.getOneOpenRate());
+                log.info(stockYyb.toInfo()+"没有明日数据,"+stockYyb.getOneOpenRate());
                 stockTradeValInfoJobRepository.save(stockYyb);
                 return;
             }
@@ -216,6 +219,9 @@ public class DfcfPankService extends QtService {
     public HashMap<String,JSONArray> getHistory(String code,String start,String end){
         String url = history_url+code+"&start="+start+"&end="+end;
         Object result = getRequest(url);
+        if(result.toString().length()<5){
+            return null;
+        }
         JSONObject jsonObject = (JSONObject) JSONArray.parseArray(result.toString()).get(0);
         JSONArray jsonArray = jsonObject.getJSONArray("hq");
         HashMap<String,JSONArray> map =new HashMap<>();
