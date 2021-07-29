@@ -9,6 +9,9 @@
         <span>日期:</span> <input class="easyui-textbox" type="text"  name="dayFormat" id="dayFormat" >
         &nbsp;<span>板块:</span> <input class="easyui-textbox" type="text"  name="plateName" id="plateName" >
         &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
+        &nbsp;<a href="#" class="easyui-linkbutton" onclick="getSelectedck()">查看个股</a>
+        &nbsp;<a target="_blank" href="/review.html" class="easyui-linkbutton" >查看历史</a>
+        &nbsp;<a target="_blank" href="/import" class="easyui-linkbutton" >导入数据</a>
     </div>
 
 </div>
@@ -42,7 +45,17 @@
         $('#dg').datagrid('load', {
             plateName: $("#plateName").val(),
         });
-    })
+    });
+    function getSelectedck(){
+        var row = $('#dg').datagrid('getSelected');
+        if(row==null){
+            $.messager.alert('Info', "请选择一个员工，进行接受任务");
+            return;
+        }
+        if (row){
+            window.open('/high/'+row.code);
+        }
+    }
 
 
 </script>
