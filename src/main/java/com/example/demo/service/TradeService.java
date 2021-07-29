@@ -2,12 +2,16 @@ package com.example.demo.service;
 
 import com.example.demo.dao.StockTradeValInfoJobRepository;
 import com.example.demo.dao.StockYybRepository;
+import com.example.demo.domain.MyTradeStock;
 import com.example.demo.domain.StockTradeValInfoJob;
 import com.example.demo.domain.table.StockYyb;
+import com.example.demo.utils.MyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class TradeService {
@@ -61,6 +65,14 @@ public class TradeService {
         Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
 
         Page<StockTradeValInfoJob> all = stockTradeValInfoJobRepository.findTop50ByRankTypeAndPlateNameContainingOrderByDayFormatDesc(stockYyb.getRankType(),stockYyb.getPlateName(),pageable);
+        return all;
+    }
+    public List<MyTradeStock> statistics(){
+        String start = MyUtils.getPreTwoMonthDayFormat();
+        List<MyTradeStock> all =stockTradeValInfoJobRepository.statistics(start,MyUtils.getDayFormat());
+        for(MyTradeStock m :all){
+            System.out.println(m.getDayFormat());
+        }
         return all;
     }
 }

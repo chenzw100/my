@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div th:include="head :: header"></div>
+<body>
+<div th:include="menu :: menu"></div>
+<h2>公司交易管理 --- 交易管理-【交易】</h2>
+<div>
+    <div style="padding:5px 0;">
+        <a target="_blank" href="/rank" class="easyui-linkbutton" >更新数据</a>
+        &nbsp;<a target="_blank" href="/review.html" class="easyui-linkbutton" >查看历史</a>
+        &nbsp;<a target="_blank" href="/import" class="easyui-linkbutton" >导入数据</a>
+    </div>
+
+</div>
+<table id="dg" title="人才库"
+       toolbar="#toolbar" pagination="true" idField="id"
+       rownumbers="true" fitColumns="true" singleSelect="true">
+    <thead>
+    <tr >
+        <th data-options="field:'dayFormat',align:'center'">日期</th>
+        <th data-options="field:'oneOpenRate',align:'center'">竞价</th>
+        <th data-options="field:'oneCloseRate',align:'center'">收竞价</th>
+        <th data-options="field:'oneOpenIncomeRate',align:'center'">1开</th>
+        <th data-options="field:'oneCloseIncomeRate',align:'center'">1收</th>
+        <th data-options="field:'oneNextOpenIncomeRate',align:'center'">再开</th>
+        <th data-options="field:'oneNextCloseIncomeRate',align:'center'">再收</th>
+        <th data-options="field:'countNum',align:'center'">数量</th>
+    </tr>
+    </thead>
+</table>
+
+<script type="text/javascript">
+    $(function(){
+        $('#dg').edatagrid({
+            pageSize:100,
+            pageList:[100,200],
+            url:'/trade/sta.action'
+
+        });
+    });
+    $("#query").click(function () {
+        $('#dg').datagrid('load', {
+            plateName: $("#plateName").val(),
+        });
+    });
+    function getSelectedck(){
+        var row = $('#dg').datagrid('getSelected');
+        if(row==null){
+            $.messager.alert('Info', "请选择一个员工，进行接受任务");
+            return;
+        }
+        if (row){
+            window.open('/high/'+row.code);
+        }
+    }
+
+
+</script>
+
+</body>
+</html>
