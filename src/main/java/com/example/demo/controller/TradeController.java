@@ -51,7 +51,7 @@ public class TradeController {
             obj.setRankType(1);
         }
         if(obj.getYesterdayTurnover()==null){
-            obj.setYesterdayTurnover(9);
+            obj.setYesterdayTurnover(8);
         }
         List<MyTradeStock> list =tradeService.statistics(obj.getRankType(),obj.getYesterdayTurnover());
         Map map = new HashMap<>();

@@ -8,10 +8,11 @@ import com.example.demo.dao.StockYybInfoRepository;
 import com.example.demo.dao.StockYybRepository;
 import com.example.demo.domain.StockTradeValInfoJob;
 import com.example.demo.domain.table.StockLimitUp;
-import com.example.demo.service.base.BaseService;
 import com.example.demo.service.qt.QtService;
 import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,7 @@ import java.util.List;
  */
 @Component
 public class DfcfPankService extends QtService {
+    public Log log = LogFactory.getLog(DfcfPankService.class);
     private static String current_Continue="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
     private static String current_Yesterday="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0815&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
     private static String current_yyb="https://datainterface3.eastmoney.com/EM_DataCenter_V3/api/YYBJXMX/GetYYBJXMX?js=jQuery112307119371614566392_1625561877508&sortfield=&sortdirec=-1&pageSize=50&tkn=eastmoney&tdir=&dayNum=&startDateTime=2020-07-06&endDateTime=2021-07-06&cfg=yybjymx&salesCode=";
@@ -259,6 +261,7 @@ public class DfcfPankService extends QtService {
             }
             s.setTomorrowOpenPrice(getIntCurrentPrice(code));
             s.toOneIncomeOpen();
+            log.info("OneIncomeOpen"+s.getOneOpenIncomeRate()+",TomorrowOpenPrice="+s.getTomorrowOpenPrice()+",todayOpenPrice="+s.getTodayOpenPrice());
             stockTradeValInfoJobRepository.save(s);
         }
         list = stockTradeValInfoJobRepository.findByOneNextCloseIncomeRateIsNull();
@@ -271,6 +274,7 @@ public class DfcfPankService extends QtService {
             }
             s.setThreeOpenPrice(getIntCurrentPrice(code));
             s.toOneNextOpenIncomeRateOpen();
+            log.info("OneNextOpenIncomeRate"+s.getOneNextCloseIncomeRate()+",ThreeOpenPrice="+s.getThreeOpenPrice()+",todayOpenPrice="+s.getTodayOpenPrice());
             stockTradeValInfoJobRepository.save(s);
         }
     }
