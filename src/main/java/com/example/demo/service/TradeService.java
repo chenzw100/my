@@ -67,9 +67,9 @@ public class TradeService {
         Page<StockTradeValInfoJob> all = stockTradeValInfoJobRepository.findTop50ByRankTypeAndPlateNameContainingOrderByDayFormatDesc(stockYyb.getRankType(),stockYyb.getPlateName(),pageable);
         return all;
     }
-    public List<MyTradeStock> statistics(){
+    public List<MyTradeStock> statistics(Integer rankType,Integer yesterdayTurnover){
         String start = MyUtils.getPreTwoMonthDayFormat();
-        List<MyTradeStock> all =stockTradeValInfoJobRepository.statistics(start,MyUtils.getDayFormat());
+        List<MyTradeStock> all =stockTradeValInfoJobRepository.statistics(start,MyUtils.getDayFormat(),rankType,yesterdayTurnover);
         for(MyTradeStock m :all){
             System.out.println(m.getDayFormat());
         }

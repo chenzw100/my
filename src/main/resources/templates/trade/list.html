@@ -3,15 +3,20 @@
 <div th:include="head :: header"></div>
 <body>
 <div th:include="menu :: menu"></div>
-<h2>公司交易管理 --- 交易管理-【交易】</h2>
+<h2>公司交易管理 --- 交易管理-【交易记录】</h2>
 <div>
     <div style="padding:5px 0;">
-        <span>日期:</span> <input class="easyui-textbox" type="text"  name="dayFormat" id="dayFormat" >
+        <span>类型:</span>
+        <select class="easyui-combobox" id="rankType" name="rankType" style="width:70px;">
+            <option value="1">十亿</option>
+            <option value="3">创业</option>
+        </select>
         &nbsp;<span>板块:</span> <input class="easyui-textbox" type="text"  name="plateName" id="plateName" >
         &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
         &nbsp;<a href="#" class="easyui-linkbutton" onclick="getSelectedck()">查看个股</a>
         &nbsp;<a target="_blank" href="/review.html" class="easyui-linkbutton" >查看历史</a>
         &nbsp;<a target="_blank" href="/import" class="easyui-linkbutton" >导入数据</a>
+        &nbsp;<a target="_blank" href="/trade/sta.html" class="easyui-linkbutton" >统计</a>
     </div>
 
 </div>
@@ -51,6 +56,7 @@
     $("#query").click(function () {
         $('#dg').datagrid('load', {
             plateName: $("#plateName").val(),
+            rankType: $("#rankType").val()
         });
     });
     function getSelectedck(){

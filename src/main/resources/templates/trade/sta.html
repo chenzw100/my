@@ -6,9 +6,21 @@
 <h2>公司交易管理 --- 交易管理-【交易】</h2>
 <div>
     <div style="padding:5px 0;">
+        <span>类型:</span>
+        <select class="easyui-combobox" id="rankType" name="rankType" style="width:70px;">
+            <option value="1">全市</option>
+            <option value="3">创业</option>
+        </select>
+        <span>成交:</span>
+        <select class="easyui-combobox" id="yesterdayTurnover" name="yesterdayTurnover" style="width:70px;">
+            <option value="9">九亿</option>
+            <option value="0">一亿</option>
+        </select>
+        &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
         <a target="_blank" href="/rank" class="easyui-linkbutton" >更新数据</a>
         &nbsp;<a target="_blank" href="/review.html" class="easyui-linkbutton" >查看历史</a>
         &nbsp;<a target="_blank" href="/import" class="easyui-linkbutton" >导入数据</a>
+        &nbsp;<a target="_blank" href="/trade/list.html" class="easyui-linkbutton" >记录</a>
     </div>
 
 </div>
@@ -40,7 +52,8 @@
     });
     $("#query").click(function () {
         $('#dg').datagrid('load', {
-            plateName: $("#plateName").val(),
+            rankType: $("#rankType").val(),
+            yesterdayTurnover: $("#yesterdayTurnover").val()
         });
     });
     function getSelectedck(){

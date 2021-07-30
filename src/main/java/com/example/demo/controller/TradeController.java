@@ -29,7 +29,9 @@ public class TradeController {
     @RequestMapping("/list.action")
     @ResponseBody
     public String list(Integer page, Integer rows, StockTradeValInfoJob obj){
-        obj.setRankType(1);
+        if(obj.getRankType()==null){
+            obj.setRankType(1);
+        }
         Page<StockTradeValInfoJob> list =tradeService.findList(page,rows,obj);
 
         Map map = new HashMap<>();
@@ -45,8 +47,13 @@ public class TradeController {
     @RequestMapping("/sta.action")
     @ResponseBody
     public String sta(StockTradeValInfoJob obj){
-        obj.setRankType(1);
-        List<MyTradeStock> list =tradeService.statistics();
+        if(obj.getRankType()==null){
+            obj.setRankType(1);
+        }
+        if(obj.getYesterdayTurnover()==null){
+            obj.setYesterdayTurnover(9);
+        }
+        List<MyTradeStock> list =tradeService.statistics(obj.getRankType(),obj.getYesterdayTurnover());
         Map map = new HashMap<>();
         map.put("total",list.size());
         map.put("rows",list);
