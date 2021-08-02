@@ -156,10 +156,10 @@ public class ClassifyController {
         for (StockTemperature st : dayTemperatures) {
             if (i < size) {
                 StockTemperature stTemp=preTemperatures.get(i);
-                temperatures.add(stTemp);
                 if(stTemp.time().equals(st.time())){
-                    temperatures.add(st);
+                    temperatures.add(stTemp);
                 }
+                temperatures.add(st);
             }else {
                 temperatures.add(st);
             }
