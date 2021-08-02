@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -150,20 +151,14 @@ public class ClassifyController {
         endDate = MyUtils.getFormatDate(queryEnd);
         String preDate = MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
         List<StockTemperature> preTemperatures = stockTemperatureRepository.findByDayFormat(preDate);
+        HashMap<String,StockTemperature> map = new HashMap();
+        for (StockTemperature pre : preTemperatures){
+            map.put(pre.time(),pre);
+        }
         List<StockTemperature> temperatures = new ArrayList<>();
-        int i = 0;
-        int size = preTemperatures.size();
         for (StockTemperature st : dayTemperatures) {
-            if (i < size) {
-                StockTemperature stTemp=preTemperatures.get(i);
-                if(stTemp.time().equals(st.time())){
-                    temperatures.add(stTemp);
-                }
-                temperatures.add(st);
-            }else {
-                temperatures.add(st);
-            }
-            i++;
+            temperatures.add(map.get(st.time()));
+            temperatures.add(st);
         }
         return temperatures;
     }
