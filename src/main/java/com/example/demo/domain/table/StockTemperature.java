@@ -278,6 +278,10 @@ public class StockTemperature {
     public void setContinueVal(String continueVal) {
         this.continueVal = continueVal;
     }
+    public String time(){
+        String timeStr = DateFormatUtils.format(getCreated(), "HH:mm");
+        return timeStr;
+    }
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
