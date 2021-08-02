@@ -25,7 +25,7 @@ public class TradeService {
         pageNumber--;
 
         Sort.Order order = new Sort.Order(Sort.Direction.DESC,"dayFormat");
-        Sort.Order order1 = new Sort.Order(Sort.Direction.DESC,"name");
+        Sort.Order order1 = new Sort.Order(Sort.Direction.ASC,"rank");
         //如果有多个排序条件 建议使用此种方式 使用 Sort.by 替换之前的  new Sort();
         Sort sort = Sort.by(order,order1);
         //使用 PageRequest.of 替代之前的 new PageRequest();
@@ -39,7 +39,7 @@ public class TradeService {
                 .withMatcher("customerWx", match -> match.startsWith())
                 .withMatcher("customerYx", match -> match.startsWith());*/
         Example<StockTradeValInfoJob> example = Example.of(stockYyb/*,matcher*/);
-        Page<StockTradeValInfoJob> all = stockTradeValInfoJobRepository.findTop50ByRankType(stockYyb.getRankType(),pageable);
+        Page<StockTradeValInfoJob> all = stockTradeValInfoJobRepository.findTop200ByRankType(stockYyb.getRankType(),pageable);
         return all;
     }
     public Page<StockTradeValInfoJob> findList(Integer pageNumber, Integer pageSize, StockTradeValInfoJob stockYyb){
@@ -64,7 +64,7 @@ public class TradeService {
          */
         Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
 
-        Page<StockTradeValInfoJob> all = stockTradeValInfoJobRepository.findTop50ByRankTypeAndPlateNameContainingOrderByDayFormatDesc(stockYyb.getRankType(),stockYyb.getPlateName(),pageable);
+        Page<StockTradeValInfoJob> all = stockTradeValInfoJobRepository.findTop200ByRankTypeAndPlateNameContainingOrderByDayFormatDesc(stockYyb.getRankType(),stockYyb.getPlateName(),pageable);
         return all;
     }
     public List<MyTradeStock> statistics(Integer rankType,Integer yesterdayTurnover){

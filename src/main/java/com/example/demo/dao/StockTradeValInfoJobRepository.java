@@ -21,8 +21,8 @@ public interface StockTradeValInfoJobRepository extends JpaRepository<StockTrade
     public List<StockTradeValInfoJob> findByOneOpenIncomeRateIsNullAndTodayClosePriceIsNotNull();
     public List<StockTradeValInfoJob> findByOneOpenRateIsNull();
     public List<StockTradeValInfoJob> findByOneNextOpenIncomeRateIsNullAndTomorrowClosePriceIsNotNull();
-    Page<StockTradeValInfoJob> findTop50ByRankTypeAndPlateNameContainingOrderByDayFormatDesc(Integer rankType,String plateName, Pageable pageable);
-    Page<StockTradeValInfoJob> findTop50ByRankType(Integer rankType, Pageable pageable);
+    Page<StockTradeValInfoJob> findTop200ByRankTypeAndPlateNameContainingOrderByDayFormatDesc(Integer rankType,String plateName, Pageable pageable);
+    Page<StockTradeValInfoJob> findTop200ByRankType(Integer rankType, Pageable pageable);
 
     @Query(value="SELECT sz.day_format 'dayFormat',sum(sz.one_open_rate) 'oneOpenRate',sum(sz.one_close_rate) 'oneCloseRate',sum(sz.one_open_income_rate) 'oneOpenIncomeRate',sum(sz.one_close_income_rate) 'oneCloseIncomeRate',sum(sz.one_next_open_income_rate) 'oneNextOpenIncomeRate',sum(sz.one_next_close_income_rate) 'oneNextCloseIncomeRate',count(sz.day_format)'countNum' FROM stock_trade_val_job sz WHERE sz.yn=1  and sz.day_format BETWEEN  ?1 AND ?2 and sz.rank_type=?3 and sz.yesterday_turnover>?4 GROUP BY sz.day_format ORDER BY sz.day_format desc", nativeQuery = true)
     public List<MyTradeStock> statistics(String start, String end,Integer rankType,Integer yesterdayTurnover);
