@@ -146,7 +146,13 @@ public class XgbCurrentService extends QtService {
     public void limitUp(){
         int spaceHeight = 1;
         Object response = getRequest(limit_up);
-        JSONArray array = JSONObject.parseObject(response.toString()).getJSONArray("data");
+        JSONArray array =null;
+        try {
+           array = JSONObject.parseObject(response.toString()).getJSONArray("data");
+        }catch (Exception e){
+            log.error(":limitUp==================>"+e.getMessage(),e);
+            return;
+        }
         log.info(":zt==================>"+array.size());
         for(int i=0;i<array.size();i++){
             JSONObject jsonStock =  array.getJSONObject(i);
@@ -179,7 +185,12 @@ public class XgbCurrentService extends QtService {
     public void limitUpBrokenAfter(){
         // 先强势，后炸板
         Object response = getRequest(limit_up_broken);
-        JSONArray array = JSONObject.parseObject(response.toString()).getJSONArray("data");
+        JSONArray array =null;
+        try {
+            array = JSONObject.parseObject(response.toString()).getJSONArray("data");
+        }catch (Exception e){
+            log.error("-broken---->" + e.getMessage(),e);
+        }
         log.info("-broken---->" + array.size());
         for(int i=0;i<array.size();i++){
             JSONObject jsonStock =  array.getJSONObject(i);
@@ -199,7 +210,12 @@ public class XgbCurrentService extends QtService {
     }
     public void superStockBefore(){
         Object response = getRequest(super_stock);
-        JSONArray array = JSONObject.parseObject(response.toString()).getJSONArray("data");
+        JSONArray array =null;
+        try {
+            array = JSONObject.parseObject(response.toString()).getJSONArray("data");
+        }catch (Exception e){
+            log.error("-->super"+e.getMessage(),e);
+        }
         log.info("-->super"+array.size());
         for(int i=0;i<array.size();i++){
             JSONObject jsonStock =  array.getJSONObject(i);
