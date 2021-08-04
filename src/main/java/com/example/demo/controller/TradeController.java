@@ -31,6 +31,7 @@ public class TradeController {
     public String list(Integer page, Integer rows, StockTradeValInfoJob obj){
         if(obj.getRankType()==null){
             obj.setRankType(4);
+            obj.setRank(5);
         }
         Page<StockTradeValInfoJob> list =tradeService.findList(page,rows,obj);
 
@@ -48,7 +49,7 @@ public class TradeController {
     @ResponseBody
     public String sta(StockTradeValInfoJob obj){
         if(obj.getRankType()==null){
-            obj.setRankType(1);
+            obj.setRankType(4);
         }
         if(obj.getYesterdayTurnover()==null){
             obj.setYesterdayTurnover(8);
