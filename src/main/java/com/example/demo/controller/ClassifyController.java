@@ -69,6 +69,8 @@ public class ClassifyController {
         StockMood stockMood =stockMoodRepository.findByDayFormat(queryEnd);
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
         sb.append(desc).append(stockMood).append(queryEnd).append("===>【复盘情况】:<br>").append(temperaturesClose);
+        List<StockTemperature> temperatures = getStockTemperatures(queryEnd);
+        sb.append(queryEnd).append("===>【盘面实时运行情况】:<br>").append(temperatures);
         switch(c){
             case 1 :
                 List<StockInfo> news = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_NEW.getCode());
@@ -141,8 +143,8 @@ public class ClassifyController {
 
 
 
-        List<StockTemperature> temperatures = getStockTemperatures(queryEnd);
-        sb.append(queryEnd).append("===>【盘面实时运行情况】:<br>").append(temperatures);
+        /*List<StockTemperature> temperatures = getStockTemperatures(queryEnd);
+        sb.append(queryEnd).append("===>【盘面实时运行情况】:<br>").append(temperatures);*/
         return sb.toString();
     }
     private List<StockTemperature> getStockTemperatures(String queryEnd) {

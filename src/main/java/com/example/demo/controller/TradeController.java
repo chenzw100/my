@@ -59,4 +59,9 @@ public class TradeController {
         map.put("rows",list);
         return JSON.toJSONString(map);
     }
+    @RequestMapping("/sta2.html")
+    public String sta2(ModelMap modelMap){
+        return "trade/sta2";
+    }
+
 }
