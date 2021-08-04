@@ -30,7 +30,7 @@ public class TradeController {
     @ResponseBody
     public String list(Integer page, Integer rows, StockTradeValInfoJob obj){
         if(obj.getRankType()==null){
-            obj.setRankType(1);
+            obj.setRankType(4);
         }
         Page<StockTradeValInfoJob> list =tradeService.findList(page,rows,obj);
 
