@@ -11,6 +11,7 @@ public interface MyTradeStock {
     public Integer getOneCloseIncomeRate();
     public Integer getOneNextOpenIncomeRate();
     public Integer getOneNextCloseIncomeRate();
+    public Long getYesterdayTurnover();
     public Integer getCountNum();
 
 }
