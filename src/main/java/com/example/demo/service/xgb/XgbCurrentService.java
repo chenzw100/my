@@ -190,6 +190,7 @@ public class XgbCurrentService extends QtService {
             array = JSONObject.parseObject(response.toString()).getJSONArray("data");
         }catch (Exception e){
             log.error("-broken---->" + e.getMessage(),e);
+            return;
         }
         log.info("-broken---->" + array.size());
         for(int i=0;i<array.size();i++){
@@ -215,6 +216,7 @@ public class XgbCurrentService extends QtService {
             array = JSONObject.parseObject(response.toString()).getJSONArray("data");
         }catch (Exception e){
             log.error("-->super"+e.getMessage(),e);
+            return;
         }
         log.info("-->super"+array.size());
         for(int i=0;i<array.size();i++){

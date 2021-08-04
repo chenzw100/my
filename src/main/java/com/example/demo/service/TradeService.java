@@ -39,7 +39,12 @@ public class TradeService {
                 .withMatcher("customerWx", match -> match.startsWith())
                 .withMatcher("customerYx", match -> match.startsWith());*/
         Example<StockTradeValInfoJob> example = Example.of(stockYyb/*,matcher*/);
-        Page<StockTradeValInfoJob> all = stockTradeValInfoJobRepository.findTop200ByRankType(stockYyb.getRankType(),pageable);
+        Page<StockTradeValInfoJob> all =null;
+        if(stockYyb.getRankType()==4){
+            all=stockTradeValInfoJobRepository.findTop200ByRankTypeAndRankLessThanEqual(stockYyb.getRankType(),stockYyb.getRank(),pageable);
+        }else {
+            all = stockTradeValInfoJobRepository.findTop200ByRankType(stockYyb.getRankType(),pageable);
+        }
         return all;
     }
     public Page<StockTradeValInfoJob> findList(Integer pageNumber, Integer pageSize, StockTradeValInfoJob stockYyb){
@@ -69,7 +74,14 @@ public class TradeService {
     }
     public List<MyTradeStock> statistics(Integer rankType,Integer yesterdayTurnover){
         String start = MyUtils.getPreTwoMonthDayFormat();
-        List<MyTradeStock> all =stockTradeValInfoJobRepository.statistics(start,MyUtils.getDayFormat(),rankType,yesterdayTurnover);
+        List<MyTradeStock> all =null;
+        if(rankType==-1){
+            all =stockTradeValInfoJobRepository.statistics2(start,MyUtils.getDayFormat(),4,yesterdayTurnover);
+        }else if(rankType==-2) {
+            all =stockTradeValInfoJobRepository.statistics3(start,MyUtils.getDayFormat(),4,yesterdayTurnover);
+        }else {
+            all =stockTradeValInfoJobRepository.statistics(start,MyUtils.getDayFormat(),rankType,yesterdayTurnover);
+        }
         for(MyTradeStock m :all){
             System.out.println(m.getDayFormat());
         }

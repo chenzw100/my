@@ -12,6 +12,11 @@
             <option value="4">50</option>
             <option value="3">创业</option>
         </select>
+        <select class="easyui-combobox" id="rank" name="rank" style="width:70px;">
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+        </select>
         &nbsp;<span>板块:</span> <input class="easyui-textbox" type="text"  name="plateName" id="plateName" >
         &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
         &nbsp;<a href="#" class="easyui-linkbutton" onclick="getSelectedck()">查看个股</a>
@@ -26,6 +31,7 @@
        rownumbers="true" fitColumns="true" singleSelect="true">
     <thead>
     <tr>
+        <th data-options="field:'rank',align:'center'">排行</th>
         <th data-options="field:'dayFormat',align:'center'">日期</th>
         <th data-options="field:'code',align:'center'">代码</th>
         <th data-options="field:'name',align:'center'">名称</th>
@@ -38,7 +44,7 @@
         <th data-options="field:'oneOpenIncomeRate',align:'center'">1开</th>
         <th data-options="field:'oneCloseIncomeRate',align:'center'">1收</th>
         <th data-options="field:'oneNextOpenIncomeRate',align:'center'">2开</th>
-        <th data-options="field:'oneNextCloseIncomeRate',align:'center'">2首</th>
+        <th data-options="field:'oneNextCloseIncomeRate',align:'center'">2收</th>
 
 
     </tr>
@@ -57,6 +63,7 @@
     $("#query").click(function () {
         $('#dg').datagrid('load', {
             plateName: $("#plateName").val(),
+            rank: $("#rank").val(),
             rankType: $("#rankType").val()
         });
     });
