@@ -9,10 +9,16 @@
         <span>类型:</span>
         <select class="easyui-combobox" id="rankType" name="rankType" style="width:70px;">
             <option value="4">50</option>
+            <option value="-5">=5</option>
             <option value="1">全市</option>
             <option value="-1">50-10</option>
             <option value="-2">50-5</option>
             <option value="3">创业</option>
+        </select>
+        <select class="easyui-combobox" id="rank" name="rank" style="width:70px;">
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
         </select>
         <span>成交:</span>
         <select class="easyui-combobox" id="yesterdayTurnover" name="yesterdayTurnover" style="width:70px;">
@@ -57,6 +63,7 @@
     $("#query").click(function () {
         $('#dg').datagrid('load', {
             rankType: $("#rankType").val(),
+            rank: $("#rank").val(),
             yesterdayTurnover: $("#yesterdayTurnover").val()
         });
     });

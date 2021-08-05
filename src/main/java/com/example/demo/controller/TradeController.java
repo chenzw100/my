@@ -33,11 +33,16 @@ public class TradeController {
             obj.setRankType(4);
             obj.setRank(5);
         }
-        Page<StockTradeValInfoJob> list =tradeService.findList(page,rows,obj);
-
         Map map = new HashMap<>();
-        map.put("total",list.getTotalElements());
-        map.put("rows",list.getContent());
+        if(obj.getRankType()==-1){
+            List<StockTradeValInfoJob> list =tradeService.statisticsList(obj.getRank());
+            map.put("total",list.size());
+            map.put("rows",list);
+        }else {
+            Page<StockTradeValInfoJob> list =tradeService.findList(page,rows,obj);
+            map.put("total",list.getTotalElements());
+            map.put("rows",list.getContent());
+        }
         return JSON.toJSONString(map);
     }
 
@@ -54,7 +59,7 @@ public class TradeController {
         if(obj.getYesterdayTurnover()==null){
             obj.setYesterdayTurnover(8);
         }
-        List<MyTradeStock> list =tradeService.statistics(obj.getRankType(),obj.getYesterdayTurnover());
+        List<MyTradeStock> list =tradeService.statistics(obj.getRankType(),obj.getYesterdayTurnover(),obj.getRank());
         Map map = new HashMap<>();
         map.put("total",list.size());
         map.put("rows",list);

@@ -48,6 +48,7 @@ public class TradeService {
         return all;
     }
     public Page<StockTradeValInfoJob> findList(Integer pageNumber, Integer pageSize, StockTradeValInfoJob stockYyb){
+
         if(StringUtils.isBlank(stockYyb.getPlateName())){
             return findALl(pageNumber,pageSize,stockYyb);
         }
@@ -72,13 +73,19 @@ public class TradeService {
         Page<StockTradeValInfoJob> all = stockTradeValInfoJobRepository.findTop200ByRankTypeAndPlateNameContainingOrderByDayFormatDesc(stockYyb.getRankType(),stockYyb.getPlateName(),pageable);
         return all;
     }
-    public List<MyTradeStock> statistics(Integer rankType,Integer yesterdayTurnover){
+    public List<StockTradeValInfoJob> statisticsList(Integer num){
+        List<StockTradeValInfoJob> all = stockTradeValInfoJobRepository.statisticsList(num);
+        return all;
+    }
+    public List<MyTradeStock> statistics(Integer rankType,Integer yesterdayTurnover,Integer sum){
         String start = MyUtils.getPreTwoMonthDayFormat();
         List<MyTradeStock> all =null;
         if(rankType==-1){
             all =stockTradeValInfoJobRepository.statistics2(start,MyUtils.getDayFormat(),4,yesterdayTurnover);
         }else if(rankType==-2) {
             all =stockTradeValInfoJobRepository.statistics3(start,MyUtils.getDayFormat(),4,yesterdayTurnover);
+        }else if(rankType==-5) {
+            all =stockTradeValInfoJobRepository.statistics4(sum,start,MyUtils.getDayFormat(),4,yesterdayTurnover);
         }else {
             all =stockTradeValInfoJobRepository.statistics(start,MyUtils.getDayFormat(),rankType,yesterdayTurnover);
         }
