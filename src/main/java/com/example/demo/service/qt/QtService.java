@@ -1,10 +1,13 @@
 package com.example.demo.service.qt;
 
+import cn.hutool.core.date.DateTime;
 import com.example.demo.service.base.BaseService;
 import com.example.demo.utils.MyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.format.datetime.joda.JodaTimeContext;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -26,8 +29,19 @@ public class QtService extends BaseService{
 
     static String url ="http://qt.gtimg.cn/q=s_";
     public String getCurrentPrice(String code){
-        String price = PRICE_CACHE.get(code);
-        if(StringUtils.isEmpty(price)){
+        DateTime dateTime = new DateTime();
+        int hour =dateTime.hour(true);
+        String price="0";
+        if(hour>14){
+            price = PRICE_CACHE.get(code);
+        }
+        if(hour==9){
+            int minute =dateTime.minute();
+            if(minute>24&&minute<30){
+                price = PRICE_CACHE.get(code);
+            }
+        }
+        if(price.equals("0")){
             String[] stockObj = getStock(code);
             if(stockObj.length<3){
                 return "0";
@@ -41,6 +55,15 @@ public class QtService extends BaseService{
         return price;
     }
     public Integer getIntCurrentPrice(String code){
+        String stockObj = getCurrentPrice(code);
+        return MyUtils.getCentByYuanStr(stockObj);
+    }
+    public Integer getIntCurrentPriceNotSys(String code){
+        if (code.indexOf("6") == 0) {
+            code = "sh" + code;
+        } else {
+            code = "sz" + code;
+        }
         String stockObj = getCurrentPrice(code);
         return MyUtils.getCentByYuanStr(stockObj);
     }

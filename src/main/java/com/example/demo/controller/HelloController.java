@@ -15,6 +15,7 @@ import com.example.demo.service.dfcf.*;
 import com.example.demo.service.sina.SinaService;
 import com.example.demo.service.sohu.StockHistoryService;
 import com.example.demo.service.tgb.TgbDealService;
+import com.example.demo.service.ths.StaStockInfoService;
 import com.example.demo.service.xgb.XgbCurrentService;
 import com.example.demo.service.xgb.XgbService;
 import com.example.demo.task.PanService;
@@ -75,9 +76,20 @@ public class HelloController {
     @Autowired
     DfcfPankService dfcfPankService;
     @Autowired
+    StaStockInfoService staStockInfoService;
+    @Autowired
     private RestTemplate restTemplate;
     private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
     private static String c_cUrl ="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
+    @RequestMapping("/dojob")
+    public String dojob() {
+        try {
+            staStockInfoService.jobDo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "rank deal success";
+    }
     @RequestMapping("/rank")
     public String rank() {
         try {
