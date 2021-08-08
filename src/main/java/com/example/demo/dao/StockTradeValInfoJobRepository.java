@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import com.example.demo.domain.MyTradeSisStock;
 import com.example.demo.domain.MyTradeStock;
 import com.example.demo.domain.StockTradeValInfoJob;
 import org.springframework.data.domain.Page;

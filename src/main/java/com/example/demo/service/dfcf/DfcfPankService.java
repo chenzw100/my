@@ -248,8 +248,12 @@ public class DfcfPankService extends QtService {
                 code = "sz" + code;
             }
             s.setTodayOpenPrice(getIntCurrentPrice(code));
-            s.toOneOpen();
-            stockTradeValInfoJobRepository.save(s);
+            try {
+                s.toOneOpen();
+                stockTradeValInfoJobRepository.save(s);
+            }catch (Exception e){
+                log.error("code"+code+"=开盘价"+s.getTodayOpenPrice()+e.getMessage(),e);
+            }
         }
         list = stockTradeValInfoJobRepository.findByOneOpenIncomeRateIsNullAndTodayClosePriceIsNotNull();
         for(StockTradeValInfoJob s: list){
@@ -260,9 +264,13 @@ public class DfcfPankService extends QtService {
                 code = "sz" + code;
             }
             s.setTomorrowOpenPrice(getIntCurrentPrice(code));
-            s.toOneIncomeOpen();
-            log.info("OneIncomeOpen"+s.getOneOpenIncomeRate()+",TomorrowOpenPrice="+s.getTomorrowOpenPrice()+",todayOpenPrice="+s.getTodayOpenPrice());
-            stockTradeValInfoJobRepository.save(s);
+            try {
+                s.toOneIncomeOpen();
+                log.info("OneIncomeOpen"+s.getOneOpenIncomeRate()+",TomorrowOpenPrice="+s.getTomorrowOpenPrice()+",todayOpenPrice="+s.getTodayOpenPrice());
+                stockTradeValInfoJobRepository.save(s);
+            }catch (Exception e){
+                log.error("code"+code+"=明日开盘价"+s.getTomorrowOpenPrice()+e.getMessage(),e);
+            }
         }
         list = stockTradeValInfoJobRepository.findByOneNextOpenIncomeRateIsNullAndTomorrowClosePriceIsNotNull();
         for(StockTradeValInfoJob s: list){
@@ -273,9 +281,13 @@ public class DfcfPankService extends QtService {
                 code = "sz" + code;
             }
             s.setThreeOpenPrice(getIntCurrentPrice(code));
-            s.toOneNextOpenIncomeRateOpen();
-            log.info("OneNextOpenIncomeRate"+s.getOneNextCloseIncomeRate()+",ThreeOpenPrice="+s.getThreeOpenPrice()+",todayOpenPrice="+s.getTodayOpenPrice());
-            stockTradeValInfoJobRepository.save(s);
+            try {
+                s.toOneNextOpenIncomeRateOpen();
+                log.info("OneNextOpenIncomeRate"+s.getOneNextCloseIncomeRate()+",ThreeOpenPrice="+s.getThreeOpenPrice()+",todayOpenPrice="+s.getTodayOpenPrice());
+                stockTradeValInfoJobRepository.save(s);
+            }catch (Exception e){
+                log.error("code"+code+"=再日开盘价"+s.getTomorrowOpenPrice()+e.getMessage(),e);
+            }
         }
     }
 }
