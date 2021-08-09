@@ -7,6 +7,7 @@ import com.example.demo.domain.MyTradeSisStock;
 import com.example.demo.domain.StockTradeValCurrent;
 import com.example.demo.domain.StockTradeValInfoJob;
 import com.example.demo.domain.StockTradeValInfoJobSis;
+import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.base.BaseService;
 import com.example.demo.service.qt.QtService;
 import com.example.demo.utils.ChineseWorkDay;
@@ -25,12 +26,16 @@ public class StockTradeValCurrentService {
     public Log log = LogFactory.getLog(StockTradeValCurrentService.class);
     @Autowired
     private StockTradeValInfoJobRepository stockTradeValInfoJobRepository;
-    @Autowired
-    private StockTradeValInfoJobSisRepository stockTradeValInfoJobSisRepository;
+
     @Autowired
     private StockTradeValCurrentRepository stockTradeValCurrentRepository;
     @Autowired
     QtService qtService;
+    public List<StockTradeValCurrent> findByDayFormat(String dayFormat){
+        log.info("query day:"+dayFormat);
+        List<StockTradeValCurrent>  currents = stockTradeValCurrentRepository.findByDayFormat(dayFormat);
+        return currents;
+    }
 
     public void jobDo() {
         Integer oneOpenRate =0; // MyUtils.getIncreaseRateCent(this.todayOpenPrice,this.yesterdayClosePrice).intValue();
@@ -46,17 +51,17 @@ public class StockTradeValCurrentService {
         Date yesterdayDate3 =nowWorkDay.preDaysWorkDay(3,now);
         StockTradeValCurrent current = new StockTradeValCurrent();
 
-        List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByDayFormatAndRankType(MyUtils.getDayFormat(yesterdayDate),4);
+        List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByDayFormatAndRankType(MyUtils.getDayFormat(yesterdayDate), NumberEnum.StockTradeType.FIFTY.getCode());
         for(StockTradeValInfoJob s:list){
             oneOpenRate=oneOpenRate+s.getOneOpenRate();
             oneCloseRate =oneCloseRate+MyUtils.getIncreaseRateCent(qtService.getIntCurrentPriceNotSys(s.getCode()),s.getTodayOpenPrice()).intValue();
         }
-        list =stockTradeValInfoJobRepository.findByDayFormatAndRankType(MyUtils.getDayFormat(yesterdayDate2),4);
+        list =stockTradeValInfoJobRepository.findByDayFormatAndRankType(MyUtils.getDayFormat(yesterdayDate2),NumberEnum.StockTradeType.FIFTY.getCode());
         for(StockTradeValInfoJob s:list){
             oneOpenIncomeRate=oneOpenIncomeRate+s.getOneOpenIncomeRate();
             oneCloseIncomeRate =oneCloseIncomeRate+MyUtils.getIncreaseRateCent(qtService.getIntCurrentPriceNotSys(s.getCode()),s.getTodayOpenPrice()).intValue();
         }
-        list =stockTradeValInfoJobRepository.findByDayFormatAndRankType(MyUtils.getDayFormat(yesterdayDate3),4);
+        list =stockTradeValInfoJobRepository.findByDayFormatAndRankType(MyUtils.getDayFormat(yesterdayDate3),NumberEnum.StockTradeType.FIFTY.getCode());
         for(StockTradeValInfoJob s:list){
             oneNextOpenIncomeRate =oneNextOpenIncomeRate+s.getOneNextOpenIncomeRate();
             oneNextCloseIncomeRate=oneNextCloseIncomeRate+MyUtils.getIncreaseRateCent(qtService.getIntCurrentPriceNotSys(s.getCode()),s.getTodayOpenPrice()).intValue();
@@ -69,7 +74,8 @@ public class StockTradeValCurrentService {
         current.setOneNextCloseIncomeRate(oneNextCloseIncomeRate);
         current.setDayFormat(MyUtils.getDayFormat());
         current.setCreated(new Date());
-        current.setRankType(4);
+        current.setRankType(NumberEnum.StockTradeType.FIFTY.getCode());
+        current.setYn(1);
         stockTradeValCurrentRepository.save(current);
 
         log.info("情绪流水记录成功");

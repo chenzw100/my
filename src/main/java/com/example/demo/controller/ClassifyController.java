@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dao.*;
+import com.example.demo.domain.StockTradeValCurrent;
 import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockMood;
 import com.example.demo.domain.table.StockTemperature;
@@ -8,6 +9,7 @@ import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockPlateService;
 import com.example.demo.service.sina.SinaService;
+import com.example.demo.service.ths.StockTradeValCurrentService;
 import com.example.demo.service.xgb.XgbCurrentService;
 import com.example.demo.service.xgb.XgbService;
 import com.example.demo.task.PanService;
@@ -51,13 +53,15 @@ public class ClassifyController {
     StockPlateStaRepository stockPlateStaRepository;
     @Autowired
     StockMoodRepository stockMoodRepository;
-
+    @Autowired
+    StockTradeValCurrentService stockTradeValCurrentService;
 
 
     @RequestMapping("my/{c}/{end}")
     String my(@PathVariable("c")Integer c,@PathVariable("end")String end) {
         //1.新股，2.空间股，3，人气股，4单日热门股
         String queryEnd = getQueryDate(end);
+        List<StockTradeValCurrent> scs =stockTradeValCurrentService.findByDayFormat(queryEnd);
         Date queryDate =  MyUtils.getFormatDate(PRE_END);
         String week = MyUtils.getWeek(queryDate);
         String queryYesterday =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(queryDate));
@@ -70,7 +74,8 @@ public class ClassifyController {
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
         sb.append(desc).append(stockMood).append(queryEnd).append("===>【复盘情况】:<br>").append(temperaturesClose);
         List<StockTemperature> temperatures = getStockTemperatures(queryEnd);
-        sb.append(queryEnd).append("===>【盘面实时运行情况】:<br>").append(temperatures);
+        sb.append(queryEnd).append("===>【盘面实时运行情况1】:<br>").append(temperatures);
+        sb.append(queryEnd).append("===>【盘面实时运行情况2】:<br>").append(scs);
         switch(c){
             case 1 :
                 List<StockInfo> news = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_NEW.getCode());
@@ -81,8 +86,8 @@ public class ClassifyController {
             case 2 :
                 List<StockInfo> highCurrents = stockInfoService.fiveHeightSpace(start, queryEnd);
                 List<StockInfo> kpls = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
-                sb.append(queryEnd).append(week).append("===>【空间股】:<br>").append(highCurrents).
-                        append(queryEnd).append(week).append("===>【灵魂股】:<br>").append(kpls);
+                sb.append(queryEnd).append(week).
+                        append(queryEnd).append(week).append("===>【灵魂股】:<br>").append(kpls).append("===>【空间股】:<br>").append(highCurrents);
                 break; //可选
             case 3 :
                 List<StockInfo> fiveOpens = stockInfoService.findStockDaysByDayFormatOpen(queryEnd, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());

@@ -5,6 +5,7 @@ import com.example.demo.dao.StockYybRepository;
 import com.example.demo.domain.MyTradeStock;
 import com.example.demo.domain.StockTradeValInfoJob;
 import com.example.demo.domain.table.StockYyb;
+import com.example.demo.enums.NumberEnum;
 import com.example.demo.utils.MyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,11 +82,11 @@ public class TradeService {
         String start = MyUtils.getPreTwoMonthDayFormat();
         List<MyTradeStock> all =null;
         if(rankType==-1){
-            all =stockTradeValInfoJobRepository.statistics2(start,MyUtils.getDayFormat(),4,yesterdayTurnover);
+            all =stockTradeValInfoJobRepository.statistics2(start,MyUtils.getDayFormat(), NumberEnum.StockTradeType.FIFTY.getCode(),yesterdayTurnover);
         }else if(rankType==-2) {
-            all =stockTradeValInfoJobRepository.statistics3(start,MyUtils.getDayFormat(),4,yesterdayTurnover);
+            all =stockTradeValInfoJobRepository.statistics3(start,MyUtils.getDayFormat(),NumberEnum.StockTradeType.FIFTY.getCode(),yesterdayTurnover);
         }else if(rankType==-5) {
-            all =stockTradeValInfoJobRepository.statistics4(sum,start,MyUtils.getDayFormat(),4,yesterdayTurnover);
+            all =stockTradeValInfoJobRepository.statistics4(sum,start,MyUtils.getDayFormat(),NumberEnum.StockTradeType.FIFTY.getCode(),yesterdayTurnover);
         }else {
             all =stockTradeValInfoJobRepository.statistics(start,MyUtils.getDayFormat(),rankType,yesterdayTurnover);
         }

@@ -105,6 +105,7 @@ public class PanService {
         if(isWorkday()){
             dealPanDataService.open();
             dfcfPankService.oneOpenIncomeRate();
+            stockTradeValCurrentService.jobDo();
 
         }
     }
@@ -125,6 +126,7 @@ public class PanService {
             xgbCurrentService.closePan();
             xgbService.closePan();
             xgbCurrentService.closeNewAndNearly();
+            stockTradeValCurrentService.jobDo();
         }
     }
     //盘中每小时处理数据

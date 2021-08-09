@@ -3,6 +3,7 @@ package com.example.demo.domain;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.example.demo.utils.MyUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -146,5 +147,16 @@ public class StockTradeValCurrent implements Serializable {
 
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        String dateStr = DateFormatUtils.format(getCreated(), "MM-dd HH:mm");
+        sb.append(dateStr);
+        sb.append("[竞价:").append(oneOpenRate).append("][竞收:").append(oneCloseRate).append("][1开:").append(oneOpenIncomeRate).append("][1收:").append(oneCloseIncomeRate)
+                .append("][再开:").append(oneNextOpenIncomeRate).append("][再收:").append(oneNextCloseIncomeRate).append("]<br>");
+
+        return sb.toString();
     }
 }

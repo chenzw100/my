@@ -184,4 +184,42 @@ public class NumberEnum {
             return "";
         }
     }
+
+    public enum StockTradeType{
+        FALL(4,"非连板"),//2021年8月6日  跌幅排名前40  成交额大于1千万
+        FIRST(1,"首板"),//2021年8月6日 涨停 成交额从大到小排名前50 非连板 成交额大于10亿
+        CYB(3,"创业板"),//2021年08月6日 涨停  成交额从大到小排名前50  成交额大于1亿 创业板
+        RISE(5,"20亿"),//2021年08月6日   成交额大于20亿 涨幅大于5% 流通值 100
+        HARDEN(10,"涨停"),//2021年08月6日 涨停   成交额大于10亿  流通值 100
+        FIFTY(50,"50排名"),//2020年12月31日  成交额从大到小排名前50 流通值大于10
+        ;
+
+        private StockTradeType(int code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+        private int code;
+        private String desc;
+        public int getCode() {
+            return code;
+        }
+        public void setCode(int code) {
+            this.code = code;
+        }
+        public String getDesc() {
+            return desc;
+        }
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        public static String getPlateType(int code){
+            for(PlateType d : PlateType.values()){
+                if(d.getCode()==code){
+                    return d.getDesc();
+                }
+            }
+            return "";
+        }
+    }
 }

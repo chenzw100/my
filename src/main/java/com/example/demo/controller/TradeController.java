@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.demo.domain.MyTradeStock;
 import com.example.demo.domain.StockTradeValInfoJob;
 import com.example.demo.domain.table.StockYyb;
+import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.TradeService;
 import com.example.demo.service.YybService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class TradeController {
     @ResponseBody
     public String list(Integer page, Integer rows, StockTradeValInfoJob obj){
         if(obj.getRankType()==null){
-            obj.setRankType(4);
+            obj.setRankType(NumberEnum.StockTradeType.FIFTY.getCode());
             obj.setRank(5);
         }
         Map map = new HashMap<>();
@@ -54,7 +55,7 @@ public class TradeController {
     @ResponseBody
     public String sta(StockTradeValInfoJob obj){
         if(obj.getRankType()==null){
-            obj.setRankType(4);
+            obj.setRankType(NumberEnum.StockTradeType.FIFTY.getCode());
         }
         if(obj.getYesterdayTurnover()==null){
             obj.setYesterdayTurnover(8);
