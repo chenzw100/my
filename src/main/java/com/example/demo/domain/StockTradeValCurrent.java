@@ -154,7 +154,7 @@ public class StockTradeValCurrent implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         String dateStr = DateFormatUtils.format(getCreated(), "MM-dd HH:mm");
-        sb.append(dateStr).append(NumberEnum.StockCurrentType.getStockCurrentType(rankType));
+        sb.append(dateStr).append(" "+NumberEnum.StockTradeType.getDesc(rankType));
 
         sb.append("[竞价:").append(oneOpenRate).append("][竞收:").append(oneCloseRate).append("][1开:").append(oneOpenIncomeRate).append("][1收:").append(oneCloseIncomeRate)
                 .append("][再开:").append(oneNextOpenIncomeRate).append("][再收:").append(oneNextCloseIncomeRate).append("]<br>");
