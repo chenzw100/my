@@ -7,9 +7,12 @@ import com.example.demo.domain.MyTradeSisStock;
 import com.example.demo.domain.StockTradeValCurrent;
 import com.example.demo.domain.StockTradeValInfoJob;
 import com.example.demo.domain.StockTradeValInfoJobSis;
+import com.example.demo.service.base.BaseService;
 import com.example.demo.service.qt.QtService;
 import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +22,7 @@ import java.util.List;
 
 @Component
 public class StockTradeValCurrentService {
+    public Log log = LogFactory.getLog(StockTradeValCurrentService.class);
     @Autowired
     private StockTradeValInfoJobRepository stockTradeValInfoJobRepository;
     @Autowired
@@ -67,5 +71,8 @@ public class StockTradeValCurrentService {
         current.setCreated(new Date());
         current.setRankType(4);
         stockTradeValCurrentRepository.save(current);
+
+        log.info("情绪流水记录成功");
+
     }
 }

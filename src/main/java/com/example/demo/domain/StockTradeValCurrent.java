@@ -30,13 +30,6 @@ public class StockTradeValCurrent implements Serializable {
     @Column(nullable = false,columnDefinition="varchar(10) COMMENT 'yyyymmdd'")
     @Excel(name = "日期", orderNum = "1")
     private String dayFormat;
-    @Excel(name = "股票代码", orderNum = "2")
-    @Column(nullable = false,columnDefinition="varchar(8)")
-    private String code;
-    @Excel(name = "股票简称", orderNum = "3")
-    @Column(nullable = false,columnDefinition="varchar(8)")
-    private String name;
-
 
 
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第一次开盘竞价'")
@@ -98,21 +91,6 @@ public class StockTradeValCurrent implements Serializable {
         this.dayFormat = dayFormat;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Integer getOneOpenRate() {
         return oneOpenRate;

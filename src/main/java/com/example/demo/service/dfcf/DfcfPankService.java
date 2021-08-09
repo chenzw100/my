@@ -240,6 +240,7 @@ public class DfcfPankService extends QtService {
 
     public void oneOpenIncomeRate(){
         List<StockTradeValInfoJob> list = stockTradeValInfoJobRepository.findByOneOpenRateIsNull();
+        log.info("需要处理的早盘数据"+list.size());
         for(StockTradeValInfoJob s: list){
             String code =s.getCode();
             if (code.indexOf("6") == 0) {
@@ -256,6 +257,7 @@ public class DfcfPankService extends QtService {
             }
         }
         list = stockTradeValInfoJobRepository.findByOneOpenIncomeRateIsNullAndTodayClosePriceIsNotNull();
+        log.info("需要第二处理的早盘数据"+list.size());
         for(StockTradeValInfoJob s: list){
             String code =s.getCode();
             if (code.indexOf("6") == 0) {
@@ -273,6 +275,7 @@ public class DfcfPankService extends QtService {
             }
         }
         list = stockTradeValInfoJobRepository.findByOneNextOpenIncomeRateIsNullAndTomorrowClosePriceIsNotNull();
+        log.info("需要第三处理的早盘数据"+list.size());
         for(StockTradeValInfoJob s: list){
             String code =s.getCode();
             if (code.indexOf("6") == 0) {

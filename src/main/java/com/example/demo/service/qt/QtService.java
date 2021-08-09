@@ -31,7 +31,7 @@ public class QtService extends BaseService{
     public String getCurrentPrice(String code){
         DateTime dateTime = new DateTime();
         int hour =dateTime.hour(true);
-        String price="0";
+        String price=null;
         if(hour>14){
             price = PRICE_CACHE.get(code);
         }
@@ -41,16 +41,16 @@ public class QtService extends BaseService{
                 price = PRICE_CACHE.get(code);
             }
         }
-        if(price.equals("0")){
+        if(StringUtils.isBlank(price)){
             String[] stockObj = getStock(code);
             if(stockObj.length<3){
                 return "0";
             }
             price = stockObj[3];
             PRICE_CACHE.put(code,price);
-            log.info(code+"-PRICE_CACHE-"+price);
+            log.info(code+"-put PRICE_CACHE-"+price);
         }else {
-            log.info(code+"-PRICE_no_CACHE-"+price);
+            log.info(code+"-get PRICE_CACHE-"+price);
         }
         return price;
     }

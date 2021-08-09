@@ -9,6 +9,7 @@ import com.example.demo.service.dfcf.DfcfService;
 import com.example.demo.service.dfcf.DfcfYybRecordJobService;
 import com.example.demo.service.pan.DealPanDataService;
 import com.example.demo.service.tgb.TgbService;
+import com.example.demo.service.ths.StockTradeValCurrentService;
 import com.example.demo.service.xgb.XgbCurrentService;
 import com.example.demo.service.xgb.XgbService;
 import com.example.demo.utils.ChineseWorkDay;
@@ -55,6 +56,8 @@ public class PanService {
     DfcfYybRecordJobService dfcfYybRecordJobService;
     @Autowired
     DfcfPankService dfcfPankService;
+    @Autowired
+    StockTradeValCurrentService stockTradeValCurrentService;
     //营业部处理
     @Scheduled(cron = closeTradeJobCron)
     public void tradeJob(){
@@ -130,6 +133,7 @@ public class PanService {
         if(isWorkday()) {
             log.info("currentPan-ready1 data");
             xgbCurrentService.currentPan();
+            stockTradeValCurrentService.jobDo();
             //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         }
     }
@@ -138,6 +142,7 @@ public class PanService {
         if(isWorkday()) {
             log.info("currentPan-ready2 data");
             xgbCurrentService.currentPan();
+            stockTradeValCurrentService.jobDo();
             //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         }
     }
@@ -146,6 +151,7 @@ public class PanService {
         if(isWorkday()) {
             log.info("currentPan-ready3 data");
             xgbCurrentService.currentPan();
+            stockTradeValCurrentService.jobDo();
             //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         }
     }
@@ -154,6 +160,7 @@ public class PanService {
         if(isWorkday()) {
             log.info("currentPan-ready4 data");
             xgbCurrentService.currentPan();
+            stockTradeValCurrentService.jobDo();
             //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         }
     }
@@ -162,6 +169,7 @@ public class PanService {
         if(isWorkday()) {
             log.info("currentPan-ready5 data");
             xgbCurrentService.currentPan();
+            stockTradeValCurrentService.jobDo();
             //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         }
     }
@@ -170,6 +178,7 @@ public class PanService {
         if(isWorkday()) {
             log.info("currentPan-ready6 data");
             xgbCurrentService.currentPan();
+            stockTradeValCurrentService.jobDo();
             //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         }
     }
