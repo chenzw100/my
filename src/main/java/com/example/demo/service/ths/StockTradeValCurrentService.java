@@ -31,6 +31,12 @@ public class StockTradeValCurrentService {
     private StockTradeValCurrentRepository stockTradeValCurrentRepository;
     @Autowired
     QtService qtService;
+    public List<StockTradeValCurrent> findByDayFormatAndRankType(String dayFormat,Integer rankType){
+        log.info("query findByDayFormatAndRankType :"+dayFormat);
+        List<StockTradeValCurrent>  currents = stockTradeValCurrentRepository.findByDayFormatAndRankType(dayFormat,rankType);
+        return currents;
+    }
+
     public List<StockTradeValCurrent> findByDayFormat(String dayFormat){
         log.info("query day:"+dayFormat);
         List<StockTradeValCurrent>  currents = stockTradeValCurrentRepository.findByDayFormatOrderByRankType(dayFormat);

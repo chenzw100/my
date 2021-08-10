@@ -12,5 +12,6 @@ import java.util.List;
 public interface StockTradeValCurrentRepository extends JpaRepository<StockTradeValCurrent,Long> {
 
         List<StockTradeValCurrent> findByDayFormatOrderByRankType(String dayFormat);
+        List<StockTradeValCurrent> findByDayFormatAndRankType(String dayFormat,Integer rankType);
 
 }

@@ -2,9 +2,12 @@ package com.example.demo.domain;
 
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.utils.MyUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,6 +22,9 @@ public class StockTradeValCurrent implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(nullable = false)
     private Date created;
 

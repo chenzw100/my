@@ -61,7 +61,7 @@ public class ClassifyController {
     String my(@PathVariable("c")Integer c,@PathVariable("end")String end) {
         //1.新股，2.空间股，3，人气股，4单日热门股
         String queryEnd = getQueryDate(end);
-        List<StockTradeValCurrent> scs =stockTradeValCurrentService.findByDayFormat(queryEnd);
+        List<StockTradeValCurrent> scs =stockTradeValCurrentService.findByDayFormatAndRankType(queryEnd,NumberEnum.StockTradeType.FIFTY.getCode());
         Date queryDate =  MyUtils.getFormatDate(PRE_END);
         String week = MyUtils.getWeek(queryDate);
         String queryYesterday =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(queryDate));

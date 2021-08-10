@@ -2,11 +2,15 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.example.demo.domain.MyTradeStock;
+import com.example.demo.domain.StockTradeValCurrent;
 import com.example.demo.domain.StockTradeValInfoJob;
 import com.example.demo.domain.table.StockYyb;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.TradeService;
 import com.example.demo.service.YybService;
+import com.example.demo.service.ths.StockTradeValCurrentService;
+import com.example.demo.utils.MyUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -23,6 +27,8 @@ import java.util.Map;
 public class TradeController {
     @Autowired
     TradeService tradeService;
+    @Autowired
+    StockTradeValCurrentService stockTradeValCurrentService;
     @RequestMapping("/list.html")
     public String index(ModelMap modelMap){
         return "trade/list";
@@ -69,6 +75,25 @@ public class TradeController {
     @RequestMapping("/sta2.html")
     public String sta2(ModelMap modelMap){
         return "trade/sta2";
+    }
+
+
+    @RequestMapping("/current.html")
+    public String current(ModelMap modelMap){
+        return "trade/current";
+    }
+    @RequestMapping("/current.action")
+    @ResponseBody
+    public String current(StockTradeValCurrent obj){
+        if(StringUtils.isBlank(obj.getDayFormat())){
+            obj.setDayFormat( MyUtils.getDayFormat());
+            obj.setRankType(NumberEnum.StockTradeType.FIFTY.getCode());
+        }
+        List<StockTradeValCurrent> scs =stockTradeValCurrentService.findByDayFormatAndRankType(obj.getDayFormat(),obj.getRankType());
+        Map map = new HashMap<>();
+        map.put("total",scs.size());
+        map.put("rows",scs);
+        return JSON.toJSONString(map);
     }
 
 }
