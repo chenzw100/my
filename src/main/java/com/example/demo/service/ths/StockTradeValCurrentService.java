@@ -58,8 +58,10 @@ public class StockTradeValCurrentService {
         Date now = new Date();
         ChineseWorkDay nowWorkDay = new ChineseWorkDay(now);
         Date yesterdayDate =nowWorkDay.preWorkDay();
-        Date yesterdayDate2 =nowWorkDay.preDaysWorkDay(2,now);
-        Date yesterdayDate3 =nowWorkDay.preDaysWorkDay(3,now);
+        ChineseWorkDay yesterdayWorkDay = new ChineseWorkDay(yesterdayDate);
+        Date yesterdayDate2 =yesterdayWorkDay.preWorkDay();
+        ChineseWorkDay yesterday3WorkDay = new ChineseWorkDay(yesterdayDate2);
+        Date yesterdayDate3 =yesterday3WorkDay.preWorkDay();
         StockTradeValCurrent current = new StockTradeValCurrent();
 
         List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByDayFormatAndRankType(MyUtils.getDayFormat(yesterdayDate), rankType);
