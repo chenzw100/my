@@ -33,21 +33,21 @@ public class StockTradeValInfoJob implements Serializable {
     @Excel(name = "股票简称", orderNum = "3")
     @Column(nullable = false,columnDefinition="varchar(8)")
     private String name;
-    @Excel(name = "排名", orderNum = "4")
+    @Excel(name = "排名", orderNum = "8")
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '排名'")
     private Integer rank;
-    @Excel(name = "成交额(元)", orderNum = "5")
+    @Excel(name = "成交额(元)", orderNum = "4")
     @Transient
     private String yesterdayTurnoverStr;
-    @Excel(name = "成交量(股)", orderNum = "6")
+    @Excel(name = "成交量(股)", orderNum = "5")
     @Transient
     private String yesterdayVolumeStr;
 
-    @Excel(name = "涨停原因类别", orderNum = "7")
+    @Excel(name = "涨停原因类别", orderNum = "6")
     @Column(nullable = true,columnDefinition="varchar(200) COMMENT '板块'")
     private String plateName;
 
-    @Excel(name = "a股流通市值(元)", orderNum = "8")
+    @Excel(name = "a股流通市值(元)", orderNum = "7")
     @Transient
     private String tradeAmountStr;
 
