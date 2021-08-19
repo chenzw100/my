@@ -91,7 +91,7 @@ public class StockTradeValCurrentService {
         current.setYn(1);
         stockTradeValCurrentRepository.save(current);
 
-        log.info("情绪流水记录成功");
+        log.info(rankType+"情绪流水记录成功oneCloseRate"+oneCloseRate);
 
     }
 }

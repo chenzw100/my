@@ -443,6 +443,9 @@ public class StockTradeValInfoJob implements Serializable {
     }
 
     public Integer getOneOpenIncomeRate() {
+        if(oneOpenIncomeRate==null){
+            oneOpenIncomeRate=0;
+        }
         return oneOpenIncomeRate;
     }
 
@@ -475,6 +478,9 @@ public class StockTradeValInfoJob implements Serializable {
     }
 
     public Integer getOneNextOpenIncomeRate() {
+        if(oneNextOpenIncomeRate==null){
+            oneNextOpenIncomeRate=0;
+        }
         return oneNextOpenIncomeRate;
     }
 

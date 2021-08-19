@@ -3,16 +3,17 @@
 <div th:include="head :: header"></div>
 <body>
 <div th:include="menu :: menu"></div>
-<h2>公司交易管理 --- 交易管理-【交易记录】</h2>
+<h2>公司交易管理 涨停情况--- 交易管理-【交易记录】</h2>
 <div>
     <div style="padding:5px 0;">
         <span>类型:</span>
         <select class="easyui-combobox" id="rankType" name="rankType" style="width:70px;">
-            <option value="10" selected>10-涨停</option>
-            <option value="50">前50</option>
-            <option value="5">5-20亿</option>
-            <option value="4">下跌</option>
-            <option value="3">创业</option>
+            <option value="10" selected>涨停</option>
+            <option value="1">首板</option>
+        </select>
+        <select class="easyui-combobox" id="oneOpenRate" name="oneOpenRate" style="width:70px;">
+            <option value="-700" selected>-7%</option>
+            <option value="700" >7%</option>
         </select>
         &nbsp;<span>板块:</span> <input class="easyui-textbox" type="text"  name="plateName" id="plateName" >
         &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
@@ -53,14 +54,14 @@
         $('#dg').edatagrid({
             pageSize:100,
             pageList:[100,200],
-            url:'/trade/list.action'
+            url:'/trade/listUp.action'
 
         });
     });
     $("#query").click(function () {
         $('#dg').datagrid('load', {
             plateName: $("#plateName").val(),
-            rank: $("#rank").val(),
+            oneOpenRate: $("#oneOpenRate").val(),
             rankType: $("#rankType").val()
         });
     });

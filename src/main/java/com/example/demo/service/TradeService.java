@@ -18,6 +18,36 @@ import java.util.List;
 public class TradeService {
     @Autowired
     StockTradeValInfoJobRepository stockTradeValInfoJobRepository;
+    public Page<StockTradeValInfoJob> findLimitUP(Integer pageNumber, Integer pageSize, StockTradeValInfoJob obj){
+        if(pageNumber==null){
+            pageNumber=0;
+            pageSize=10;
+        }
+        pageNumber--;
+
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC,"dayFormat");
+        Sort.Order order1 = new Sort.Order(Sort.Direction.ASC,"rank");
+        //如果有多个排序条件 建议使用此种方式 使用 Sort.by 替换之前的  new Sort();
+        Sort sort = Sort.by(order,order1);
+        //使用 PageRequest.of 替代之前的 new PageRequest();
+        /**
+         * page：0 开始
+         * size:每页显示的数量
+         * 排序的规则
+         */
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
+       /* ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("customerWx", match -> match.startsWith())
+                .withMatcher("customerYx", match -> match.startsWith());*/
+        Example<StockTradeValInfoJob> example = Example.of(obj/*,matcher*/);
+        Page<StockTradeValInfoJob> all =null;
+        if(obj.getOneOpenRate()==700){
+            all = stockTradeValInfoJobRepository.findByRankTypeAndOneOpenRateGreaterThan(obj.getRankType(),obj.getOneOpenRate(),pageable);
+        }else {
+            all=stockTradeValInfoJobRepository.findByRankTypeAndOneOpenRateLessThan(obj.getRankType(),obj.getOneOpenRate(),pageable);
+        }
+        return all;
+    }
     public Page<StockTradeValInfoJob> findALl(Integer pageNumber, Integer pageSize, StockTradeValInfoJob stockYyb){
         if(pageNumber==null){
             pageNumber=0;

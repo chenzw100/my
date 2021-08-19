@@ -26,6 +26,8 @@ public interface StockTradeValInfoJobRepository extends JpaRepository<StockTrade
     Page<StockTradeValInfoJob> findTop200ByRankTypeAndPlateNameContainingOrderByDayFormatDesc(Integer rankType,String plateName, Pageable pageable);
     Page<StockTradeValInfoJob> findTop200ByRankType(Integer rankType, Pageable pageable);
     Page<StockTradeValInfoJob> findTop200ByRankTypeAndRankLessThanEqual(Integer rankType, Integer rank, Pageable pageable);
+    Page<StockTradeValInfoJob> findByRankTypeAndOneOpenRateLessThan(Integer rankType,Integer oneOpenRate, Pageable pageable);
+    Page<StockTradeValInfoJob> findByRankTypeAndOneOpenRateGreaterThan(Integer rankType,Integer oneOpenRate, Pageable pageable);
 
 
     @Query(value="SELECT sz.day_format 'dayFormat',AVG(sz.one_open_rate) 'oneOpenRate',AVG(sz.one_close_rate) 'oneCloseRate',AVG(sz.one_open_income_rate) 'oneOpenIncomeRate',AVG(sz.one_close_income_rate) 'oneCloseIncomeRate',AVG(sz.one_next_open_income_rate) 'oneNextOpenIncomeRate',AVG(sz.one_next_close_income_rate) 'oneNextCloseIncomeRate',AVG(sz.yesterday_turnover) 'yesterdayTurnover',count(sz.day_format)'countNum' FROM stock_trade_val_job sz WHERE sz.yn=1  and sz.day_format BETWEEN  ?1 AND ?2 and sz.rank_type=?3 and sz.yesterday_turnover>?4 GROUP BY sz.day_format ORDER BY sz.day_format desc", nativeQuery = true)

@@ -29,6 +29,26 @@ public class TradeController {
     TradeService tradeService;
     @Autowired
     StockTradeValCurrentService stockTradeValCurrentService;
+    @RequestMapping("/listUp.html")
+    public String listLimit(ModelMap modelMap){
+        return "trade/listUp";
+    }
+    @RequestMapping("/listUp.action")
+    @ResponseBody
+    public String listUp(Integer page, Integer rows, StockTradeValInfoJob obj){
+        if(obj.getRankType()==null){
+            obj.setRankType(NumberEnum.StockTradeType.HARDEN.getCode());
+        }
+        if(obj.getOneOpenRate()==null){
+            obj.setOneOpenRate(-700);
+        }
+        Map map = new HashMap<>();
+
+        Page<StockTradeValInfoJob> list =tradeService.findLimitUP(page,rows,obj);
+        map.put("total",list.getTotalElements());
+        map.put("rows",list.getContent());
+        return JSON.toJSONString(map);
+    }
     @RequestMapping("/list.html")
     public String index(ModelMap modelMap){
         return "trade/list";
@@ -37,7 +57,7 @@ public class TradeController {
     @ResponseBody
     public String list(Integer page, Integer rows, StockTradeValInfoJob obj){
         if(obj.getRankType()==null){
-            obj.setRankType(NumberEnum.StockTradeType.FIFTY.getCode());
+            obj.setRankType(NumberEnum.StockTradeType.HARDEN.getCode());
             obj.setRank(5);
         }
         Map map = new HashMap<>();
@@ -86,7 +106,9 @@ public class TradeController {
     @ResponseBody
     public String current(StockTradeValCurrent obj){
         if(StringUtils.isBlank(obj.getDayFormat())){
-            obj.setDayFormat( MyUtils.getDayFormat());
+            obj.setDayFormat(MyUtils.getDayFormat());
+        }
+        if(obj.getRankType()==null){
             obj.setRankType(NumberEnum.StockTradeType.FIFTY.getCode());
         }
         List<StockTradeValCurrent> scs =stockTradeValCurrentService.findByDayFormatAndRankType(obj.getDayFormat(),obj.getRankType());
