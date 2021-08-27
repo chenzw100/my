@@ -164,8 +164,8 @@ public class StockInfoService {
     public List<StockInfo> findStockDaysByDayFormatOpen(String dayFormat,int type){
         return stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByOpenBidRateDesc(dayFormat, type);
     }
-    public List<StockInfo> findStockDaysByTodayFormatPlate(){
-        return stockInfoRepository.findByDayFormatAndStockTypeOrderByPlateName(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DAY.getCode());
+    public List<StockInfo> findStockDaysByTodayFormatPlate(String dayFormat){
+        return stockInfoRepository.findByDayFormatAndStockTypeOrderByPlateName(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode());
     }
     public List<StockInfo> findStockDaysByTodayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DAY.getCode());
@@ -202,8 +202,8 @@ public class StockInfoService {
     public List<StockInfo> findStockDayFivesByTodayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
     }
-    public List<StockInfo> findStockDayFivesByTodayFormatPlate(){
-        return stockInfoRepository.findByDayFormatAndStockTypeOrderByPlateName(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
+    public List<StockInfo> findStockDayFivesByTodayFormatPlate(String dayFormat){
+        return stockInfoRepository.findByDayFormatAndStockTypeOrderByPlateName(dayFormat, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
     }
     public List<StockInfo> findStockDayFivesByDayFormat(String dayFormat){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(dayFormat, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
