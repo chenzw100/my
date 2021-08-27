@@ -29,6 +29,8 @@ public class StockInfoService {
 
     @Autowired
     StockInfoRepository stockInfoRepository;
+
+
     public List<StockInfo> fupan(String dayFormat){
         Date endDate =  MyUtils.getFormatDate(dayFormat);
         String yesterday =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
@@ -162,7 +164,9 @@ public class StockInfoService {
     public List<StockInfo> findStockDaysByDayFormatOpen(String dayFormat,int type){
         return stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByOpenBidRateDesc(dayFormat, type);
     }
-
+    public List<StockInfo> findStockDaysByTodayFormatPlate(){
+        return stockInfoRepository.findByDayFormatAndStockTypeOrderByPlateName(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DAY.getCode());
+    }
     public List<StockInfo> findStockDaysByTodayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DAY.getCode());
     }
@@ -197,6 +201,9 @@ public class StockInfoService {
     //---STOCK_DAY_FIVE---start ---
     public List<StockInfo> findStockDayFivesByTodayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
+    }
+    public List<StockInfo> findStockDayFivesByTodayFormatPlate(){
+        return stockInfoRepository.findByDayFormatAndStockTypeOrderByPlateName(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
     }
     public List<StockInfo> findStockDayFivesByDayFormat(String dayFormat){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(dayFormat, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
