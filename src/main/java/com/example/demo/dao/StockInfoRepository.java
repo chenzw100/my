@@ -33,7 +33,7 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     //竞价前3
     List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByOpenBidRate(String dayFormat,Integer stockType);
     //收盘前3
-    List<StockInfo> findFirst3ByDayFormatAndStockTypeOrderByTodayCloseYieldDesc(String dayFormat,Integer stockType);
+    List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByTodayCloseYieldDesc(String dayFormat,Integer stockType);
     //收盘前3
     List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByTodayCloseYield(String dayFormat,Integer stockType);
     //明日开盘前3

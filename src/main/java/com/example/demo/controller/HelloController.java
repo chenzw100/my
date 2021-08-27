@@ -597,7 +597,7 @@ public class HelloController {
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         PRE_END=queryEnd;
 
-
+        String queryYesterday =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
         List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
         StockTruth stockTruth = null;
         if(stockTruths==null){
@@ -610,7 +610,9 @@ public class HelloController {
         List<StockInfo> dayHot =stockInfoService.find2DayHot(queryEnd);
         List<StockInfo> result1 =stockInfoService.findStockDayFivesByTodayFormatPlate(queryEnd);
         List<StockInfo> result2 =stockInfoService.findStockDaysByTodayFormatPlate(queryEnd);
-        return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"===>【复盘】:<br>"+temperaturesClose+"<br>===>【最热议】:<br>"+dayHot+"<br>===>【当日板块】:<br>"+result2+"<br>===>【五日板块】:<br>"+result1;
+        List<StockInfo> todayCloseYields =stockInfoService.todayCloseYield(queryYesterday);
+        List<StockInfo> todayCloseYieldFives = stockInfoService.todayCloseYieldFive(queryYesterday);
+        return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"===>【复盘】:<br>"+temperaturesClose+"<br>===>【最热议】:<br>"+dayHot+"<br>===>【昨日最强】:<br>"+todayCloseYields+"<br>===>【昨日最强】:<br>"+todayCloseYieldFives+"<br>===>【当日板块】:<br>"+result2+"<br>===>【五日板块】:<br>"+result1;
     }
     @RequestMapping("/chance3/{end}")
     String chance3(@PathVariable("end")String end) {
