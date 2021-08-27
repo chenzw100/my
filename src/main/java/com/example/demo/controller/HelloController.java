@@ -597,8 +597,6 @@ public class HelloController {
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         PRE_END=queryEnd;
 
-        List<StockInfo> fives = stockInfoService.findStockDayFivesByDayFormatTomorrowOpenYield(queryEnd);
-        List<StockInfo> top3 =stockInfoService.findByDayFormatOrderByFiveHighYieldDescTop3(queryEnd);
 
         List<StockTruth> stockTruths = stockTruthRepository.findByDayFormat(queryEnd);
         StockTruth stockTruth = null;
@@ -609,9 +607,8 @@ public class HelloController {
         String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据=====>当前查询日期";
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
-        List<StockInfo> days = stockInfoService.findStockDaysByDayFormatTomorrowOpenYield(queryEnd);
         List<StockInfo> dayHot =stockInfoService.find2DayHot(queryEnd);
-        return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"===>【最热议】:<br>"+dayHot+"<br>===>【竞价情况】:<br>"+days+"<br>"+top3+"<br>"+fives+temperaturesClose;
+        return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"===>【复盘】:<br>"+temperaturesClose+"<br>===>【最热议】:<br>"+dayHot;
     }
     @RequestMapping("/chance3/{end}")
     String chance3(@PathVariable("end")String end) {
