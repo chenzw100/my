@@ -610,7 +610,8 @@ public class HelloController {
         String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start,queryEnd);
         List<StockInfo> days = stockInfoService.findStockDaysByDayFormatTomorrowOpenYield(queryEnd);
-        return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"<br>===>【竞价情况】:<br>"+days+"<br>"+top3+"<br>"+fives+temperaturesClose;
+        List<StockInfo> dayHot =stockInfoService.find2DayHot(queryEnd);
+        return desc+queryEnd+"<br>心理历程<br>:"+stockTruths+"===>【最热议】:<br>"+dayHot+"<br>===>【竞价情况】:<br>"+days+"<br>"+top3+"<br>"+fives+temperaturesClose;
     }
     @RequestMapping("/chance3/{end}")
     String chance3(@PathVariable("end")String end) {

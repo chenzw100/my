@@ -61,7 +61,7 @@ public class ClassifyController {
     String my(@PathVariable("c")Integer c,@PathVariable("end")String end) {
         //1.新股，2.空间股，3，人气股，4单日热门股
         String queryEnd = getQueryDate(end);
-        List<StockTradeValCurrent> scs =stockTradeValCurrentService.findByDayFormatAndRankType(queryEnd,NumberEnum.StockTradeType.FIFTY.getCode());
+        //List<StockTradeValCurrent> scs =stockTradeValCurrentService.findByDayFormatAndRankType(queryEnd,NumberEnum.StockTradeType.FIFTY.getCode());
         Date queryDate =  MyUtils.getFormatDate(PRE_END);
         String week = MyUtils.getWeek(queryDate);
         String queryYesterday =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(queryDate));
@@ -73,9 +73,9 @@ public class ClassifyController {
         StockMood stockMood =stockMoodRepository.findByDayFormat(queryEnd);
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
         sb.append(desc).append(stockMood).append(queryEnd).append("===>【复盘情况】:<br>").append(temperaturesClose);
-        List<StockTemperature> temperatures = getStockTemperatures(queryEnd);
-        sb.append(queryEnd).append("===>【盘面实时运行情况1】:<br>").append(temperatures);
-        sb.append(queryEnd).append("===>【盘面实时运行情况2】:<br>").append(scs);
+        /*List<StockTemperature> temperatures = getStockTemperatures(queryEnd);
+        sb.append(queryEnd).append("===>【盘面实时运行情况1】:<br>").append(temperatures);*/
+        //sb.append(queryEnd).append("===>【盘面实时运行情况2】:<br>").append(scs);
         switch(c){
             case 1 :
                 List<StockInfo> news = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_NEW.getCode());
@@ -148,8 +148,8 @@ public class ClassifyController {
 
 
 
-        /*List<StockTemperature> temperatures = getStockTemperatures(queryEnd);
-        sb.append(queryEnd).append("===>【盘面实时运行情况】:<br>").append(temperatures);*/
+        List<StockTemperature> temperatures = getStockTemperatures(queryEnd);
+        sb.append(queryEnd).append("===>【盘面实时运行情况】:<br>").append(temperatures);
         return sb.toString();
     }
     private List<StockTemperature> getStockTemperatures(String queryEnd) {
