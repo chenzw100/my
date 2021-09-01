@@ -75,7 +75,7 @@ public class ChineseWorkDay {
      * @return
      * @throws Exception
      */
-    public boolean isLawHoliday() throws Exception {
+    public boolean isLawHoliday()  {
 
         if (lawHolidays.contains(calendar)) {
             return true;
@@ -90,7 +90,7 @@ public class ChineseWorkDay {
      * @return
      * @throws
      */
-    public boolean isWeekends() throws Exception {
+    public boolean isWeekends() {
 
         Calendar ca = Calendar.getInstance();
         ca.setTime(date);
@@ -108,7 +108,7 @@ public class ChineseWorkDay {
      * @return
      * @throws Exception
      */
-    public boolean isExtraWorkday() throws Exception {
+    public boolean isExtraWorkday() {
         if (extraWorkdays.contains(calendar)) {
             return true;
         }
@@ -122,7 +122,7 @@ public class ChineseWorkDay {
      * @return
      * @throws Exception
      */
-    public boolean isHoliday() throws Exception {
+    public boolean isHoliday() {
 
         // 首先法定节假日必定是休息日
         if (this.isLawHoliday()) {

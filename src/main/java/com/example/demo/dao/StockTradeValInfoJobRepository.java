@@ -16,6 +16,7 @@ import java.util.List;
  * JpaRepository default method
  */
 public interface StockTradeValInfoJobRepository extends JpaRepository<StockTradeValInfoJob,Long> {
+    public List<StockTradeValInfoJob> findByOrderByDayFormatDesc();
     @Query(value="SELECT * from stock_trade_val_info_job WHERE day_format BETWEEN ?1 AND ?2", nativeQuery = true)
     public List<StockTradeValInfoJob> threeStatistic(String start, String end);
     public List<StockTradeValInfoJob> findByDayFormatAndRankType(String start,Integer rankType);

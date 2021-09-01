@@ -95,7 +95,8 @@ public class DfcfPankService extends QtService {
         return plateName;
     }
     public void getAllList(){
-        List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByOneNextCloseIncomeRateIsNull();
+        //List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByOneNextCloseIncomeRateIsNull();
+        List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByOrderByDayFormatDesc();
         for(StockTradeValInfoJob s:list){
             dealJob(s);
         }
@@ -110,16 +111,29 @@ public class DfcfPankService extends QtService {
         }
     }
     public void dealJob(StockTradeValInfoJob stockYyb ){
-        Date yesterdayDate = MyUtils.getFormatDate(stockYyb.getDayFormat());
+       /* Date yesterdayDate = MyUtils.getFormatDate(stockYyb.getDayFormat());
         ChineseWorkDay nowWorkDay = new ChineseWorkDay(yesterdayDate);
         Date now = nowWorkDay.nextWorkDay();
+        ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(now);
+        Date tomorrowDate = tomorrowWorkDay.nextWorkDay();
+        ChineseWorkDay threeWorkDay = new ChineseWorkDay(tomorrowDate);
+        Date threeDate = threeWorkDay.nextWorkDay();*/
+
+
+        Date now = MyUtils.getFormatDate(stockYyb.getDayFormat());
+        ChineseWorkDay yesterdayWorkDay = new ChineseWorkDay(now);
+        if(yesterdayWorkDay.isHoliday()){
+                log.info("------------ h 休息日"+stockYyb.getDayFormat());
+                return;
+        }
+        Date yesterdayDate = yesterdayWorkDay.preWorkDay();
         ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(now);
         Date tomorrowDate = tomorrowWorkDay.nextWorkDay();
         ChineseWorkDay threeWorkDay = new ChineseWorkDay(tomorrowDate);
         Date threeDate = threeWorkDay.nextWorkDay();
 
 
-        String start = stockYyb.getDayFormat();
+        String start = MyUtils.getDayFormat(yesterdayDate);
         String end = MyUtils.getDayFormat(threeDate);
 
 
@@ -128,7 +142,7 @@ public class DfcfPankService extends QtService {
             return;
         }
         JSONArray three = map.get(MyUtils.getDayFormat(threeDate));
-        JSONArray yesterday = map.get(stockYyb.getDayFormat());
+        JSONArray yesterday = map.get(MyUtils.getDayFormat(yesterdayDate));
         JSONArray today = map.get(MyUtils.getDayFormat(now));
         JSONArray tomorrow =map.get(MyUtils.getDayFormat(tomorrowDate));
         try {
@@ -213,7 +227,7 @@ public class DfcfPankService extends QtService {
             stockTradeValInfoJobRepository.save(stockYyb);
             log.info("总更新竞价数据,"+stockYyb.getTwoOpenRate());
         } catch (Exception e) {
-            System.out.println("error -------------"+stockYyb.getDayFormat()+",code="+stockYyb.getCode());
+            System.out.println("总更新竞价数据 error -------------"+stockYyb.getDayFormat()+",code="+stockYyb.getCode());
             e.getMessage();
         }
     }
@@ -222,10 +236,15 @@ public class DfcfPankService extends QtService {
         String url = history_url+code+"&start="+start+"&end="+end;
         Object result = getRequest(url);
         if(result.toString().length()<5){
+            log.error("失败1："+url);
             return null;
         }
         JSONObject jsonObject = (JSONObject) JSONArray.parseArray(result.toString()).get(0);
         JSONArray jsonArray = jsonObject.getJSONArray("hq");
+        if(jsonArray==null){
+            log.error("失败2："+url);
+            return null;
+        }
         HashMap<String,JSONArray> map =new HashMap<>();
         for(Object object :jsonArray){
             JSONArray oa =JSONArray.parseArray(object.toString());

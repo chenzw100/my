@@ -140,7 +140,10 @@ public class MyUtils {
         return new BigDecimal(increase-base).multiply(new BigDecimal(100)).divide(new BigDecimal(base), 2, RoundingMode.HALF_UP);
 
     }
-    public static BigDecimal getIncreaseRateCent(int increase,int base){
+    public static BigDecimal getIncreaseRateCent(Integer increase,Integer base){
+        if(increase==null||base==null){
+            return new BigDecimal(0);
+        }
         if(increase==0||base==0){
             return new BigDecimal(0);
         }

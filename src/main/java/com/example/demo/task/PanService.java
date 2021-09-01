@@ -58,7 +58,7 @@ public class PanService {
     DfcfPankService dfcfPankService;
     @Autowired
     StockTradeValCurrentService stockTradeValCurrentService;
-    //营业部处理
+    /*//营业部处理
     @Scheduled(cron = closeTradeJobCron)
     public void tradeJob(){
         //获取数据
@@ -81,7 +81,7 @@ public class PanService {
         if(isWorkday()){
             dfcfService.yybJob();
         }
-    }
+    }*/
     //盘前处理数据 6:23点获取
     @Scheduled(cron = tgbCron)
     public void preTgb(){
@@ -104,8 +104,8 @@ public class PanService {
     public void openPan(){
         if(isWorkday()){
             dealPanDataService.open();
-            dfcfPankService.oneOpenIncomeRate();
-            stockTradeValCurrentService.jobDo();
+            //dfcfPankService.oneOpenIncomeRate();
+            //stockTradeValCurrentService.jobDo();
 
         }
     }
@@ -126,7 +126,7 @@ public class PanService {
             xgbCurrentService.closePan();
             xgbService.closePan();
             xgbCurrentService.closeNewAndNearly();
-            stockTradeValCurrentService.jobDo();
+            //stockTradeValCurrentService.jobDo();
         }
     }
     //盘中每小时处理数据
@@ -135,7 +135,7 @@ public class PanService {
         if(isWorkday()) {
             log.info("currentPan-ready1 data");
             xgbCurrentService.currentPan();
-            stockTradeValCurrentService.jobDo();
+            //stockTradeValCurrentService.jobDo();
             //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         }
     }
@@ -144,7 +144,7 @@ public class PanService {
         if(isWorkday()) {
             log.info("currentPan-ready2 data");
             xgbCurrentService.currentPan();
-            stockTradeValCurrentService.jobDo();
+            //stockTradeValCurrentService.jobDo();
             //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         }
     }
@@ -153,7 +153,7 @@ public class PanService {
         if(isWorkday()) {
             log.info("currentPan-ready3 data");
             xgbCurrentService.currentPan();
-            stockTradeValCurrentService.jobDo();
+            //stockTradeValCurrentService.jobDo();
             //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         }
     }
@@ -162,7 +162,7 @@ public class PanService {
         if(isWorkday()) {
             log.info("currentPan-ready4 data");
             xgbCurrentService.currentPan();
-            stockTradeValCurrentService.jobDo();
+            //stockTradeValCurrentService.jobDo();
             //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         }
     }
@@ -171,7 +171,7 @@ public class PanService {
         if(isWorkday()) {
             log.info("currentPan-ready5 data");
             xgbCurrentService.currentPan();
-            stockTradeValCurrentService.jobDo();
+            //stockTradeValCurrentService.jobDo();
             //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         }
     }
@@ -180,7 +180,7 @@ public class PanService {
         if(isWorkday()) {
             log.info("currentPan-ready6 data");
             xgbCurrentService.currentPan();
-            stockTradeValCurrentService.jobDo();
+            //stockTradeValCurrentService.jobDo();
             //xgbService.temperature(NumberEnum.TemperatureType.NORMAL.getCode());
         }
     }

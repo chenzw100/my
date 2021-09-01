@@ -1,7 +1,10 @@
 package com.example.demo.dao;
 
 import com.example.demo.domain.MyTotalStock;
+import com.example.demo.domain.table.MyDayStock;
 import com.example.demo.domain.table.StockInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -20,6 +23,8 @@ import java.util.List;
  */
 public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     List<StockInfo> findAll();
+    Page<StockInfo> findByStockTypeAndDayFormatOrderByHotSort(Integer stockType,String dayFormat, Pageable pageable);
+    Page<StockInfo> findByStockTypeAndCodeOrderByDayFormatDesc(Integer stockType,String code, Pageable pageable);
     List<StockInfo> findByStockTypeOrderByDayFormatDesc(Integer stockType);
     List<StockInfo> findByDayFormatOrderByOpenBidRateDesc(String dayFormat);
     StockInfo findByCodeAndDayFormatAndStockType(String code, String dayFormat,Integer stockType);
@@ -66,5 +71,8 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
 
     List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByHotSevenDesc(String dayFormat,Integer stockType);
     List<StockInfo> findFirst2ByDayFormatAndStockTypeOrderByHotSort(String dayFormat,Integer stockType);
+
+    @Query(value="SELECT sd.day_format as dayFormat,sd.`name`,sd.`code`,sd.hot_sort as hotSort FROM stock_info sd WHERE sd.stock_type=10 and sd.day_format=?1 and sd.`code` in (SELECT s.`code` FROM stock_info s WHERE s.stock_type=70 and s.day_format=?1)", nativeQuery = true)
+    public List<MyDayStock> dayInfoInFive(String start);
 
 }
