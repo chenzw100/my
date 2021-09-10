@@ -59,9 +59,12 @@ public class TGBController {
     @RequestMapping("/list.action")
     @ResponseBody
     public String list(Integer page, Integer rows, StockInfo obj){
-
+        obj.setHotSort(-1);
         if(obj.getStockType()==null){
             obj.setStockType(NumberEnum.StockType.STOCK_DAY.getCode());
+        }else if(obj.getStockType()==1){
+            obj.setStockType(NumberEnum.StockType.STOCK_DAY.getCode());
+            obj.setHotSort(1);
         }
         if(StringUtils.isBlank(obj.getDayFormat())){
             if(StringUtils.isBlank(obj.getCode())){

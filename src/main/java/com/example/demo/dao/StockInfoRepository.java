@@ -25,6 +25,7 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     List<StockInfo> findAll();
     Page<StockInfo> findByStockTypeAndDayFormatOrderByHotSort(Integer stockType,String dayFormat, Pageable pageable);
     Page<StockInfo> findByStockTypeAndCodeOrderByDayFormatDesc(Integer stockType,String code, Pageable pageable);
+    Page<StockInfo> findFirst10ByStockTypeAndHotSortOrderByDayFormatDesc(Integer stockType,Integer hotSort, Pageable pageable);
     List<StockInfo> findByStockTypeOrderByDayFormatDesc(Integer stockType);
     List<StockInfo> findByDayFormatOrderByOpenBidRateDesc(String dayFormat);
     StockInfo findByCodeAndDayFormatAndStockType(String code, String dayFormat,Integer stockType);

@@ -79,7 +79,9 @@ public class TGBRecordService{
                 .withMatcher("customerYx", match -> match.startsWith());*/
         Example<StockInfo> example = Example.of(obj/*,matcher*/);
         Page<StockInfo> all =null;
-        if(StringUtils.isNotBlank(obj.getCode())){
+        if(1==obj.getHotSort()){
+            all=stockInfoRepository.findFirst10ByStockTypeAndHotSortOrderByDayFormatDesc(obj.getStockType(),obj.getHotSort(),pageable);
+        }else if(StringUtils.isNotBlank(obj.getCode())){
             obj.setDayFormat(null);
             all=stockInfoRepository.findByStockTypeAndCodeOrderByDayFormatDesc(obj.getStockType(),obj.getCode(),pageable);
         }else {
