@@ -79,6 +79,9 @@ public class MyUtils {
     public static String getPreFiveDayFormat(){
         return getDayFormat(MyChineseWorkDay.preDaysWorkDay(4, MyUtils.getCurrentDate()));
     }
+    public static String getPreThreeDayFormat(){
+        return getDayFormat(MyChineseWorkDay.preDaysWorkDay(2, MyUtils.getCurrentDate()));
+    }
     public static String getPreFiveDayFormat(Date date){
         return getDayFormat(MyChineseWorkDay.preDaysWorkDay(4, date));
     }

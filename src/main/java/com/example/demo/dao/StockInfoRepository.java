@@ -63,6 +63,8 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     public List<StockInfo> fiveStatistic(String start, String end);
     @Query(value="SELECT * FROM ( SELECT code, name,sum(hot_seven) as hotSeven,sum(hot_value)as hotValue, COUNT(id) as totalCount from stock_info WHERE stock_type =10 and day_format BETWEEN ?1 AND ?2  GROUP BY code) as temp WHERE temp.totalCount>2 ORDER BY totalCount DESC ", nativeQuery = true)
     public List<MyTotalStock> fiveDayInfo(String start, String end);
+    @Query(value="SELECT * FROM ( SELECT code, name,sum(hot_seven) as hotSeven,sum(hot_value)as hotValue, COUNT(id) as totalCount from stock_info WHERE stock_type =10 and day_format BETWEEN ?1 AND ?2  GROUP BY code) as temp WHERE temp.totalCount>1 ORDER BY totalCount DESC ", nativeQuery = true)
+    public List<MyTotalStock> threeDayInfo(String start, String end);
     @Query(value="SELECT * from stock_info WHERE stock_type=40 and day_format BETWEEN ?1 AND ?2", nativeQuery = true)
     public List<StockInfo> fiveHeightSpace(String start, String end);
     //竞价前3

@@ -168,6 +168,47 @@ public class TgbService extends QtService {
             log.info("dayFive end size:"+totalStocks.size());
         }
     }
+    public void dayThree(){
+        String end = MyUtils.getDayFormat();
+        String start =MyUtils.getPreThreeDayFormat();
+        List<MyTotalStock> totalStocks =  stockInfoService.threeDayInfo(start, end);
+        log.info(start+"-"+end+",dayThree size:"+totalStocks.size());
+        for(MyTotalStock myTotalStock : totalStocks){
+            StockInfo fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_DAY_THREE.getCode());
+            fiveTgbStock.setHotSort(myTotalStock.getTotalCount());
+            fiveTgbStock.setHotValue(myTotalStock.getHotValue());
+            fiveTgbStock.setHotSeven(myTotalStock.getHotSeven());
+            String currentPrice = getCurrentPrice(myTotalStock.getCode());
+            fiveTgbStock.setYesterdayClosePrice(MyUtils.getCentBySinaPriceStr(currentPrice));
+            List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myTotalStock.getCode(),MyUtils.getDayFormat(MyUtils.getYesterdayDate()));
+            if(xgbStocks!=null && xgbStocks.size()>0){
+                StockLimitUp xgbStock =xgbStocks.get(0);
+                fiveTgbStock.setPlateName(xgbStock.getPlateName());
+                fiveTgbStock.setOneFlag(xgbStock.getOpenCount());
+                fiveTgbStock.setContinuous(xgbStock.getContinueBoardCount());
+                fiveTgbStock.setLimitUp(1);
+            }else {
+                xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(myTotalStock.getCode());
+                if(xgbStocks!=null && xgbStocks.size()>0){
+                    fiveTgbStock.setPlateName(xgbStocks.get(0).getPlateName());
+                }else {
+                    fiveTgbStock.setPlateName("");
+                }
+                fiveTgbStock.setOneFlag(1);
+                fiveTgbStock.setContinuous(0);
+                fiveTgbStock.setLimitUp(0);
+            }
+            fiveTgbStock.setDayFormat(MyUtils.getDayFormat());
+            StockInfo fiveTgbStockTemp =stockInfoService.findStockDayFiveByCodeAndYesterdayFormat(myTotalStock.getCode());
+            if(fiveTgbStockTemp!=null){
+                fiveTgbStock.setShowCount(fiveTgbStockTemp.getShowCount() + 1);
+            }else {
+                fiveTgbStock.setShowCount(1);
+            }
+            stockInfoService.save(fiveTgbStock);
+            log.info("dayThree end size:"+totalStocks.size());
+        }
+    }
 
 
     public void currentDataDeal(){

@@ -42,6 +42,7 @@ public class NumberEnum {
         STOCK_DAY(10,"当天"),
         STOCK_CURRENT(20,"当天实时"),
         STOCK_DOWN(30,"弱势"),
+        STOCK_DAY_THREE(31,"三日当天"),
         STOCK_SPACE_HEIGHT(40,"空间"),
         STOCK_LIMIT_UP_FIVE(50,"五版"),
         STOCK_CURRENT_FIVE(60,"五日实时"),

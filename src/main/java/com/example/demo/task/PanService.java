@@ -89,6 +89,7 @@ public class PanService {
         if(isWorkday()){
             tgbService.dayDate();
             tgbService.dayFive();
+            tgbService.dayThree();
         }
     }
     //盘前处理数据 9:03点获取
