@@ -40,6 +40,7 @@ public class NumberEnum {
     //stock_down，stock_space_height,stock_limit_up_five,stock_day，stock_current_five，stock_day_five
     public enum StockType{
         STOCK_DAY(10,"当天"),
+        STOCK_THS(11,"同花顺"),
         STOCK_CURRENT(20,"当天实时"),
         STOCK_DOWN(30,"弱势"),
         STOCK_DAY_THREE(31,"三日当天"),

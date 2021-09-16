@@ -11,6 +11,7 @@
         <select class="easyui-combobox" id="stockType" name="stockType" style="width:70px;">
             <option value="10"  th:selected="${stockType == 10} " >当日</option>
             <option value="31" th:selected="${stockType == 31} " >三日</option>
+            <option value="11" th:selected="${stockType == 11} " >同花顺</option>
             <option value="70" th:selected="${stockType == 70} " >五日</option>
             <option value="40">空间</option>
             <option value="1">榜一</option>
@@ -21,6 +22,7 @@
         &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
         &nbsp;<a href="#" class="easyui-linkbutton" onclick="getSelectedck()">查看个股</a>
         &nbsp;<a target="_blank" href="/review.html" class="easyui-linkbutton" >查看历史</a>
+        &nbsp;<a target="_blank" href="/amy/1/1" class="easyui-linkbutton" >添加</a>
         <input type="text" value="1" id="dateEnd" onkeyup="onKeyUpEnter(event)">
 
     </div>

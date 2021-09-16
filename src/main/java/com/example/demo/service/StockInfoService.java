@@ -113,7 +113,7 @@ public class StockInfoService {
         return stockInfoRepository.fiveDayInfo(start,end);
     }
     public List<MyTotalStock> threeDayInfo(String start, String end){
-        return stockInfoRepository.fiveDayInfo(start,end);
+        return stockInfoRepository.threeDayInfo(start,end);
     }
     public List<StockInfo> findStockInfosByTodayFormat(){
         return stockInfoRepository.findByDayFormatOrderByStockTypeDesc(MyUtils.getDayFormat());

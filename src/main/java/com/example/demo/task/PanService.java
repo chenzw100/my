@@ -58,7 +58,7 @@ public class PanService {
     DfcfPankService dfcfPankService;
     @Autowired
     StockTradeValCurrentService stockTradeValCurrentService;
-    /*//营业部处理
+    //营业部处理
     @Scheduled(cron = closeTradeJobCron)
     public void tradeJob(){
         //获取数据
@@ -66,6 +66,7 @@ public class PanService {
             dfcfPankService.getAllList();
         }
     }
+    /*
     //营业部处理
     @Scheduled(cron = closeYybJobCron)
     public void yyb2Job(){

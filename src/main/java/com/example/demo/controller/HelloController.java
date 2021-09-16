@@ -84,7 +84,53 @@ public class HelloController {
     private RestTemplate restTemplate;
     private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
     private static String c_cUrl ="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
-
+    @RequestMapping("/amy/{type}/{code}")
+    public String amy(@PathVariable("type")Integer type,@PathVariable("code")String code) {
+        if ("1".equals(code)) {
+            return "success";
+        }
+        if (code.indexOf("6") == 0) {
+            code = "sh" + code;
+        } else {
+            code = "sz" + code;
+        }
+        SinaTinyInfoStock sinaStock = sinaService.getTiny(code);
+        if (sinaStock == null) {
+            return "fail";
+        }
+        StockInfo myStock = new StockInfo(code, sinaStock.getName(), type);
+        myStock.setYesterdayClosePrice(sinaStock.getYesterdayPrice());
+        myStock.setContinuous(1);
+        myStock.setOpenCount(-1);
+        myStock.setHotSort(-1);
+        myStock.setOneFlag(-1);
+        StockInfo fiveTgbStockTemp =stockInfoService.findStockKplByCodeAndYesterdayFormat(myStock.getCode());
+        if(fiveTgbStockTemp!=null){
+            myStock.setShowCount(fiveTgbStockTemp.getShowCount() + 1);
+        }else {
+            myStock.setShowCount(1);
+        }
+        List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myStock.getCode(),MyUtils.getDayFormat(MyUtils.getYesterdayDate()));
+        if(xgbStocks!=null && xgbStocks.size()>0){
+            StockLimitUp xgbStock =xgbStocks.get(0);
+            myStock.setPlateName(xgbStock.getPlateName());
+            myStock.setOneFlag(xgbStock.getOpenCount());
+            myStock.setContinuous(xgbStock.getContinueBoardCount());
+            myStock.setLimitUp(1);
+        }else {
+            xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(myStock.getCode());
+            if(xgbStocks!=null && xgbStocks.size()>0){
+                myStock.setPlateName(xgbStocks.get(0).getPlateName());
+            }else {
+                myStock.setPlateName("");
+            }
+            myStock.setOneFlag(1);
+            myStock.setContinuous(0);
+            myStock.setLimitUp(0);
+        }
+        stockInfoRepository.save(myStock);
+        return myStock.toString();
+    }
     @RequestMapping("/doTest")
     public String doTest() {
         try {

@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
 
  */
-@Entity(name="stock_trade_val_job_copy")
+@Entity(name="stock_trade_val_job")
 public class StockTradeValInfoJob implements Serializable {
     @Id
     @GeneratedValue
