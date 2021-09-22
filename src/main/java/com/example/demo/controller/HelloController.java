@@ -81,9 +81,20 @@ public class HelloController {
     @Autowired
     StockTradeValCurrentService stockTradeValCurrentService;
     @Autowired
+    DfcfYybRecordJobService dfcfYybRecordJobService;
+    @Autowired
     private RestTemplate restTemplate;
     private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
     private static String c_cUrl ="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
+    @RequestMapping("/yybDo")
+    public String yybJob() {
+        try {
+            dfcfYybRecordJobService.yybJob();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "rank deal success";
+    }
     @RequestMapping("/amy/{type}/{code}")
     public String amy(@PathVariable("type")Integer type,@PathVariable("code")String code) {
         if ("1".equals(code)) {

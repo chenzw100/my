@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div th:include="head :: header"></div>
+<body>
+<div th:include="menu :: menu"></div>
+<h2>新一高开一个点小于9个点。西湖不跌停开</h2>
+<div>
+    <div style="padding:5px 0;">
+        <a target="_blank" href="/nbyyb/yybDo" class="easyui-linkbutton" >更新数据</a>&nbsp;
+        <span>类型:</span>
+        <select class="easyui-combobox" id="yybId" name="yybId" style="width:70px;">
+            <option value="80623462"  th:selected="${yybId == 80623462} " >西湖</option>
+            <option value="80034092" th:selected="${yybId == 80034092} " >新一</option>
+            <option value="1"  >最新</option>
+        </select>
+        &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
+        &nbsp;<a target="_blank" href="/tgb/list.html" class="easyui-linkbutton" >tgb</a>
+        &nbsp;<a target="_blank" href="/review.html" class="easyui-linkbutton" >查看历史</a>
+        &nbsp;<a target="_blank" href="/amy/1/1" class="easyui-linkbutton" >添加</a>
+
+    </div>
+
+</div>
+<table id="dg" title="人才库"
+       toolbar="#toolbar" pagination="true" idField="id"
+       rownumbers="true" fitColumns="true" singleSelect="true">
+    <thead>
+    <tr>
+        <th data-options="field:'yzName',align:'center'">柚子</th>
+        <th data-options="field:'yzType',align:'center'">类型</th>
+        <th data-options="field:'sumAmount',align:'center'">净额</th>
+        <th data-options="field:'tradeAmount',align:'center'">买入</th>
+        <th data-options="field:'dayFormat',align:'center'">日期</th>
+        <th data-options="field:'code',align:'center'">代码</th>
+        <th data-options="field:'name',align:'center'">名称</th>
+        <th data-options="field:'yesterdayClosePrice',align:'center'">昨日价</th>
+        <th data-options="field:'todayOpenPrice',align:'center'">开价</th>
+        <th data-options="field:'todayLowPrice',align:'center'">最低价</th>
+        <th data-options="field:'todayHighPrice',align:'center'">最高价</th>
+        <th data-options="field:'todayClosePrice',align:'center'">收价</th>
+        <th data-options="field:'plateName',align:'center'">板块</th>
+        <th data-options="field:'oneOpenRate',align:'center'">竞价开</th>
+        <th data-options="field:'oneCloseRate',align:'center'">竞价收</th>
+        <th data-options="field:'oneOpenIncomeRate',align:'center'">隔日开</th>
+        <th data-options="field:'oneCloseIncomeRate',align:'center'">隔日收</th>
+    </tr>
+    </thead>
+</table>
+
+<script type="text/javascript">
+    $(function(){
+        $('#dg').edatagrid({
+            pageSize:10,
+            pageList:[10,20],
+            url:'/nbyyb/list.action'
+        });
+    });
+    $("#query").click(function () {
+        $('#dg').datagrid('load', {
+            yybId: $("#yybId").val()
+        });
+    });
+
+
+</script>
+
+</body>
+</html>

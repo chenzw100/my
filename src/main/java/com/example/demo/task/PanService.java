@@ -31,7 +31,7 @@ public class PanService {
     private static final String openCron = "30 25 9 ? * MON-FRI";
     private static final String closeCron ="58 2 15 ? * MON-FRI";
     private static final String closeYybCron ="5 2 17 ? * MON-FRI";
-    private static final String closeYybJobCron ="45 02 18 ? * MON-FRI";
+    private static final String closeYybJobCron ="45 12 17 ? * MON-FRI";
     private static final String closeTradeJobCron ="15 01 18 ? * MON-FRI";
     //private static final String choiceMy="1 1 9 ? * MON-FRI";
     //private static final String currentTimeCron="1 55 0/1 ? * MON-FRI";
@@ -59,15 +59,15 @@ public class PanService {
     @Autowired
     StockTradeValCurrentService stockTradeValCurrentService;
     //营业部处理
-    @Scheduled(cron = closeTradeJobCron)
-    public void tradeJob(){
+    /*@Scheduled(cron = closeTradeJobCron)
+   /* public void tradeJob(){
         //获取数据
         if(isWorkday()){
             dfcfPankService.getAllList();
         }
-    }
-    /*
-    //营业部处理
+    }*/
+
+    //营业部处理NB
     @Scheduled(cron = closeYybJobCron)
     public void yyb2Job(){
         //获取数据
@@ -75,7 +75,7 @@ public class PanService {
             dfcfYybRecordJobService.yybJob();
         }
     }
-    //营业部处理
+   /* //营业部处理
     @Scheduled(cron = closeYybCron)
     public void yybJob(){
         //获取数据

@@ -13,7 +13,7 @@ import java.io.Serializable;
  *
 
  */
-@Entity(name="stock_yyb_info_job")
+@Entity(name="stock_yyb_info_job_new1")
 public class StockYybInfoJob implements Serializable {
     @Id
     @GeneratedValue

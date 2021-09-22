@@ -40,7 +40,7 @@ import java.util.List;
 public class DfcfYybRecordJobService extends BaseService {
     private static String current_Continue="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
     private static String current_Yesterday="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0815&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
-    private static String current_yyb="https://datainterface3.eastmoney.com/EM_DataCenter_V3/api/YYBJXMX/GetYYBJXMX?js=jQuery112307119371614566392_1625561877508&sortfield=&sortdirec=-1&pageSize=50&tkn=eastmoney&tdir=&dayNum=&startDateTime=2020-01-01&endDateTime=2021-07-09&cfg=yybjymx&salesCode=";
+    private static String current_yyb="https://datainterface3.eastmoney.com/EM_DataCenter_V3/api/YYBJXMX/GetYYBJXMX?js=jQuery112307119371614566392_1625561877508&sortfield=&sortdirec=-1&pageSize=50&tkn=eastmoney&tdir=&dayNum=&startDateTime=2021-01-01&endDateTime=2021-09-09&cfg=yybjymx&salesCode=";
 
     private static String five_day_url="https://datainterface3.eastmoney.com/EM_DataCenter_V3/api/YYBJXMX/GetYYBJXMX?js=jQuery112308524302760036775_1625625265638&sortfield=&sortdirec=-1&pageSize=50&pageNum=1&tkn=eastmoney&tdir=&dayNum=&cfg=yybjymx&startDateTime=";
     private static String history_url ="https://q.stock.sohu.com/hisHq?code=cn_";
@@ -56,9 +56,15 @@ public class DfcfYybRecordJobService extends BaseService {
     public HashMap<String,JSONArray> getHistory(String code,String start,String end){
         String url = history_url+code+"&start="+start+"&end="+end;
         Object result = getRequest(url);
-        JSONObject jsonObject = (JSONObject) JSONArray.parseArray(result.toString()).get(0);
-        JSONArray jsonArray = jsonObject.getJSONArray("hq");
+        String str=result.toString();
+        log.info(url+" =url,code = " + code+" result=" +str);
         HashMap<String,JSONArray> map =new HashMap<>();
+        if("{}\n".equals(str)){
+            log.error(url+" =url error,code = " + code+" result=" +str);
+            return map;
+        }
+        JSONObject jsonObject = (JSONObject) JSONArray.parseArray(str).get(0);
+        JSONArray jsonArray = jsonObject.getJSONArray("hq");
         for(Object object :jsonArray){
             JSONArray oa =JSONArray.parseArray(object.toString());
             String day = oa.get(0).toString();
@@ -111,7 +117,7 @@ public class DfcfYybRecordJobService extends BaseService {
         String startDay =MyUtils.getPreTwoMonthDayFormat();
         //String startDay =MyUtils.getPreFiveDayFormat();
         String url = startDay+"&endDateTime="+endDay+"&salesCode="+ybbId;
-        log.info("url = [" +five_day_url+ url + "]");
+        log.info("currentYybJob url = [" +five_day_url+ url + "]");
         Object result = getRequest(five_day_url+url);
         return dealInfo(result);
 
@@ -207,11 +213,11 @@ public class DfcfYybRecordJobService extends BaseService {
                 stockYyb.setPlateName(getPlateName(stockYyb.getCode()));
             }
             Date yesterdayDate = MyUtils.getFormatDate(stockYyb.getDayFormat());
-            ChineseWorkDay nowWorkDay = new ChineseWorkDay(new Date());
+            ChineseWorkDay nowWorkDay = new ChineseWorkDay(yesterdayDate);
             Date now = nowWorkDay.nextWorkDay();
-            ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(new Date());
+            ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(now);
             Date tomorrowDate = tomorrowWorkDay.nextWorkDay();
-            ChineseWorkDay threeWorkDay = new ChineseWorkDay(new Date());
+            ChineseWorkDay threeWorkDay = new ChineseWorkDay(tomorrowDate);
             Date threeDate = threeWorkDay.nextWorkDay();
 
 
