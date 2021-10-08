@@ -133,6 +133,11 @@ public class TgbService extends QtService {
         List<MyTotalStock> totalStocks =  stockInfoService.fiveDayInfo(start, end);
         log.info(start+"-"+end+",dayFive size:"+totalStocks.size());
         for(MyTotalStock myTotalStock : totalStocks){
+            StockInfo dayDb =stockInfoService.findStockDayByCodeTodayFormat(myTotalStock.getCode());
+            if(dayDb==null){
+                log.info(start+"-"+end+",dayFive not exist:"+myTotalStock.getCode());
+                continue;
+            }
             StockInfo fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
             fiveTgbStock.setHotSort(myTotalStock.getTotalCount());
             fiveTgbStock.setHotValue(myTotalStock.getHotValue());
@@ -174,6 +179,11 @@ public class TgbService extends QtService {
         List<MyTotalStock> totalStocks =  stockInfoService.threeDayInfo(start, end);
         log.info(start+"-"+end+",dayThree size:"+totalStocks.size());
         for(MyTotalStock myTotalStock : totalStocks){
+            StockInfo dayDb =stockInfoService.findStockDayByCodeTodayFormat(myTotalStock.getCode());
+            if(dayDb==null){
+                log.info(start+"-"+end+",dayThree not exist:"+myTotalStock.getCode());
+                continue;
+            }
             StockInfo fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_DAY_THREE.getCode());
             fiveTgbStock.setHotSort(myTotalStock.getTotalCount());
             fiveTgbStock.setHotValue(myTotalStock.getHotValue());

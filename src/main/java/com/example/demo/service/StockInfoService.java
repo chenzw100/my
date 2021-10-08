@@ -198,6 +198,9 @@ public class StockInfoService {
     public StockInfo findStockDaysByCodeYesterdayFormat(String code){
         return stockInfoRepository.findByCodeAndDayFormatAndStockType(code,MyUtils.getYesterdayDayFormat(), NumberEnum.StockType.STOCK_DAY.getCode());
     }
+    public StockInfo findStockDayByCodeTodayFormat(String code){
+        return stockInfoRepository.findByCodeAndDayFormatAndStockType(code,MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DAY.getCode());
+    }
     //---STOCK_CURRENT_FIVE---start ---
     public List<StockInfo> findStockCurrentFivesByTodayFormat(){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_CURRENT_FIVE.getCode());
