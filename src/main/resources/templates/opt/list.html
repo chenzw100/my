@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div th:include="head :: header"></div>
+<body>
+<div th:include="menu :: menu"></div>
+<h2>公司交易管理 --- 交易管理-【交易记录】</h2>
+<div>
+    <div style="padding:5px 0;">
+        <span>类型:</span>
+        <select class="easyui-combobox" id="stockType" name="stockType" style="width:70px;">
+            <option value="3"  th:selected="${hotType == 3} " >月</option>
+            <option value="2" th:selected="${hotType == 2} " >半</option>
+            <option value="1" th:selected="${hotType == 1} " >周</option>
+
+        </select>
+        &nbsp;日期:<input class="easyui-textbox" type="text"  name="dayFormat" id="dayFormat" >
+        &nbsp;CODE:<input class="easyui-textbox" type="text"  name="code" id="code"  th:value="${code}">
+        &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
+        &nbsp;<a href="#" class="easyui-linkbutton" onclick="getSelectedck()">查看个股</a>
+        &nbsp;<a target="_blank" href="/nbyyb/list.html" class="easyui-linkbutton" >yyb</a>
+        &nbsp;<a target="_blank" href="/review.html" class="easyui-linkbutton" >查看历史</a>
+        &nbsp;<a target="_blank" href="/amy/1/1" class="easyui-linkbutton" >添加</a>
+        <input type="text" value="1" id="dateEnd" onkeyup="onKeyUpEnter(event)">
+
+    </div>
+
+</div>
+<table id="dg" title="操作"
+       toolbar="#toolbar" pagination="true" idField="id"
+       rownumbers="true" fitColumns="true" singleSelect="true">
+    <thead>
+    <tr>
+        <th data-options="field:'hotType',align:'center'">类型</th>
+        <th data-options="field:'hotValue',align:'center'">热搜</th>
+        <th data-options="field:'dayFormat',align:'center'">日期</th>
+        <th data-options="field:'code',align:'center'">代码</th>
+        <th data-options="field:'name',align:'center'">名称</th>
+
+    </tr>
+    </thead>
+</table>
+
+<script type="text/javascript">
+    $(function(){
+        $('#dg').edatagrid({
+            pageSize:20,
+            pageList:[20,25],
+            url:'/opt/list.action',
+            queryParams:{
+                code: $("#code").val(),
+                stockType: $("#hotType").val()
+            },
+
+        });
+    });
+    $("#query").click(function () {
+        $('#dg').datagrid('load', {
+            code: $("#code").val(),
+            stockType: $("#hotType").val(),
+            dayFormat: $("#dayFormat").val()
+        });
+    });
+    function getSelectedck(){
+        var row = $('#dg').datagrid('getSelected');
+        if(row==null){
+            $.messager.alert('Info', "请选择一个CODE，进行查看");
+            return;
+        }
+        if (row){
+            window.open('/opt/list.html?code='+row.code+"&stockType="+row.stockType);
+        }
+    }
+
+    function onKeyUpEnter(e) {
+        if (e.keyCode == 13) {
+            scan();
+        }else if(e.keyCode == 37){
+            //pre
+            $("#dateEnd").val(2);
+            scan();
+        }
+        else if(e.keyCode == 39){
+            //next
+            $("#dateEnd").val(3);
+            scan();
+        }
+    }
+    function scan() {
+        $('#dg').datagrid('load', {
+            code: $("#code").val(),
+            hotType: $("#hotType").val(),
+            hotValue:$("#dateEnd").val()
+        });
+    }
+</script>
+
+</body>
+</html>
