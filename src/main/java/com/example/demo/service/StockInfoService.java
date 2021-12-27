@@ -6,9 +6,9 @@ import com.example.demo.domain.table.StockInfo;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Component
 public class StockInfoService {
-
+    public Log log = LogFactory.getLog(StockInfoService.class);
     @Autowired
     StockInfoRepository stockInfoRepository;
     public List<StockInfo> todayCloseYield(String dayFormat){
@@ -252,6 +252,25 @@ public class StockInfoService {
 
     public List<StockInfo> find2DayHot(String dayFormat){
        return stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByHotSort(dayFormat,NumberEnum.StockType.STOCK_DAY.getCode());
+    }
+
+    public List<StockInfo>  weekStatistic(){
+        String start = MyUtils.getPreFiveDayFormat();
+        String end = MyUtils.getDayFormat();
+        log.info(start+": weekStatistic :"+end);
+        return stockInfoRepository.hotCode(start,end);
+    }
+    public List<StockInfo>  week2Statistic(){
+        String end = MyUtils.getDayFormat();
+        String start = MyUtils.getPre2WeekDayFormat();
+        log.info(start+": week2Statistic :"+end);
+        return stockInfoRepository.hotCode(start,end);
+    }
+    public List<StockInfo>  monthStatistic(){
+        String end = MyUtils.getDayFormat();
+        String start = MyUtils.getPreMonthDayFormat();
+        log.info(start+": monthStatistic :"+end);
+        return stockInfoRepository.hotCode(start,end);
     }
 
 }

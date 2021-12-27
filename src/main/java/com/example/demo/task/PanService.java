@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.enums.NumberEnum;
+import com.example.demo.service.StockOptService;
 import com.example.demo.service.dfcf.DfcfPankService;
 import com.example.demo.service.dfcf.DfcfService;
 import com.example.demo.service.dfcf.DfcfYybRecordJobService;
@@ -58,6 +59,9 @@ public class PanService {
     DfcfPankService dfcfPankService;
     @Autowired
     StockTradeValCurrentService stockTradeValCurrentService;
+
+    @Autowired
+    StockOptService stockOptService;
     //营业部处理
     /*@Scheduled(cron = closeTradeJobCron)
    /* public void tradeJob(){
@@ -91,6 +95,7 @@ public class PanService {
             tgbService.dayDate();
             tgbService.dayFive();
             tgbService.dayThree();
+            stockOptService.staStock();
         }
     }
     //盘前处理数据 9:03点获取

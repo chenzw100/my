@@ -1,10 +1,7 @@
 package com.example.demo.dao;
 
-import com.example.demo.domain.StaStockPlate;
-import com.example.demo.domain.table.StockPlate;
 import com.example.demo.domain.table.StockPlateSta;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
