@@ -20,7 +20,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface StockOptRepository extends JpaRepository<StockOpt,Long> {
     StockOpt save(StockOpt stockPlate);
-    Page<StockOpt> findByDayFormatOrderByHotTypeDesc(String dayFormat, Pageable pageable);
+    Page<StockOpt> findByDayFormatOrderByHotType(String dayFormat, Pageable pageable);
 
 
 

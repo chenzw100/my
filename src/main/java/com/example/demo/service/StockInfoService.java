@@ -254,19 +254,19 @@ public class StockInfoService {
        return stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByHotSort(dayFormat,NumberEnum.StockType.STOCK_DAY.getCode());
     }
 
-    public List<StockInfo>  weekStatistic(){
+    public List<MyTotalStock>  weekStatistic(){
         String start = MyUtils.getPreFiveDayFormat();
         String end = MyUtils.getDayFormat();
         log.info(start+": weekStatistic :"+end);
         return stockInfoRepository.hotCode(start,end);
     }
-    public List<StockInfo>  week2Statistic(){
+    public List<MyTotalStock>  week2Statistic(){
         String end = MyUtils.getDayFormat();
         String start = MyUtils.getPre2WeekDayFormat();
         log.info(start+": week2Statistic :"+end);
         return stockInfoRepository.hotCode(start,end);
     }
-    public List<StockInfo>  monthStatistic(){
+    public List<MyTotalStock>  monthStatistic(){
         String end = MyUtils.getDayFormat();
         String start = MyUtils.getPreMonthDayFormat();
         log.info(start+": monthStatistic :"+end);
