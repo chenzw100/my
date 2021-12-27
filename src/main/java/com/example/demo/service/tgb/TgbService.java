@@ -77,6 +77,7 @@ public class TgbService extends QtService {
                     tgbStock.setContinuous(0);
                     tgbStock.setLimitUp(0);
                 }
+                log.error("==>WORKDAY fail xinfo"+tgbStock.getCode());
                 StockInfo StockInfo = stockInfoService.findStockDaysByCodeYesterdayFormat(tgbStock.getCode());
                 if(StockInfo!=null){
                     tgbStock.setShowCount(StockInfo.getShowCount()+1);
