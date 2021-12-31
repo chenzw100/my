@@ -84,4 +84,14 @@ public class StockOpt implements Serializable {
     public void setHotValue(Integer hotValue) {
         this.hotValue = hotValue;
     }
+
+    @Override
+    public String toString() {
+        return
+                dayFormat +
+                ", hotValue=" + hotValue +
+                ", code='" + code +
+                ", name='" + name +
+                "<br>";
+    }
 }

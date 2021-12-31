@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dao.StockInfoRepository;
 import com.example.demo.domain.MyTotalStock;
 import com.example.demo.domain.table.StockInfo;
+import com.example.demo.domain.table.StockOpt;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
@@ -271,6 +272,23 @@ public class StockInfoService {
         String start = MyUtils.getPreMonthDayFormat();
         log.info(start+": monthStatistic :"+end);
         return stockInfoRepository.hotCode(start,end);
+    }
+
+    public List<StockOpt> hotCode(String start,String end){
+        List<MyTotalStock> myTotalStocks = stockInfoRepository.hotCode(start,end);
+        List<StockOpt> result = new ArrayList<>();
+        if(myTotalStocks.size()>0){
+            for(MyTotalStock s: myTotalStocks){
+                StockOpt stockPlateSta = new StockOpt();
+                stockPlateSta.setDayFormat(start+"-"+end);
+                stockPlateSta.setHotType(NumberEnum.PlateType.MONTH.getCode());
+                stockPlateSta.setCode(s.getCode());
+                stockPlateSta.setName(s.getName());
+                stockPlateSta.setHotValue(s.getHotValue());
+                result.add(stockPlateSta);
+            }
+        }
+        return result;
     }
 
 }

@@ -1010,4 +1010,37 @@ public class HelloController {
         }
         return false;
     }
+
+    @RequestMapping("/hot/{end}")
+    String hot(@PathVariable("end")String end) {
+        String queryEnd = end;
+        if("1".equals(end)){
+            if(isWorkday()){
+                queryEnd= MyUtils.getDayFormat();
+            }else {
+                queryEnd=MyUtils.getYesterdayDayFormat();
+            }
+        }else if("2".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+        }else if("3".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        }
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        PRE_END=queryEnd;
+
+
+        String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据=====>当前查询日期";
+
+        ChineseWorkDay tenDay=new ChineseWorkDay(endDate);
+        String startTen =MyUtils.getDayFormat(tenDay.preDaysWorkDay(9,endDate));
+        ChineseWorkDay twentyDay=new ChineseWorkDay(endDate);
+        String startTwenty =MyUtils.getDayFormat(twentyDay.preDaysWorkDay(19,endDate));
+        System.out.println("startTen = [" + startTen + "]"+"startTwenty = [" + startTwenty + "]");
+        List<StockOpt> ten =stockInfoService.hotCode(startTen,queryEnd);
+        List<StockOpt> twenty =stockInfoService.hotCode(startTwenty,queryEnd);
+
+        return desc+queryEnd+"<br>===>【最热议ten】:<br>"+ten+"<br>===>【最热议twenty】:<br>"+twenty;
+    }
 }
