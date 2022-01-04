@@ -1044,6 +1044,6 @@ public class HelloController {
         List<StockOpt> fifteen =stockInfoService.hotCode(startFifteen,queryEnd);
         List<StockOpt> twenty =stockInfoService.hotCode(startTwenty,queryEnd);
 
-        return desc+queryEnd+"<br>===>【最热议ten】:<br>"+twenty+"<br>===>【最热议twenty】:<br>"+fifteen+"<br>===>【最热议twenty】:<br>"+ten;
+        return desc+queryEnd+"<br>===>【twenty】:<br>"+twenty+"<br>===>【fifteen】:<br>"+fifteen+"<br>===>【ten】:<br>"+ten;
     }
 }

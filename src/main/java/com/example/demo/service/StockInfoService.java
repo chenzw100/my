@@ -280,6 +280,7 @@ public class StockInfoService {
         Date endDate =  MyUtils.getFormatDate(end);
         ChineseWorkDay tenDay=new ChineseWorkDay(endDate);
         String startHot =MyUtils.getDayFormat(tenDay.preWorkDay());
+        log.info(startHot+": my :"+end);
         List<StockOpt> result = new ArrayList<>();
         if(myTotalStocks.size()>0){
             for(MyTotalStock s: myTotalStocks){
