@@ -89,9 +89,10 @@ public class StockOpt implements Serializable {
     public String toString() {
         return
                 dayFormat +
-                ", hotValue=" + hotValue +
-                ", code='" + code +
-                ", name='" + name +
+                        " Type=" + hotType +
+                " code=" + code +
+                " name=" + name +
+                        " hotValue=" + hotValue +
                 "<br>";
     }
 }

@@ -69,6 +69,8 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     public List<StockInfo> fiveHeightSpace(String start, String end);
     @Query(value="SELECT COUNT(s.code) hotValue,s.`code`,s.`name` FROM stock_info s WHERE s.stock_type=10 and s.day_format BETWEEN  ?1 AND ?2  GROUP BY s.`code` ORDER BY hotValue desc LIMIT 0,5", nativeQuery = true)
     public List<MyTotalStock> hotCode(String start, String end);
+    @Query(value="SELECT COUNT(s.code) hotValue,s.`code`,s.`name` FROM stock_info s WHERE s.stock_type=10 and s.day_format BETWEEN  ?1 AND ?2  and s.`code`=?3 GROUP BY s.`code` ", nativeQuery = true)
+    public MyTotalStock hotByCode(String start, String end,String code);
     //竞价前3
     List<StockInfo> findFirst3DistinctStockInfoByDayFormatOrderByOpenBidRateDesc(String dayFormat);
     //竞价末3

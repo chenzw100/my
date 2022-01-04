@@ -5,6 +5,7 @@ import com.example.demo.domain.MyTotalStock;
 import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockOpt;
 import com.example.demo.enums.NumberEnum;
+import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
 import org.apache.commons.logging.Log;
@@ -276,15 +277,24 @@ public class StockInfoService {
 
     public List<StockOpt> hotCode(String start,String end){
         List<MyTotalStock> myTotalStocks = stockInfoRepository.hotCode(start,end);
+        Date endDate =  MyUtils.getFormatDate(end);
+        ChineseWorkDay tenDay=new ChineseWorkDay(endDate);
+        String startHot =MyUtils.getDayFormat(tenDay.preWorkDay());
         List<StockOpt> result = new ArrayList<>();
         if(myTotalStocks.size()>0){
             for(MyTotalStock s: myTotalStocks){
                 StockOpt stockPlateSta = new StockOpt();
                 stockPlateSta.setDayFormat(start+"-"+end);
-                stockPlateSta.setHotType(NumberEnum.PlateType.MONTH.getCode());
+
                 stockPlateSta.setCode(s.getCode());
                 stockPlateSta.setName(s.getName());
                 stockPlateSta.setHotValue(s.getHotValue());
+                MyTotalStock my =stockInfoRepository.hotByCode(startHot,end,s.getCode());
+                if(my==null){
+                    stockPlateSta.setHotType(0);
+                }else {
+                    stockPlateSta.setHotType(my.getHotValue());
+                }
                 result.add(stockPlateSta);
             }
         }

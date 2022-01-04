@@ -1035,12 +1035,15 @@ public class HelloController {
 
         ChineseWorkDay tenDay=new ChineseWorkDay(endDate);
         String startTen =MyUtils.getDayFormat(tenDay.preDaysWorkDay(9,endDate));
+        ChineseWorkDay fifteenDay=new ChineseWorkDay(endDate);
+        String startFifteen =MyUtils.getDayFormat(fifteenDay.preDaysWorkDay(14,endDate));
         ChineseWorkDay twentyDay=new ChineseWorkDay(endDate);
         String startTwenty =MyUtils.getDayFormat(twentyDay.preDaysWorkDay(19,endDate));
-        System.out.println("startTen = [" + startTen + "]"+"startTwenty = [" + startTwenty + "]");
+        System.out.println("startTen = [" + startTen + "]"+"startFifteen = [" + startFifteen + "]"+"startTwenty = [" + startTwenty + "]");
         List<StockOpt> ten =stockInfoService.hotCode(startTen,queryEnd);
+        List<StockOpt> fifteen =stockInfoService.hotCode(startFifteen,queryEnd);
         List<StockOpt> twenty =stockInfoService.hotCode(startTwenty,queryEnd);
 
-        return desc+queryEnd+"<br>===>【最热议ten】:<br>"+ten+"<br>===>【最热议twenty】:<br>"+twenty;
+        return desc+queryEnd+"<br>===>【最热议ten】:<br>"+twenty+"<br>===>【最热议twenty】:<br>"+fifteen+"<br>===>【最热议twenty】:<br>"+ten;
     }
 }
