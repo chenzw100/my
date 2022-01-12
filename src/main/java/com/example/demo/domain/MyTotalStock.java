@@ -9,5 +9,6 @@ public interface MyTotalStock {
     public Integer getHotSeven();
     public Integer getHotValue();
     public Integer getTotalCount();
+    public String getPlateName();
 
 }

@@ -290,6 +290,7 @@ public class StockInfoService {
                 stockPlateSta.setCode(s.getCode());
                 stockPlateSta.setName(s.getName());
                 stockPlateSta.setHotValue(s.getHotValue());
+                stockPlateSta.setPlateName(s.getPlateName());
                 MyTotalStock my =stockInfoRepository.hotByCode(startHot,end,s.getCode());
                 if(my==null){
                     stockPlateSta.setHotType(0);

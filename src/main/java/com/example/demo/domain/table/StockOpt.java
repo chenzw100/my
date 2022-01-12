@@ -36,6 +36,16 @@ public class StockOpt implements Serializable {
     private Integer hotValue;
     @Column(nullable = false,columnDefinition="int(11) DEFAULT 0 COMMENT '1-月,2,3-周'")
     private Integer hotType;
+    @Transient
+    private String plateName;
+
+    public String getPlateName() {
+        return plateName;
+    }
+
+    public void setPlateName(String plateName) {
+        this.plateName = plateName;
+    }
 
     public Integer getHotType() {
         return hotType;
@@ -90,9 +100,10 @@ public class StockOpt implements Serializable {
         return
                 dayFormat +
                         " Type=" + hotType +
-                " code=" + code +
-                " name=" + name +
-                        " hotValue=" + hotValue +
+                " [" + code +
+                " " + name +
+                        "] hot=" + hotValue +
+                        " " + plateName +
                 "<br>";
     }
 }
