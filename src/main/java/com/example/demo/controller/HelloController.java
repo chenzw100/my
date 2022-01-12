@@ -1030,8 +1030,9 @@ public class HelloController {
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         PRE_END=queryEnd;
 
-
-        String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据=====>当前查询日期";
+        StringBuilder sb =new StringBuilder();
+        String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据<br>=====>当前查询日期";
+        sb.append(desc).append(queryEnd);
 
         ChineseWorkDay tenDay=new ChineseWorkDay(endDate);
         String startTen =MyUtils.getDayFormat(tenDay.preDaysWorkDay(9,endDate));
@@ -1043,7 +1044,14 @@ public class HelloController {
         List<StockOpt> ten =stockInfoService.hotCode(startTen,queryEnd);
         List<StockOpt> fifteen =stockInfoService.hotCode(startFifteen,queryEnd);
         List<StockOpt> twenty =stockInfoService.hotCode(startTwenty,queryEnd);
+        ChineseWorkDay yesterdayDate=new ChineseWorkDay(endDate);
+        String yesterday =MyUtils.getDayFormat(yesterdayDate.preWorkDay());
+        List<StockPlateSta> stockPlates =stockPlateStaRepository.findByDayFormatAndPlateType(yesterday, 1);
 
-        return desc+queryEnd+"<br>===>【twenty】:<br>"+twenty+"<br>===>【fifteen】:<br>"+fifteen+"<br>===>【ten】:<br>"+ten;
+        for(StockPlateSta stockPlateSta:stockPlates){
+            sb.append("<br>").append(yesterday).append(" 板块【").append(stockPlateSta.getPlateName()).append("】").append(stockPlateSta.getDescription());
+        }
+
+        return sb.toString()+"<br>===>【twenty】:<br>"+twenty+"<br>===>【fifteen】:<br>"+fifteen+"<br>===>【ten】:<br>"+ten;
     }
 }

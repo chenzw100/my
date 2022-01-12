@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.dao.StockInfoRepository;
+import com.example.demo.dao.StockLimitUpRepository;
 import com.example.demo.domain.MyTotalStock;
 import com.example.demo.domain.table.StockInfo;
+import com.example.demo.domain.table.StockLimitUp;
 import com.example.demo.domain.table.StockOpt;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.utils.ChineseWorkDay;
@@ -31,6 +33,8 @@ public class StockInfoService {
     public Log log = LogFactory.getLog(StockInfoService.class);
     @Autowired
     StockInfoRepository stockInfoRepository;
+    @Autowired
+    StockLimitUpRepository stockLimitUpRepository;
     public List<StockInfo> todayCloseYield(String dayFormat){
         List<StockInfo> result =stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTodayCloseYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY.getCode());
         return result;
@@ -290,7 +294,8 @@ public class StockInfoService {
                 stockPlateSta.setCode(s.getCode());
                 stockPlateSta.setName(s.getName());
                 stockPlateSta.setHotValue(s.getHotValue());
-                stockPlateSta.setPlateName(s.getPlateName());
+                StockLimitUp xgbStock =stockLimitUpRepository.findTop1ByCodeAndPlateNameIsNotNullOrderByIdDesc(s.getCode());
+                stockPlateSta.setPlateName(xgbStock.getPlateName());
                 MyTotalStock my =stockInfoRepository.hotByCode(startHot,end,s.getCode());
                 if(my==null){
                     stockPlateSta.setHotType(0);
