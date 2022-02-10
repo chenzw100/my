@@ -27,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -1053,5 +1054,52 @@ public class HelloController {
         }
 
         return sb.toString()+"<br>===>【twenty】:<br>"+twenty+"<br>===>【fifteen】:<br>"+fifteen+"<br>===>【ten】:<br>"+ten;
+    }
+    @RequestMapping("/ob/{end}")
+    String ob(@PathVariable("end")String end) {
+        String queryEnd = end;
+        if("1".equals(end)){
+            if(isWorkday()){
+                queryEnd= MyUtils.getDayFormat();
+            }else {
+                queryEnd=MyUtils.getYesterdayDayFormat();
+            }
+        }else if("2".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+        }else if("3".equals(end)){
+            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        }
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        PRE_END=queryEnd;
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
+
+        StringBuilder sb =new StringBuilder();
+        String desc ="信念[空间与新题材模式，趋势持股看看一下，条件双十逻辑，涨停倍增逻辑] 提供20191015以后的数据=====>当前查询日期<br>";
+        StockMood stockMood =stockMoodRepository.findByDayFormat(queryEnd);
+        List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
+        sb.append(desc).append(stockMood).append(queryEnd).append("===>【复盘情况】:<br>").append(temperaturesClose);
+        List<StockTemperature> temperatures = getStockTemperatures(queryEnd);
+        sb.append(queryEnd).append("===>【盘面实时运行情况】:<br>").append(temperatures);
+
+        return sb.toString();
+    }
+    private List<StockTemperature> getStockTemperatures(String queryEnd) {
+        Date endDate;
+        List<StockTemperature> dayTemperatures = stockTemperatureRepository.findByDayFormat(queryEnd);
+        endDate = MyUtils.getFormatDate(queryEnd);
+        String preDate = MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
+        List<StockTemperature> preTemperatures = stockTemperatureRepository.findByDayFormat(preDate);
+        HashMap<String,StockTemperature> map = new HashMap();
+        for (StockTemperature pre : preTemperatures){
+            map.put(pre.time(),pre);
+        }
+        List<StockTemperature> temperatures = new ArrayList<>();
+        for (StockTemperature st : dayTemperatures) {
+            temperatures.add(map.get(st.time()));
+            temperatures.add(st);
+        }
+        return temperatures;
     }
 }

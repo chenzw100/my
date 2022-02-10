@@ -291,12 +291,12 @@ public class StockTemperature {
         sb.append("[上证:").append(getTradeVal()).append("亿、创:").append(getTradeCYBVal()).append("亿][强:").append(getSuperUpCount()).append(",大阳:").append(getSuperCount())
         .append(",正:").append(getContinueCount()).append("] [负:").append(getStrongDowns()).append(", 跌:").append(getLimitDown())
          .append("][涨:").append(getLimitUp()).append(", 炸:").append(getOpen())
-                .append("][C强:").append(getSuperUpCountCYB()).append(",C大阳:").append(getSuperCountCYB())
-                .append(",C正:").append(getContinueCountCYB()).append("] [C负:").append(getStrongDownsCYB())
         .append("] [昨:").append(MyUtils.getYuanByCent(getYesterdayShow()))
         .append("] [连:").append(getContinueVal())
         .append("] [炸:").append(MyUtils.getYuanByCent(getBrokenRatio()))
-        .append("] [上涨:").append(getRaise()).append(", 下跌跌:").append(getDown()).append("]")
+        .append("] [上涨:").append(getRaise()).append(", 下跌:").append(getDown())
+         .append("][C强:").append(getSuperUpCountCYB()).append(",C大阳:").append(getSuperCountCYB())
+         .append(",C正:").append(getContinueCountCYB()).append("] [C负:").append(getStrongDownsCYB())
         .append("] 温度:").append(getTemperature()).append("<br>");
 
         return sb.toString();
