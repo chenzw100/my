@@ -1102,4 +1102,5 @@ public class HelloController {
         }
         return temperatures;
     }
+
 }
