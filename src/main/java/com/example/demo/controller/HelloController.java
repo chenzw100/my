@@ -1118,9 +1118,9 @@ public class HelloController {
         StringBuilder sb =new StringBuilder();
         String desc ="信念[空间与新题材模式，趋势持股看看一下，条件双十逻辑，涨停倍增逻辑] 提供20191015以后的数据=====>当前查询日期<br>";
         List<StockTemperature> buy1 =stockTemperatureRepository.buy1(2);
-        List<StockTemperature> buy2 =stockTemperatureRepository.buy1(2);
+        List<StockTemperature> buy2 =stockTemperatureRepository.buy2(2);
         List<StockTemperature> buy3 =stockTemperatureRepository.buy1(4);
-        List<StockTemperature> buy4 =stockTemperatureRepository.buy1(4);
+        List<StockTemperature> buy4 =stockTemperatureRepository.buy2(4);
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
         sb.append(desc).append(queryEnd).append("===>【复盘情况】:<br>").append(temperaturesClose)
                 .append("===>【收盘的情况冰】:<br>").append(buy1)
