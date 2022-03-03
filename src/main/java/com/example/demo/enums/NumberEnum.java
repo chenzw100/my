@@ -7,7 +7,8 @@ public class NumberEnum {
     public enum TemperatureType{
         OPEN(1,"开盘"),
         CLOSE(2,"收盘"),
-        NORMAL(3,"正常");
+        NORMAL(3,"正常"),
+        FIVE(4,"五分钟");
 
         private TemperatureType(int code, String desc) {
             this.code = code;

@@ -61,6 +61,14 @@ public class XgbCurrentService extends QtService {
     private static int  upCount = 0,upCountCYB=0;
     private static int superCount=0,superCountCYB=0;
     private static int superUpCount=0,superUpCountCYB=0;
+    public void currentFivePan(){
+        log.info("xgb==>start current");
+        limitUp();
+        superStockBefore();
+        limitUpBrokenAfter();
+        temperature(NumberEnum.TemperatureType.FIVE.getCode());
+        log.info("xgb===>end current");
+    }
     public void currentPan(){
         log.info("xgb==>start current");
         limitUp();
@@ -381,6 +389,7 @@ public class XgbCurrentService extends QtService {
             myStock.setContinuous(0);
             myStock.setLimitUp(0);
         }
+        log.info("-->Code add :"+myStock.getCode());
         stockInfoService.save(myStock);
     }
 }
