@@ -35,4 +35,11 @@ public interface StockTemperatureRepository extends JpaRepository<StockTemperatu
     public List<StockTemperature> normal(String start, String end);
     @Query(value=" SELECT * FROM stock_temperature WHERE day_format BETWEEN ?1 AND ?2 ORDER BY id ", nativeQuery = true)
     public List<StockTemperature> current(String start, String end);
+
+
+    @Query(value="SELECT * FROM stock_temperature s WHERE s.type=?1 and (s.continue_val<0 and s.raise<1000) ORDER BY s.created DESC LIMIT 6", nativeQuery = true)
+    public List<StockTemperature> buy1(Integer type);
+
+    @Query(value="SELECT * FROM stock_temperature s WHERE s.type=?1 and s.limit_down<5 and s.strong_downs<3 ORDER BY s.created DESC LIMIT 6", nativeQuery = true)
+    public List<StockTemperature> buy2(Integer type);
 }
