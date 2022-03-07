@@ -16,6 +16,7 @@ import com.example.demo.service.dfcf.DfcfService;
 import com.example.demo.service.qt.QtService;
 import com.example.demo.service.sina.SinaService;
 import com.example.demo.utils.MyUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -355,6 +356,14 @@ public class XgbCurrentService extends QtService {
         SinaTinyInfoStock sinaStock = sinaService.getTiny(code);
         if (sinaStock == null) {
             return ;
+        }
+        if(StringUtils.isBlank(sinaStock.getName())){
+            log.info("-->Code add name :"+sinaStock.getCode());
+            sinaStock.setName("--");
+            StockInfo temp =stockInfoService.findStockDaysByCodeYesterdayFormat(sinaStock.getCode());
+            if(temp!=null){
+                sinaStock.setName(temp.getName());
+            }
         }
         StockInfo myStock = new StockInfo(code, sinaStock.getName(), type);
         myStock.setYesterdayClosePrice(sinaStock.getYesterdayPrice());
