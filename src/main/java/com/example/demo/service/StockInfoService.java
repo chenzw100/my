@@ -301,8 +301,8 @@ public class StockInfoService {
                     stockPlateSta.setHotType(0);
                 }else {
                     stockPlateSta.setHotType(my.getHotValue());
+                    result.add(stockPlateSta);
                 }
-                result.add(stockPlateSta);
             }
         }
         return result;
