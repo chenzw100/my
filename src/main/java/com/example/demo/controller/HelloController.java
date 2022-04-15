@@ -1131,4 +1131,33 @@ public class HelloController {
         return sb.toString();
     }
 
+    @RequestMapping("/buy2")
+    String buy2() {
+        String queryEnd = "";
+        if(isWorkday()){
+            queryEnd= MyUtils.getDayFormat();
+        }else {
+            queryEnd=MyUtils.getYesterdayDayFormat();
+        }
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        PRE_END=queryEnd;
+        String start =MyUtils.getDayFormat(MyChineseWorkDay.preDaysWorkDay(5, endDate));
+
+        StringBuilder sb =new StringBuilder();
+        String desc ="信念[空间与新题材模式，趋势持股看看一下，条件双十逻辑，涨停倍增逻辑] 提供20191015以后的数据=====>当前查询日期<br>";
+        List<StockTemperature> buy1 =stockTemperatureRepository.ice(2);
+        List<StockTemperature> buy2 =stockTemperatureRepository.hot(2);
+        List<StockTemperature> buy3 =stockTemperatureRepository.ice(4);
+        List<StockTemperature> buy4 =stockTemperatureRepository.hot(4);
+        List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
+        sb.append(desc).append(queryEnd).append("===>【复盘情况】:<br>").append(temperaturesClose)
+                .append("===>【尾盘的情况冰】:<br>").append(buy3)
+                .append("===>【尾盘的情况热】:<br>").append(buy4)
+                .append("===>【收盘的情况冰】:<br>").append(buy1)
+                .append("===>【收盘的情况热】:<br>").append(buy2)
+        ;
+
+        return sb.toString();
+    }
+
 }
