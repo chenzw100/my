@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dao.StockInfoRepository;
 import com.example.demo.dao.StockLimitUpRepository;
+import com.example.demo.domain.MyOptStock;
 import com.example.demo.domain.MyTotalStock;
 import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockLimitUp;
@@ -288,6 +289,35 @@ public class StockInfoService {
         List<StockOpt> result = new ArrayList<>();
         if(myTotalStocks.size()>0){
             for(MyTotalStock s: myTotalStocks){
+                StockOpt stockPlateSta = new StockOpt();
+                stockPlateSta.setDayFormat(start+"-"+end);
+
+                stockPlateSta.setCode(s.getCode());
+                stockPlateSta.setName(s.getName());
+                stockPlateSta.setHotValue(s.getHotValue());
+                StockLimitUp xgbStock =stockLimitUpRepository.findTop1ByCodeAndPlateNameIsNotNullOrderByIdDesc(s.getCode());
+                stockPlateSta.setPlateName(xgbStock.getPlateName());
+                MyTotalStock my =stockInfoRepository.hotByCode(startHot,end,s.getCode());
+                if(my==null){
+                    stockPlateSta.setHotType(0);
+                }else {
+                    stockPlateSta.setHotType(my.getHotValue());
+                    result.add(stockPlateSta);
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<StockOpt> optCode(String start,String end){
+        List<MyOptStock> myTotalStocks = stockInfoRepository.optCode(start,end);
+        Date endDate =  MyUtils.getFormatDate(end);
+        ChineseWorkDay tenDay=new ChineseWorkDay(endDate);
+        String startHot =MyUtils.getDayFormat(tenDay.preWorkDay());
+        log.info(startHot+": my :"+end);
+        List<StockOpt> result = new ArrayList<>();
+        if(myTotalStocks.size()>0){
+            for(MyOptStock s: myTotalStocks){
                 StockOpt stockPlateSta = new StockOpt();
                 stockPlateSta.setDayFormat(start+"-"+end);
 

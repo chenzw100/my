@@ -1042,7 +1042,7 @@ public class HelloController {
         ChineseWorkDay twentyDay=new ChineseWorkDay(endDate);
         String startTwenty =MyUtils.getDayFormat(twentyDay.preDaysWorkDay(19,endDate));
         System.out.println("startTen = [" + startTen + "]"+"startFifteen = [" + startFifteen + "]"+"startTwenty = [" + startTwenty + "]");
-        List<StockOpt> ten =stockInfoService.hotCode(startTen,queryEnd);
+        List<StockOpt> ten =stockInfoService.optCode(startTen,queryEnd);
         List<StockOpt> fifteen =stockInfoService.hotCode(startFifteen,queryEnd);
         List<StockOpt> twenty =stockInfoService.hotCode(startTwenty,queryEnd);
         ChineseWorkDay yesterdayDate=new ChineseWorkDay(endDate);
