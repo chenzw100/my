@@ -38,6 +38,19 @@ public class StockOpt implements Serializable {
     private Integer hotType;
     @Transient
     private String plateName;
+    @Transient
+    private String today;
+
+    public String getToday() {
+        if(today==null){
+            return "";
+        }
+        return today;
+    }
+
+    public void setToday(String today) {
+        this.today = today;
+    }
 
     public String getPlateName() {
         return plateName;
@@ -104,6 +117,7 @@ public class StockOpt implements Serializable {
                 " " + name +
                         "] hot=" + hotValue +
                         " " + plateName +
+                        " " + getToday() +
                 "<br>";
     }
 }
