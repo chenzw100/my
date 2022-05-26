@@ -1043,6 +1043,7 @@ public class HelloController {
         String startTwenty =MyUtils.getDayFormat(twentyDay.preDaysWorkDay(19,endDate));
         System.out.println("startTen = [" + startTen + "]"+"startFifteen = [" + startFifteen + "]"+"startTwenty = [" + startTwenty + "]");
         List<StockOpt> ten =stockInfoService.optCode(startTen,queryEnd);
+        List<StockOpt> ten4 =stockInfoService.optCode(startTen,queryEnd);
         List<StockOpt> fifteen =stockInfoService.hotCode(startFifteen,queryEnd);
         List<StockOpt> twenty =stockInfoService.hotCode(startTwenty,queryEnd);
         ChineseWorkDay yesterdayDate=new ChineseWorkDay(endDate);
@@ -1053,7 +1054,7 @@ public class HelloController {
             sb.append("<br>").append(yesterday).append(" 板块【").append(stockPlateSta.getPlateName()).append("】").append(stockPlateSta.getDescription());
         }
 
-        return sb.toString()+"<br>===>【twenty】:<br>"+twenty+"<br>===>【fifteen】:<br>"+fifteen+"<br>===>【ten】:<br>"+ten;
+        return sb.toString()+"<br>===>【twenty】:<br>"+twenty+"<br>===>【fifteen】:<br>"+fifteen+"<br>===>【ten】:<br>"+ten+"<br>===>【ten4】:<br>"+ten4;
     }
     @RequestMapping("/ob/{end}")
     String ob(@PathVariable("end")String end) {

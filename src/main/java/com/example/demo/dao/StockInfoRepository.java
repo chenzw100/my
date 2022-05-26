@@ -86,4 +86,7 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     @Query(value="SELECT * FROM(SELECT * FROM(SELECT COUNT(s.code) hotValue,s.`code`,s.`name`,s.plate_name plateName FROM stock_info s WHERE s.stock_type=10 and s.day_format BETWEEN  ?1 AND ?2 GROUP BY s.`code` ORDER BY hotValue desc LIMIT 0,10)a WHERE a.hotValue>4)b LEFT JOIN (SELECT ss.`code` today FROM stock_info ss WHERE ss.stock_type=10 and ss.day_format =?2 )c on b.code=c.`today`", nativeQuery = true)
     public List<MyOptStock> optCode(String start, String end);
 
+    @Query(value="SELECT * FROM(SELECT * FROM(SELECT COUNT(s.code) hotValue,s.`code`,s.`name`,s.plate_name plateName FROM stock_info s WHERE s.stock_type=10 and s.day_format BETWEEN  ?1 AND ?2 GROUP BY s.`code` ORDER BY hotValue desc LIMIT 0,10)a WHERE a.hotValue>3)b LEFT JOIN (SELECT ss.`code` today FROM stock_info ss WHERE ss.stock_type=10 and ss.day_format =?2 )c on b.code=c.`today`", nativeQuery = true)
+    public List<MyOptStock> optCode4(String start, String end);
+
 }
