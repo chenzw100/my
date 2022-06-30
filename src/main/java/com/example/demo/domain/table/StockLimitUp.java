@@ -35,6 +35,14 @@ public class StockLimitUp implements Serializable {
     private Integer tomorrowOpenPrice;
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '明天收盘'")
     private Integer tomorrowClosePrice;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '收盘收益'")
+    private Integer todayOpenYield;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '收盘收益'")
+    private Integer todayCloseYield;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '明日开盘收益'")
+    private Integer tomorrowOpenYield;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '明日收盘收益'")
+    private Integer tomorrowCloseYield;
     public StockLimitUp(){}
     public StockLimitUp(String code, String name,Date date){
         this.code =code;
@@ -47,12 +55,46 @@ public class StockLimitUp implements Serializable {
         this.openCount=-1;
         this.dayFormat = MyUtils.getDayFormat(date);
     }
+
+    public Integer getTodayOpenYield() {
+        return todayOpenYield;
+    }
+
+    public void setTodayOpenYield(Integer todayOpenYield) {
+        this.todayOpenYield = todayOpenYield;
+    }
+
+    public Integer getTodayCloseYield() {
+        return todayCloseYield;
+    }
+
+    public void setTodayCloseYield(Integer todayCloseYield) {
+        this.todayCloseYield = todayCloseYield;
+    }
+
+    public Integer getTomorrowOpenYield() {
+        return tomorrowOpenYield;
+    }
+
+    public void setTomorrowOpenYield(Integer tomorrowOpenYield) {
+        this.tomorrowOpenYield = tomorrowOpenYield;
+    }
+
+    public Integer getTomorrowCloseYield() {
+        return tomorrowCloseYield;
+    }
+
+    public void setTomorrowCloseYield(Integer tomorrowCloseYield) {
+        this.tomorrowCloseYield = tomorrowCloseYield;
+    }
+
     public Integer getTodayOpenPrice() {
         return todayOpenPrice;
     }
 
     public void setTodayOpenPrice(Integer todayOpenPrice) {
         this.todayOpenPrice = todayOpenPrice;
+        this.todayOpenYield =MyUtils.getIncreaseRateCent(todayOpenPrice,getYesterdayClosePrice()).intValue();
     }
 
     public Integer getTodayClosePrice() {
@@ -61,6 +103,7 @@ public class StockLimitUp implements Serializable {
 
     public void setTodayClosePrice(Integer todayClosePrice) {
         this.todayClosePrice = todayClosePrice;
+        this.todayCloseYield =MyUtils.getIncreaseRateCent(todayClosePrice,getTodayOpenPrice()).intValue();
     }
 
     public Integer getTomorrowOpenPrice() {
@@ -69,6 +112,7 @@ public class StockLimitUp implements Serializable {
 
     public void setTomorrowOpenPrice(Integer tomorrowOpenPrice) {
         this.tomorrowOpenPrice = tomorrowOpenPrice;
+        this.tomorrowOpenYield= MyUtils.getIncreaseRateCent(tomorrowOpenPrice,getTodayOpenPrice()).intValue();
     }
 
     public Integer getTomorrowClosePrice() {
@@ -77,11 +121,12 @@ public class StockLimitUp implements Serializable {
 
     public void setTomorrowClosePrice(Integer tomorrowClosePrice) {
         this.tomorrowClosePrice = tomorrowClosePrice;
+        this.tomorrowCloseYield= MyUtils.getIncreaseRateCent(tomorrowClosePrice,getTodayOpenPrice()).intValue();
     }
 
 
 
-    @Transient
+   /* @Transient
     private String todayOpenRate;
     @Transient
     private String todayCloseRate;
@@ -120,7 +165,7 @@ public class StockLimitUp implements Serializable {
 
     public void setTomorrowCloseRate(String tomorrowCloseRate) {
         this.tomorrowCloseRate = tomorrowCloseRate;
-    }
+    }*/
 
 
 

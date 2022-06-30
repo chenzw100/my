@@ -7,21 +7,11 @@
 <div>
     <div style="padding:5px 0;">
         <a target="_blank" href="/pre" class="easyui-linkbutton" >更新数据</a>&nbsp;
-        <span>类型:</span>
-        <select class="easyui-combobox" id="stockType" name="stockType" style="width:70px;">
-            <option value="10"  th:selected="${stockType == 10} " >当日</option>
-            <option value="31" th:selected="${stockType == 31} " >三日</option>
-            <option value="11" th:selected="${stockType == 11} " >同花顺</option>
-            <option value="70" th:selected="${stockType == 70} " >五日</option>
-            <option value="40">空间</option>
-            <option value="1">榜一</option>
-        </select>
-        &nbsp;日期:<input class="easyui-textbox" type="text"  name="dayFormat" id="dayFormat" >
-        &nbsp;CODE:<input class="easyui-textbox" type="text"  name="code" id="code"  th:value="${code}">
+        日期:<input class="easyui-textbox" type="text"  name="dayFormat" id="dayFormat" >
         &nbsp;<span>板块:</span> <input class="easyui-textbox" type="text"  name="plateName" id="plateName" >
         &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
-        &nbsp;<a target="_blank" href="/up/list.html" class="easyui-linkbutton" >tgb</a>
         &nbsp;<a target="_blank" href="/hot.html" class="easyui-linkbutton" >hot</a>
+        &nbsp;<a target="_blank" href="/tgb/list.html" class="easyui-linkbutton" >tgb</a>
         &nbsp;<a href="#" class="easyui-linkbutton" onclick="getSelectedck()">查看个股</a>
         &nbsp;<a target="_blank" href="/nbyyb/list.html" class="easyui-linkbutton" >yyb</a>
         &nbsp;<a target="_blank" href="/review.html" class="easyui-linkbutton" >查看历史</a>
@@ -31,25 +21,21 @@
     </div>
 
 </div>
-<table id="dg" title="人才库"
+<table id="dg" title="up"
        toolbar="#toolbar" pagination="true" idField="id"
        rownumbers="true" fitColumns="true" singleSelect="true">
     <thead>
     <tr>
-        <th data-options="field:'hotSort',align:'center'">排行</th>
-        <th data-options="field:'hotValue',align:'center'">热搜</th>
-        <th data-options="field:'hotSeven',align:'center'">7日</th>
-        <th data-options="field:'continuous',align:'center'">连板</th>
+        <th data-options="field:'continueBoardCount',align:'center'">连板</th>
         <th data-options="field:'dayFormat',align:'center'">日期</th>
         <th data-options="field:'code',align:'center'">代码</th>
         <th data-options="field:'name',align:'center'">名称</th>
         <th data-options="field:'yesterdayClosePrice',align:'center'">昨日价</th>
         <th data-options="field:'plateName',align:'center'">板块</th>
-        <th data-options="field:'openBidRate',align:'center'">竞价开</th>
+        <th data-options="field:'todayOpenYield',align:'center'">竞价开</th>
         <th data-options="field:'todayCloseYield',align:'center'">竞价收</th>
         <th data-options="field:'tomorrowOpenYield',align:'center'">隔日开</th>
         <th data-options="field:'tomorrowCloseYield',align:'center'">隔日收</th>
-
 
     </tr>
     </thead>
@@ -60,18 +46,18 @@
         $('#dg').edatagrid({
             pageSize:10,
             pageList:[10,20],
-            url:'/tgb/list.action',
-            queryParams:{
+            url:'/up/list.action',
+            /*queryParams:{
                 code: $("#code").val(),
                 stockType: $("#stockType").val()
-            },
+            },*/
 
         });
     });
     $("#query").click(function () {
         $('#dg').datagrid('load', {
-            code: $("#code").val(),
-            stockType: $("#stockType").val(),
+            /*code: $("#code").val(),
+            stockType: $("#stockType").val(),*/
             dayFormat: $("#dayFormat").val()
         });
     });
@@ -102,8 +88,8 @@
     }
     function scan() {
         $('#dg').datagrid('load', {
-            code: $("#code").val(),
-            stockType: $("#stockType").val(),
+           /* code: $("#code").val(),
+            stockType: $("#stockType").val(),*/
             openCount:$("#dateEnd").val()
         });
     }

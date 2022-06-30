@@ -19,9 +19,10 @@ public class DealPanDataService extends QtService {
     @Autowired
     StockInfoService stockInfoService;
     @Autowired
-    StockLimitUpRepository stockLimitUpRepository;
-    @Autowired
     StockYybInfoRepository stockYybInfoRepository;
+
+    @Autowired
+    StockLimitUpRepository stockLimitUpRepository;
 
     @Autowired
     SinaService sinaService;
@@ -30,6 +31,7 @@ public class DealPanDataService extends QtService {
         PRICE_CACHE.clear();
         log.info("data open start");
         openStockInfo();
+        openStockLimitUp();
         openStockYybInfo();
         log.info("data open end");
         PRICE_CACHE.clear();
@@ -40,6 +42,7 @@ public class DealPanDataService extends QtService {
         log.info("data close start");
         fiveStatistic();
         closeStockInfo();
+        closeStockLimitUp();
         closeStockYybInfo();
         log.info("data close end");
         SINA_CACHE.clear();
@@ -152,6 +155,40 @@ public class DealPanDataService extends QtService {
                     xgbFiveUpStock.setTodayOpenPrice(tinyInfoStock.getOpenPrice());
                 }
                 stockInfoService.save(xgbFiveUpStock);
+            }
+        }
+    }
+
+    private void openStockLimitUp(){
+        List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByDayFormatAndContinueBoardCountGreaterThan(MyUtils.getYesterdayDayFormat(),1);
+        if(xgbStocks!=null){
+            for(StockLimitUp myStock :xgbStocks){
+                myStock.setTodayOpenPrice(getIntCurrentPrice(myStock.getCode()));
+                stockLimitUpRepository.save(myStock);
+            }
+        }
+        xgbStocks = stockLimitUpRepository.findByDayFormatAndContinueBoardCountGreaterThan(MyUtils.getPre2DayFormat(),1);
+        if(xgbStocks!=null){
+            for(StockLimitUp myStock :xgbStocks){
+                myStock.setTomorrowOpenPrice(getIntCurrentPrice(myStock.getCode()));
+                stockLimitUpRepository.save(myStock);
+            }
+        }
+    }
+
+    private void closeStockLimitUp(){
+        List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByDayFormatAndContinueBoardCountGreaterThan(MyUtils.getYesterdayDayFormat(),1);
+        if(xgbStocks!=null){
+            for(StockLimitUp myStock :xgbStocks){
+                myStock.setTodayClosePrice(getIntCurrentPrice(myStock.getCode()));
+                stockLimitUpRepository.save(myStock);
+            }
+        }
+        xgbStocks = stockLimitUpRepository.findByDayFormatAndContinueBoardCountGreaterThan(MyUtils.getPre2DayFormat(),1);
+        if(xgbStocks!=null){
+            for(StockLimitUp myStock :xgbStocks){
+                myStock.setTomorrowClosePrice(getIntCurrentPrice(myStock.getCode()));
+                stockLimitUpRepository.save(myStock);
             }
         }
     }

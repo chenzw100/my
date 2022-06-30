@@ -1,6 +1,9 @@
 package com.example.demo.dao;
 
+import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockLimitUp;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -23,5 +26,6 @@ public interface StockLimitUpRepository extends JpaRepository<StockLimitUp,Long>
     StockLimitUp save(StockLimitUp xgbStock);
     List<StockLimitUp> findByCodeAndPlateNameIsNotNullOrderByIdDesc(String code);
     StockLimitUp findTop1ByCodeAndPlateNameIsNotNullOrderByIdDesc(String code);
+    Page<StockLimitUp> findByDayFormatAndContinueBoardCountGreaterThan(String dayFormat, int min, Pageable pageable);
 
 }
