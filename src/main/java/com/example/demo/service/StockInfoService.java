@@ -386,7 +386,9 @@ public class StockInfoService {
                 stockPlateSta.setName(s.getName());
                 stockPlateSta.setHotValue(s.getHotValue());
                 StockLimitUp xgbStock =stockLimitUpRepository.findTop1ByCodeAndPlateNameIsNotNullOrderByIdDesc(s.getCode());
-                stockPlateSta.setPlateName(xgbStock.getPlateName());
+                if(xgbStock!=null){
+                    stockPlateSta.setPlateName(xgbStock.getPlateName());
+                }
                 MyTotalStock my =stockInfoRepository.hotByCode(startHot,end,s.getCode());
                 if(my==null){
                     stockPlateSta.setHotType(0);
