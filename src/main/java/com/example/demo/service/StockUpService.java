@@ -109,6 +109,7 @@ public class StockUpService extends QtService {
         Integer yesterdayClosePrice =MyUtils.getCentByYuanStr(yesterday.getString(2));
         stockInfoRecord.setYesterdayClosePrice(yesterdayClosePrice);
 
+
         Integer todayOpenPrice =MyUtils.getCentByYuanStr(today.getString(1));
         stockInfoRecord.setTodayOpenPrice(todayOpenPrice);
         Integer todayClosePrice=MyUtils.getCentByYuanStr(today.getString(2));
