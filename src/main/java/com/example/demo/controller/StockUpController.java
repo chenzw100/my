@@ -63,6 +63,12 @@ public class StockUpController {
         map.put("rows",list.getContent());
         return JSON.toJSONString(map);
     }
+    @RequestMapping("/limit.action")
+    @ResponseBody
+    public String limitUp() {
+        stockUpService.doLimitUp();
+        return "success";
+    }
 
 
 
