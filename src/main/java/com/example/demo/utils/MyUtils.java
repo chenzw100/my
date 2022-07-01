@@ -98,6 +98,9 @@ public class MyUtils {
         return new BigDecimal(Double.parseDouble(sinaPriceStr)).multiply(new BigDecimal(100)).setScale(2, RoundingMode.HALF_UP).intValue();
     }
     public static int getCentByYuanStr(String sinaPriceStr){
+        if(StringUtils.isBlank(sinaPriceStr)){
+            return 0;
+        }
         return new BigDecimal(Double.parseDouble(sinaPriceStr)).multiply(new BigDecimal(100)).setScale(2, RoundingMode.HALF_UP).intValue();
     }
     public static int getCentBy4Point(String sinaPriceStr){

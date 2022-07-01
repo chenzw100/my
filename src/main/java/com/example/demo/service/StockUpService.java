@@ -61,7 +61,7 @@ public class StockUpService extends QtService {
 
     public void doLimitUp(){
         String start = "20220601";
-        String end = "20220627";
+        String end = "20220629";
         boolean f=true;
         while (f){
             if(start.equals(end)){
@@ -96,8 +96,7 @@ public class StockUpService extends QtService {
 
         String start = MyUtils.getDayFormat(yesterdayDate);
         String end = MyUtils.getDayFormat(tomorrowDate);
-        stockInfoRecord.setCode(stockInfoRecord.getCode().substring(2,8));
-        HashMap<String, JSONArray> map = getHistory(stockInfoRecord.getCode(),start,end);
+        HashMap<String, JSONArray> map = getHistory(stockInfoRecord.getCode().substring(2,8),start,end);
         if(map==null){
             System.out.println("null = [" + stockInfoRecord.getDayFormat() + "]");
             return;
@@ -106,18 +105,27 @@ public class StockUpService extends QtService {
         JSONArray today = map.get(MyUtils.getDayFormat(now));
         JSONArray tomorrow =map.get(MyUtils.getDayFormat(tomorrowDate));
 
-        Integer yesterdayClosePrice =MyUtils.getCentByYuanStr(yesterday.getString(2));
-        stockInfoRecord.setYesterdayClosePrice(yesterdayClosePrice);
+        if(yesterday!=null){
+            Integer yesterdayClosePrice =MyUtils.getCentByYuanStr(yesterday.getString(2));
+            if(stockInfoRecord.getYesterdayClosePrice().intValue() != yesterdayClosePrice){
+                System.out.println("yichang     =============== [" + stockInfoRecord.toString() + "]");
+            }
+            stockInfoRecord.setYesterdayClosePrice(yesterdayClosePrice);
+        }
 
-        Integer todayOpenPrice =MyUtils.getCentByYuanStr(today.getString(1));
-        stockInfoRecord.setTodayOpenPrice(todayOpenPrice);
-        Integer todayClosePrice=MyUtils.getCentByYuanStr(today.getString(2));
-        stockInfoRecord.setTodayClosePrice(todayClosePrice);
+        if(today!=null){
+            Integer todayOpenPrice =MyUtils.getCentByYuanStr(today.getString(1));
+            stockInfoRecord.setTodayOpenPrice(todayOpenPrice);
+            Integer todayClosePrice=MyUtils.getCentByYuanStr(today.getString(2));
+            stockInfoRecord.setTodayClosePrice(todayClosePrice);
+        }
 
-        Integer tomorrowOpenPrice=MyUtils.getCentByYuanStr(tomorrow.getString(1));
-        stockInfoRecord.setTomorrowOpenPrice(tomorrowOpenPrice);
-        Integer tomorrowClosePrice=MyUtils.getCentByYuanStr(tomorrow.getString(2));
-        stockInfoRecord.setTomorrowClosePrice(tomorrowClosePrice);
+        if(tomorrow!=null){
+            Integer tomorrowOpenPrice=MyUtils.getCentByYuanStr(tomorrow.getString(1));
+            stockInfoRecord.setTomorrowOpenPrice(tomorrowOpenPrice);
+            Integer tomorrowClosePrice=MyUtils.getCentByYuanStr(tomorrow.getString(2));
+            stockInfoRecord.setTomorrowClosePrice(tomorrowClosePrice);
+        }
 
         stockLimitUpRepository.save(stockInfoRecord);
         System.out.println("result = [" + stockInfoRecord.toString() + "]");
