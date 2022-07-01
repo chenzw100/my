@@ -33,6 +33,7 @@ import java.util.List;
 @RestController
 public class HelloController {
     private static String PRE_END="";
+    private static String HOT_PRE_END="";
     @Autowired
     SinaService sinaService;
     @Autowired
@@ -1022,14 +1023,14 @@ public class HelloController {
                 queryEnd=MyUtils.getYesterdayDayFormat();
             }
         }else if("2".equals(end)){
-            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            Date endDate =  MyUtils.getFormatDate(HOT_PRE_END);
             queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
         }else if("3".equals(end)){
-            Date endDate =  MyUtils.getFormatDate(PRE_END);
+            Date endDate =  MyUtils.getFormatDate(HOT_PRE_END);
             queryEnd =MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
         }
         Date endDate =  MyUtils.getFormatDate(queryEnd);
-        PRE_END=queryEnd;
+        HOT_PRE_END=queryEnd;
 
         StringBuilder sb =new StringBuilder();
         String desc ="【主流板块】注意[1,4,8,10月披露+月底提金，还有一些莫名的反常！！！]查询日期20191015以后的数据<br>=====>当前查询日期";

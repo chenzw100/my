@@ -101,6 +101,17 @@ public class StockInfo implements Serializable {
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '五日最低收益'")
     private Integer fiveLowYield;
 
+    @Transient
+    private String todayClose;
+
+    public String getTodayClose() {
+        return MyUtils.getIncreaseRate(getTodayClosePrice(),getYesterdayClosePrice()).toString();
+    }
+
+    public void setTodayClose(String todayClose) {
+        this.todayClose = todayClose;
+    }
+
     public Integer getTodayCloseYield() {
         //(todayClosePrice-todayPrice)/todayPrice
         todayCloseYield =MyUtils.getIncreaseRateCent(getTodayClosePrice(),getTodayOpenPrice()).intValue();
@@ -435,8 +446,8 @@ public class StockInfo implements Serializable {
         }
         StringBuilder sb = new StringBuilder();
         sb.append(dayFormat).append(NumberEnum.StockType.getStockType(stockType)).append(code).append(name).append("[最高:").append(getFiveHighRate()).append("最低:").append(getFiveLowRate()).
-                append(",连板:").append(getContinuous()).append(",昨收:").append(MyUtils.getYuanByCent(getYesterdayClosePrice())).append("]竞价:").append(getTodayOpenRate()).
-                append(",收盘:").append(getTodayCloseRate()).
+                append(",连板:").append(getContinuous()).append(",昨收:").append(MyUtils.getYuanByCent(getYesterdayClosePrice())).append("][竞价:").append(getTodayOpenRate()).append(",收盘").append(getTodayClose()).
+                append("],收盘收益:").append(getTodayCloseRate()).
                 append(",明天:").append(getTomorrowOpenRate()).append(":").append(getTomorrowCloseRate()).
                 append("[七日:").append(getHotSeven()).append(",热值:").append(getHotValue()).append(",热序").append(getHotSort()).append("]").
                 append(getPlateName()).append("<br>");

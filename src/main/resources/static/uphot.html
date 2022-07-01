@@ -1,0 +1,79 @@
+<head>
+    <meta charset="UTF-8">
+    <title>for me</title>
+    <script type="text/javascript" src="jquery-2.2.4.min.js"></script>
+</head>
+
+<style>
+    .mychart{
+        width: 950px;height:200px;
+    }
+</style>
+<div class="container">
+    <div class="">
+        <input type="text" value="1" id="dateEnd" onkeyup="onKeyUpEnter(event)">
+        <input type="button" value="确定" id="search" onclick="getSelect()"  />
+        <span><a target="_blank" href="/up/list.html">up</a></span>
+        <span><a target="_blank"  href="/ob.html">观察</a></span>
+        <span><a target="_blank"  href="/high/0">查询信息</a></span>
+        <span><a target="_blank" href="/tgb/list.html">tgb</a></span>
+        <span><a target="_blank" href="/opt/list.html">hotOpt</a></span>
+        <span><a target="_blank" href="/mood/0/0">添加情绪</a></span>
+        <span><a target="_blank" href="/truth/1">添加复盘</a></span>
+        <span><a target="_blank"  href="/add/1">添加灵魂</a></span>
+        <span><a target="_blank"  href="/focus.html">图标</a></span>
+        <span><a target="_blank"  href="/ideals2.html">反抽</a></span>
+        <span><a target="_blank"  href="/risk.html">风险</a></span>
+    </div>
+    <div>
+        <div id="main" ></div>
+    </div>
+
+
+</div>
+
+<script type="application/javascript">
+    $(function(){
+        getSelect();
+    })
+    function onKeyUpEnter(e) {
+        if (e.keyCode == 13) {
+            getSelect();
+        }else if(e.keyCode == 37){
+            //pre
+            $("#dateEnd").val(2);
+            getSelect();
+        }
+        else if(e.keyCode == 39){
+            //next
+            $("#dateEnd").val(3);
+            getSelect();
+        }
+    }
+    function getSelect(){
+        getViewData();
+    }
+    function getViewData(){
+        var end = $("#dateEnd").val();
+        if(end==undefined || end==""){
+            end="1";
+        }
+        $.ajax({
+            url : 'up/hot/'+end,
+            dataType : 'json',
+            type : 'get',
+            async : false,
+            success : function(ret){
+                //console.log("success"+ret);
+                $("#main").html(ret.responseText);
+            },
+            error:function(ret){
+                //这里走的是error?
+                $("#main").html(ret.responseText);
+                //console.log("fail："+ret);
+            }
+        });
+    }
+
+
+</script>

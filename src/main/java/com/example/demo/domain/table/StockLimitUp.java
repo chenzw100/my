@@ -124,9 +124,17 @@ public class StockLimitUp implements Serializable {
         this.tomorrowCloseYield= MyUtils.getIncreaseRateCent(tomorrowClosePrice,getTodayOpenPrice()).intValue();
     }
 
+    @Transient
+    private String todayCloseRate;
 
+    public String getTodayCloseRate() {
+        return MyUtils.getIncreaseRate(getTodayClosePrice(),getYesterdayClosePrice()).toString();
+    }
 
-   /* @Transient
+    public void setTodayCloseRate(String todayCloseRate) {
+        this.todayCloseRate = todayCloseRate;
+    }
+    /* @Transient
     private String todayOpenRate;
     @Transient
     private String todayCloseRate;

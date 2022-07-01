@@ -363,10 +363,44 @@ public class StockInfoService {
                     stockPlateSta.setHotType(my.getHotValue());
                     stockPlateSta.setToday(s.getToday());
                     result.add(stockPlateSta);
+
                 }
             }
         }
         return result;
     }
 
+    public List<StockInfo> optCodeNew4(String start,String end){
+        List<MyOptStock> myTotalStocks = stockInfoRepository.optCode4(start,end);
+        Date endDate =  MyUtils.getFormatDate(end);
+        ChineseWorkDay tenDay=new ChineseWorkDay(endDate);
+        String startHot =MyUtils.getDayFormat(tenDay.preWorkDay());
+        log.info(startHot+": my :"+end);
+        List<StockInfo> result = new ArrayList<>();
+        if(myTotalStocks.size()>0){
+            for(MyOptStock s: myTotalStocks){
+                StockOpt stockPlateSta = new StockOpt();
+                stockPlateSta.setDayFormat(start+"-"+end);
+
+                stockPlateSta.setCode(s.getCode());
+                stockPlateSta.setName(s.getName());
+                stockPlateSta.setHotValue(s.getHotValue());
+                StockLimitUp xgbStock =stockLimitUpRepository.findTop1ByCodeAndPlateNameIsNotNullOrderByIdDesc(s.getCode());
+                stockPlateSta.setPlateName(xgbStock.getPlateName());
+                MyTotalStock my =stockInfoRepository.hotByCode(startHot,end,s.getCode());
+                if(my==null){
+                    stockPlateSta.setHotType(0);
+                }else {
+                    stockPlateSta.setHotType(my.getHotValue());
+                    stockPlateSta.setToday(s.getToday());
+                    //result.add(stockPlateSta);
+                    StockInfo info =stockInfoRepository.findFirst1ByCodeAndDayFormat(s.getCode(),end);
+                    if(info!=null){
+                        result.add(info);
+                    }
+                }
+            }
+        }
+        return result;
+    }
 }

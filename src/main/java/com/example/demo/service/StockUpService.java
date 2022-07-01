@@ -60,8 +60,8 @@ public class StockUpService extends QtService {
 
 
     public void doLimitUp(){
-        String start = "20220601";
-        String end = "20220629";
+        String start = "20220101";
+        String end = "20220531";
         boolean f=true;
         while (f){
             if(start.equals(end)){
