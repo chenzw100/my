@@ -1,6 +1,8 @@
 package com.example.demo.service.qt;
 
 import cn.hutool.core.date.DateTime;
+import com.example.demo.domain.table.StockInfo;
+import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.base.BaseService;
 import com.example.demo.utils.MyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -102,5 +104,15 @@ public class QtService extends BaseService{
         String str = response.toString();
         String[] stockObj = str.split("~");
         return stockObj;
+    }
+    public StockInfo getInfo(String code){
+        String[] stockObj = getStock(code);
+        if(stockObj.length<3){
+            return null;
+        }
+        StockInfo info = new StockInfo(code, stockObj[1], NumberEnum.StockType.STOCK_KPL.getCode());
+        String price = stockObj[3];
+        info.setYesterdayClosePrice(MyUtils.getCentByYuanStr(price));
+        return info;
     }
 }

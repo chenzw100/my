@@ -126,6 +126,75 @@ public class StockLimitUp implements Serializable {
 
     @Transient
     private String todayCloseRate;
+    @Transient
+    private String todayOpenRate;
+    /**
+     * 昨日收盘价
+     */
+    @Transient
+    private String yesterdayClose;
+    /**
+     * 今日收盘价
+     */
+    @Transient
+    private String todayOpen;
+
+
+    /**
+     * 收盘收益
+     */
+    @Transient
+    private String todayCloseEarnings;
+    /**
+     * 明日开盘收益
+     */
+    @Transient
+    private String tomorrowOpenEarnings;
+    /**
+     * 明日收盘收益 Earnings
+     */
+    @Transient
+    private String tomorrowCloseEarnings;
+
+    public String getTodayCloseEarnings() {
+        return MyUtils.getYuanByCent(getTodayCloseYield());
+    }
+
+    public void setTodayCloseEarnings(String todayCloseEarnings) {
+        this.todayCloseEarnings = todayCloseEarnings;
+    }
+
+    public String getTomorrowOpenEarnings() {
+        return MyUtils.getYuanByCent(getTomorrowOpenYield());
+    }
+
+    public void setTomorrowOpenEarnings(String tomorrowOpenEarnings) {
+        this.tomorrowOpenEarnings = tomorrowOpenEarnings;
+    }
+
+    public String getTomorrowCloseEarnings() {
+        return MyUtils.getYuanByCent(getTomorrowCloseYield());
+    }
+
+    public void setTomorrowCloseEarnings(String tomorrowCloseEarnings) {
+        this.tomorrowCloseEarnings = tomorrowCloseEarnings;
+    }
+
+    public String getYesterdayClose() {
+        return MyUtils.getYuanByCent(getYesterdayClosePrice());
+    }
+
+    public void setYesterdayClose(String yesterdayClose) {
+        this.yesterdayClose = yesterdayClose;
+    }
+
+    public String getTodayOpen() {
+        return MyUtils.getYuanByCent(getTodayOpenPrice());
+    }
+
+    public void setTodayOpen(String todayOpen) {
+        this.todayOpen = todayOpen;
+    }
 
     public String getTodayCloseRate() {
         return MyUtils.getIncreaseRate(getTodayClosePrice(),getYesterdayClosePrice()).toString();
@@ -133,6 +202,14 @@ public class StockLimitUp implements Serializable {
 
     public void setTodayCloseRate(String todayCloseRate) {
         this.todayCloseRate = todayCloseRate;
+    }
+
+    public String getTodayOpenRate() {
+        return MyUtils.getIncreaseRate(getTodayOpenPrice(),getYesterdayClosePrice()).toString();
+    }
+
+    public void setTodayOpenRate(String todayOpenRate) {
+        this.todayOpenRate = todayOpenRate;
     }
     /* @Transient
     private String todayOpenRate;

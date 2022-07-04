@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.example.demo.dao.StockLimitUpRepository;
 import com.example.demo.dao.StockPlateStaRepository;
 import com.example.demo.dao.StockTemperatureRepository;
+import com.example.demo.domain.SinaTinyInfoStock;
 import com.example.demo.domain.table.*;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockUpService;
+import com.example.demo.service.qt.QtService;
 import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
@@ -36,6 +39,10 @@ public class StockUpController {
     StockPlateStaRepository stockPlateStaRepository;
     @Autowired
     StockTemperatureRepository stockTemperatureRepository;
+    @Autowired
+    QtService qtService;
+    @Autowired
+    StockLimitUpRepository stockLimitUpRepository;
     private String getQueryDate(Integer end) {
         String queryEnd = MyUtils.getDayFormat();
         if (end==null) {
@@ -56,9 +63,8 @@ public class StockUpController {
     }
 
     @RequestMapping("/list.html")
-    public String index(ModelMap modelMap,String code,Integer stockType){
-        /*modelMap.put("code",code);
-        modelMap.put("stockType",stockType);*/
+    public String index(ModelMap modelMap){
+        modelMap.put("title","连板梯队");
         return "up/list";
     }
     @RequestMapping("/list.action")
@@ -129,6 +135,51 @@ public class StockUpController {
         List<StockTemperature> temperaturesClose=stockTemperatureRepository.close(start, queryEnd);
 
         return sb.toString()+"<br>===>【fifteen】:<br>"+fifteen+"<br>===>【ten】:<br>"+ten+"<br>===>【ten4】:<br>"+ten4+"<br>===>【复盘】:<br>"+temperaturesClose;
+    }
+
+
+    @RequestMapping("/add/{type}/{code}")
+    @ResponseBody
+    public String add(@PathVariable("type")Integer type,@PathVariable("code")String code) {
+        if ("1".equals(code)) {
+            return "success";
+        }
+        if (code.indexOf("6") == 0) {
+            code = "sh" + code;
+        } else {
+            code = "sz" + code;
+        }
+        StockInfo myStock = qtService.getInfo(code);
+        if (myStock == null) {
+            return "fail";
+        }
+        myStock.setStockType(type);
+        StockInfo fiveTgbStockTemp =stockInfoService.findStockKplByCodeAndYesterdayFormat(myStock.getCode());
+        if(fiveTgbStockTemp!=null){
+            myStock.setShowCount(fiveTgbStockTemp.getShowCount() + 1);
+        }else {
+            myStock.setShowCount(1);
+        }
+        List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myStock.getCode(),MyUtils.getDayFormat(MyUtils.getYesterdayDate()));
+        if(xgbStocks!=null && xgbStocks.size()>0){
+            StockLimitUp xgbStock =xgbStocks.get(0);
+            myStock.setPlateName(xgbStock.getPlateName());
+            myStock.setOneFlag(xgbStock.getOpenCount());
+            myStock.setContinuous(xgbStock.getContinueBoardCount());
+            myStock.setLimitUp(1);
+        }else {
+            xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(myStock.getCode());
+            if(xgbStocks!=null && xgbStocks.size()>0){
+                myStock.setPlateName(xgbStocks.get(0).getPlateName());
+            }else {
+                myStock.setPlateName("");
+            }
+            myStock.setOneFlag(1);
+            myStock.setContinuous(0);
+            myStock.setLimitUp(0);
+        }
+        stockInfoService.save(myStock);
+        return myStock.toString();
     }
 
 

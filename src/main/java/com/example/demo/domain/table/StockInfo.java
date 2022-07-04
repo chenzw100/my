@@ -113,6 +113,45 @@ public class StockInfo implements Serializable {
      */
     @Transient
     private String todayOpen;
+    /**
+     * 收盘收益
+     */
+    @Transient
+    private String todayCloseEarnings;
+    /**
+     * 明日开盘收益
+     */
+    @Transient
+    private String tomorrowOpenEarnings;
+    /**
+     * 明日收盘收益 Earnings
+     */
+    @Transient
+    private String tomorrowCloseEarnings;
+
+    public String getTodayCloseEarnings() {
+        return MyUtils.getYuanByCent(getTodayCloseYield());
+    }
+
+    public void setTodayCloseEarnings(String todayCloseEarnings) {
+        this.todayCloseEarnings = todayCloseEarnings;
+    }
+
+    public String getTomorrowOpenEarnings() {
+        return MyUtils.getYuanByCent(getTomorrowOpenYield());
+    }
+
+    public void setTomorrowOpenEarnings(String tomorrowOpenEarnings) {
+        this.tomorrowOpenEarnings = tomorrowOpenEarnings;
+    }
+
+    public String getTomorrowCloseEarnings() {
+        return MyUtils.getYuanByCent(getTomorrowCloseYield());
+    }
+
+    public void setTomorrowCloseEarnings(String tomorrowCloseEarnings) {
+        this.tomorrowCloseEarnings = tomorrowCloseEarnings;
+    }
 
     public String getYesterdayClose() {
         return MyUtils.getYuanByCent(getYesterdayClosePrice());

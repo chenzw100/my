@@ -5,6 +5,7 @@ import com.example.demo.dao.StockPlateStaRepository;
 import com.example.demo.dao.StockTemperatureRepository;
 import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockTemperature;
+import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockUpService;
 import com.example.demo.utils.ChineseWorkDay;
@@ -51,6 +52,7 @@ public class StopInfoController {
 
     @RequestMapping("/optlist.html")
     public String index(ModelMap modelMap){
+        modelMap.put("title","操作标的");
         return "stop/optlist";
     }
     @RequestMapping("/optlist.action")
@@ -62,6 +64,8 @@ public class StopInfoController {
         ChineseWorkDay tenDay=new ChineseWorkDay(endDate);
         String startTen =MyUtils.getDayFormat(tenDay.preDaysWorkDay(9,endDate));
         List<StockInfo> ten4 =stockInfoService.optCodeNew4(startTen,queryEnd);
+        List<StockInfo> focus = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
+        ten4.addAll(focus);
         Map map = new HashMap<>();
         map.put("total",ten4.size());
         map.put("rows",ten4);
@@ -69,6 +73,7 @@ public class StopInfoController {
     }
     @RequestMapping("/tlist.html")
     public String tindex(ModelMap modelMap){
+        modelMap.put("title","市场温度");
         return "stop/tlist";
     }
     @RequestMapping("/tlist.action")
@@ -86,6 +91,7 @@ public class StopInfoController {
 
     @RequestMapping("/clist.html")
     public String cindex(ModelMap modelMap){
+        modelMap.put("title","市场实时温度");
         return "stop/clist";
     }
     @RequestMapping("/clist.action")

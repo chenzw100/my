@@ -66,6 +66,26 @@ public class StockTemperature {
     private int superUpCountCYB;
     @Transient
     private String current;
+    @Transient
+    private String yesterdayShowText;
+    @Transient
+    private String brokenRatioText;
+
+    public String getYesterdayShowText() {
+        return MyUtils.getYuanByCent(getYesterdayShow());
+    }
+
+    public void setYesterdayShowText(String yesterdayShowText) {
+        this.yesterdayShowText = yesterdayShowText;
+    }
+
+    public String getBrokenRatioText() {
+        return MyUtils.getYuanByCent(getBrokenRatio());
+    }
+
+    public void setBrokenRatioText(String brokenRatioText) {
+        this.brokenRatioText = brokenRatioText;
+    }
 
     public String getCurrent() {
         return DateFormatUtils.format(getCreated(), "yyyy-MM-dd HH:mm");
