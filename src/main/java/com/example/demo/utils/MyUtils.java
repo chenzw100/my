@@ -106,7 +106,10 @@ public class MyUtils {
     public static int getCentBy4Point(String sinaPriceStr){
         return new BigDecimal(Double.parseDouble(sinaPriceStr)).multiply(new BigDecimal(10000)).setScale(2, RoundingMode.HALF_UP).intValue();
     }
-    public static String getYuanByCent(int cent){
+    public static String getYuanByCent(Integer cent){
+        if(cent==null){
+            return "";
+        }
         return new BigDecimal(cent).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP).toString();
         /*Double faultRate = Double.parseDouble(sinaPriceStr);
         BigDecimal a = BigDecimal.valueOf(faultRate);

@@ -52,6 +52,10 @@ public class StockLimitUp implements Serializable {
         this.todayClosePrice=10;
         this.tomorrowOpenPrice=10;
         this.tomorrowClosePrice=10;
+        this.todayOpenYield=-1;
+        this.tomorrowCloseYield=-1;
+        this.tomorrowCloseYield=-1;
+        this.tomorrowOpenYield=-1;
         this.openCount=-1;
         this.dayFormat = MyUtils.getDayFormat(date);
     }
@@ -65,6 +69,9 @@ public class StockLimitUp implements Serializable {
     }
 
     public Integer getTodayCloseYield() {
+        if(todayCloseYield==null){
+            todayCloseYield=0;
+        }
         return todayCloseYield;
     }
 
@@ -81,6 +88,9 @@ public class StockLimitUp implements Serializable {
     }
 
     public Integer getTomorrowCloseYield() {
+        if(tomorrowCloseYield==null){
+            tomorrowOpenYield=0;
+        }
         return tomorrowCloseYield;
     }
 
