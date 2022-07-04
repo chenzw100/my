@@ -3,10 +3,7 @@ package com.example.demo.domain.table;
 import com.example.demo.utils.MyUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -67,6 +64,16 @@ public class StockTemperature {
     private int superUpCount;
     @Column(nullable = false)
     private int superUpCountCYB;
+    @Transient
+    private String current;
+
+    public String getCurrent() {
+        return DateFormatUtils.format(getCreated(), "yyyy-MM-dd HH:mm");
+    }
+
+    public void setCurrent(String current) {
+        this.current = current;
+    }
 
     public int getStrongDownsCYB() {
         return strongDownsCYB;
