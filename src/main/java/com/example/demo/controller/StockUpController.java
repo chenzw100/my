@@ -43,18 +43,18 @@ public class StockUpController {
     QtService qtService;
     @Autowired
     StockLimitUpRepository stockLimitUpRepository;
-    private String getQueryDate(Integer end) {
-        String queryEnd = MyUtils.getDayFormat();
+    private String getQueryDate(String end) {
+        String queryEnd = end;
         if (end==null) {
             if (MyChineseWorkDay.isWorkday()) {
                 queryEnd = MyUtils.getDayFormat();
             } else {
                 queryEnd = MyUtils.getYesterdayDayFormat();
             }
-        } else if (end==2) {
+        } else if (end.equals("2")) {
             Date endDate = MyUtils.getFormatDate(UP_PRE_END);
             queryEnd = MyUtils.getDayFormat(MyChineseWorkDay.preWorkDay(endDate));
-        } else if (end==3) {
+        } else if (end.equals("3")) {
             Date endDate = MyUtils.getFormatDate(UP_PRE_END);
             queryEnd = MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
         }
@@ -70,12 +70,7 @@ public class StockUpController {
     @RequestMapping("/list.action")
     @ResponseBody
     public String list(Integer page, Integer rows, StockLimitUp obj){
-        if(StringUtils.isBlank(obj.getDayFormat())){
-            obj.setDayFormat(getQueryDate(obj.getOpenCount()));
-        }else {
-            Date endDate = MyUtils.getFormatDate(obj.getDayFormat());
-            UP_PRE_END = MyUtils.getDayFormat(endDate);
-        }
+        obj.setDayFormat(getQueryDate(obj.getDayFormat()));
         Map map = new HashMap<>();
         Page<StockLimitUp> list =stockUpService.findALl(page,rows,obj);
         map.put("total",list.getTotalElements());
@@ -153,7 +148,9 @@ public class StockUpController {
         if (myStock == null) {
             return "fail";
         }
-        myStock.setStockType(type);
+        if(type>1){
+            myStock.setStockType(type);
+        }
         StockInfo fiveTgbStockTemp =stockInfoService.findStockKplByCodeAndYesterdayFormat(myStock.getCode());
         if(fiveTgbStockTemp!=null){
             myStock.setShowCount(fiveTgbStockTemp.getShowCount() + 1);

@@ -168,9 +168,11 @@ public class DealPanDataService extends QtService {
             }
         }
         xgbStocks = stockLimitUpRepository.findByDayFormatAndContinueBoardCountGreaterThan(MyUtils.getPre2DayFormat(),1);
+        log.info("data open start openStockLimitUp size:"+xgbStocks.size());
         if(xgbStocks!=null){
             for(StockLimitUp myStock :xgbStocks){
                 myStock.setTomorrowOpenPrice(getIntCurrentPrice(myStock.getCode()));
+                log.info(myStock.getCode()+" data open start openStockLimitUp "+myStock.getTomorrowOpenPrice()+",OpenEarnings:"+myStock.getTomorrowOpenEarnings());
                 stockLimitUpRepository.save(myStock);
             }
         }
@@ -185,9 +187,11 @@ public class DealPanDataService extends QtService {
             }
         }
         xgbStocks = stockLimitUpRepository.findByDayFormatAndContinueBoardCountGreaterThan(MyUtils.getPre2DayFormat(),1);
+        log.info("data open start closeStockLimitUp size:"+xgbStocks.size());
         if(xgbStocks!=null){
             for(StockLimitUp myStock :xgbStocks){
                 myStock.setTomorrowClosePrice(getIntCurrentPrice(myStock.getCode()));
+                log.info(myStock.getCode()+ "data open start openStockLimitUp "+myStock.getTomorrowClosePrice()+",CloseEarnings:"+myStock.getTomorrowCloseEarnings());
                 stockLimitUpRepository.save(myStock);
             }
         }

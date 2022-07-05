@@ -5,16 +5,13 @@
 <div th:include="menu :: menu"></div>
 <div>
     <div style="padding:5px 0;">
-        日期:<input class="easyui-textbox" type="text"  name="dayFormat" id="dayFormat" >
-        &nbsp;<span>板块:</span> <input class="easyui-textbox" type="text"  name="plateName" id="plateName" >
-        &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
+        &nbsp;<a target="_blank" href="/stop/optlist.html" class="easyui-linkbutton" >stop-opt</a>
         &nbsp;<a target="_blank" href="/uphot.html" class="easyui-linkbutton" >uphot</a>
         &nbsp;<a target="_blank" href="/hot.html" class="easyui-linkbutton" >hot</a>
         &nbsp;<a target="_blank" href="/tgb/list.html" class="easyui-linkbutton" >tgb</a>
-        &nbsp;<a href="#" class="easyui-linkbutton" onclick="getSelectedck()">查看个股</a>
         &nbsp;<a target="_blank" href="/nbyyb/list.html" class="easyui-linkbutton" >yyb</a>
         &nbsp;<a target="_blank" href="/review.html" class="easyui-linkbutton" >查看历史</a>
-        <input type="text" value="1" id="dateEnd" onkeyup="onKeyUpEnter(event)">
+        <input type="text" name="dayFormat"  value="" id="dateEnd" onkeyup="onKeyUpEnter(event)">
 
     </div>
 
@@ -61,16 +58,7 @@
             dayFormat: $("#dayFormat").val()
         });
     });
-    function getSelectedck(){
-        var row = $('#dg').datagrid('getSelected');
-        if(row==null){
-            $.messager.alert('Info', "请选择一个CODE，进行查看");
-            return;
-        }
-        if (row){
-            window.open('/tgb/list.html?code='+row.code+"&stockType="+row.stockType);
-        }
-    }
+
 
     function onKeyUpEnter(e) {
         if (e.keyCode == 13) {
@@ -90,7 +78,7 @@
         $('#dg').datagrid('load', {
            /* code: $("#code").val(),
             stockType: $("#stockType").val(),*/
-            openCount:$("#dateEnd").val()
+            dayFormat:$("#dateEnd").val()
         });
     }
 </script>
