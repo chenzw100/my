@@ -142,8 +142,8 @@ public class MyUtils {
         return new BigDecimal(Double.parseDouble(sinaPriceStr)).setScale(0, RoundingMode.HALF_UP).intValue();
     }
 
-    public static BigDecimal getIncreaseRate(int increase,int base){
-        if(increase==0||base==0){
+    public static BigDecimal getIncreaseRate(Integer increase,Integer base){
+        if(increase==null || increase==0||base==0 || base==null){
             return new BigDecimal(0);
         }
         return new BigDecimal(increase-base).multiply(new BigDecimal(100)).divide(new BigDecimal(base), 2, RoundingMode.HALF_UP);

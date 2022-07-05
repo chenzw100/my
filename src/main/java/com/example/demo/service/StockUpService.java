@@ -7,6 +7,7 @@ import com.example.demo.domain.table.StockLimitUp;
 import com.example.demo.service.qt.QtService;
 import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,13 @@ public class StockUpService extends QtService {
     StockLimitUpRepository stockLimitUpRepository;
 
 
+    public List<StockLimitUp> findByDayFormat(String dayFormat){
+        List<StockLimitUp> all=stockLimitUpRepository.findByDayFormatAndContinueBoardCountGreaterThan(dayFormat,2);
+        if(CollectionUtils.isEmpty(all)){
+            all=stockLimitUpRepository.findByDayFormatAndContinueBoardCountGreaterThan(dayFormat,1);
+        }
+        return all;
+    }
 
     public Page<StockLimitUp> findALl(Integer pageNumber, Integer pageSize, StockLimitUp obj){
         if(pageNumber==null){

@@ -141,7 +141,7 @@ public class DealPanDataService extends QtService {
         log.info(start+"-"+end+",--->fourStatistic count:"+xgbFiveUpStocks.size());
         if(xgbFiveUpStocks.size()>0){
             for (StockInfo xgbFiveUpStock : xgbFiveUpStocks){
-                SinaTinyInfoStock tinyInfoStock = sinaService.getTiny(xgbFiveUpStock.getCode());
+                /*SinaTinyInfoStock tinyInfoStock = sinaService.getTiny(xgbFiveUpStock.getCode());
                 log.info(xgbFiveUpStock.getShowCount()+xgbFiveUpStock.getCode()+",fiveStatistic High:"+xgbFiveUpStock.getFiveHighPrice()+",low:"+xgbFiveUpStock.getFiveLowPrice()+"==>new High:"+tinyInfoStock.getHighPrice()+",new Low:"+tinyInfoStock.getLowPrice());
                 if(tinyInfoStock.getHighPrice()>xgbFiveUpStock.getFiveHighPrice().intValue()){
                     xgbFiveUpStock.setFiveHighPrice(tinyInfoStock.getHighPrice());
@@ -150,9 +150,9 @@ public class DealPanDataService extends QtService {
                 if(tinyInfoStock.getLowPrice()>xgbFiveUpStock.getFiveLowPrice().intValue()){
                     xgbFiveUpStock.setFiveLowPrice(tinyInfoStock.getLowPrice());
                     xgbFiveUpStock.getFiveLowYield();
-                }
+                }*/
                 if(xgbFiveUpStock.getTodayOpenPrice().intValue()==10){
-                    xgbFiveUpStock.setTodayOpenPrice(tinyInfoStock.getOpenPrice());
+                    xgbFiveUpStock.setTodayOpenPrice(getIntCurrentPrice(xgbFiveUpStock.getCode()));
                 }
                 stockInfoService.save(xgbFiveUpStock);
             }

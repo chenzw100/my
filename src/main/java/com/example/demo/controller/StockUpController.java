@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.example.demo.dao.StockLimitUpRepository;
 import com.example.demo.dao.StockPlateStaRepository;
 import com.example.demo.dao.StockTemperatureRepository;
-import com.example.demo.domain.SinaTinyInfoStock;
 import com.example.demo.domain.table.*;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockUpService;
@@ -12,9 +11,7 @@ import com.example.demo.service.qt.QtService;
 import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,9 +69,17 @@ public class StockUpController {
     public String list(Integer page, Integer rows, StockLimitUp obj){
         obj.setDayFormat(getQueryDate(obj.getDayFormat()));
         Map map = new HashMap<>();
-        Page<StockLimitUp> list =stockUpService.findALl(page,rows,obj);
-        map.put("total",list.getTotalElements());
-        map.put("rows",list.getContent());
+        List<StockLimitUp> list =stockUpService.findByDayFormat(obj.getDayFormat());
+        StockLimitUp up= new StockLimitUp();
+        Date endDate = MyUtils.getFormatDate(UP_PRE_END);
+        String day = MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        up.setDayFormat(day);
+        up.setCode(day);
+        up.setName("观察日");
+        up.setPlateName("观察日");
+        list.add(0,up);
+        map.put("total",list.size());
+        map.put("rows",list);
         return JSON.toJSONString(map);
     }
     @RequestMapping("/limit.action")
