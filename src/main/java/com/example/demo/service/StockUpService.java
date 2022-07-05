@@ -28,9 +28,9 @@ public class StockUpService extends QtService {
 
 
     public List<StockLimitUp> findByDayFormat(String dayFormat){
-        List<StockLimitUp> all=stockLimitUpRepository.findByDayFormatAndContinueBoardCountGreaterThan(dayFormat,2);
+        List<StockLimitUp> all=stockLimitUpRepository.findByDayFormatAndContinueBoardCountGreaterThanOrderByContinueBoardCountDesc(dayFormat,2);
         if(CollectionUtils.isEmpty(all)){
-            all=stockLimitUpRepository.findByDayFormatAndContinueBoardCountGreaterThan(dayFormat,1);
+            all=stockLimitUpRepository.findByDayFormatAndContinueBoardCountGreaterThanOrderByContinueBoardCountDesc(dayFormat,1);
         }
         return all;
     }
