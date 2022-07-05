@@ -8,6 +8,7 @@ import com.example.demo.domain.table.*;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockUpService;
 import com.example.demo.service.qt.QtService;
+import com.example.demo.service.xgb.XgbService;
 import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
@@ -40,6 +41,8 @@ public class StockUpController {
     QtService qtService;
     @Autowired
     StockLimitUpRepository stockLimitUpRepository;
+    @Autowired
+    XgbService xgbService;
     private String getQueryDate(String end) {
         String queryEnd = end;
         if (end==null) {
@@ -184,6 +187,11 @@ public class StockUpController {
         return myStock.toString();
     }
 
-
+    @RequestMapping("/doUp")
+    @ResponseBody
+    public String doUp() {
+        xgbService.limitUp();
+        return "success";
+    }
 
 }
