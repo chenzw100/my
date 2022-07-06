@@ -2,6 +2,7 @@ package com.example.demo.domain.table;
 
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.utils.MyUtils;
+import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -175,6 +176,9 @@ public class StockLimitUp implements Serializable {
     }
 
     public String getTomorrowOpenEarnings() {
+        if(StringUtils.isNotBlank(tomorrowOpenEarnings)){
+            return tomorrowOpenEarnings;
+        }
         return MyUtils.getYuanByCent(getTomorrowOpenYield());
     }
 
@@ -215,6 +219,9 @@ public class StockLimitUp implements Serializable {
     }
 
     public String getTodayOpenRate() {
+        if(StringUtils.isNotBlank(todayOpenRate)){
+            return todayOpenRate;
+        }
         return MyUtils.getIncreaseRate(getTodayOpenPrice(),getYesterdayClosePrice()).toString();
     }
 

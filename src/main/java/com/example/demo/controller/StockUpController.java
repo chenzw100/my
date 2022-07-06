@@ -80,6 +80,9 @@ public class StockUpController {
         up.setCode(day);
         up.setName("观察日");
         up.setPlateName("观察日");
+        up.setTodayOpenRate(day);
+        String dayt = MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        up.setTomorrowOpenEarnings(dayt);
         list.add(0,up);
         map.put("total",list.size());
         map.put("rows",list);
