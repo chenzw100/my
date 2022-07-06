@@ -70,13 +70,12 @@ public class StopInfoController {
         StockInfo up= new StockInfo();
         up.setStockType(10);
         String day = MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
-        up.setDayFormat(day);
-        up.setCode(day);
+        up.setDayFormat(queryEnd);
+        up.setCode(queryEnd);
         up.setName("观察日");
         up.setPlateName("观察日");
-        up.setTodayOpenRate(day);
-        String dayt = MyUtils.getDayFormat(MyChineseWorkDay.nextDaysWorkDay(1,endDate));
-        up.setTomorrowOpenEarnings(dayt);
+        up.setTodayOpenRate(queryEnd);
+        up.setTomorrowOpenEarnings(day);
         ten4.add(0,up);
         Map map = new HashMap<>();
         map.put("total",ten4.size());
