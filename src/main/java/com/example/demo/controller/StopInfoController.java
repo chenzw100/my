@@ -75,6 +75,8 @@ public class StopInfoController {
         up.setName("观察日");
         up.setPlateName("观察日");
         up.setTodayOpenRate(queryEnd);
+        up.setTodayClose("是否跌停");
+        up.setTomorrowOpen("是否跌停");
         up.setTomorrowOpenEarnings(day);
         ten4.add(0,up);
         Map map = new HashMap<>();

@@ -173,4 +173,17 @@ public class MyUtils {
         String sy ="300265";*/
         System.out.println( MyUtils.getDayFormat(MyUtils.getFormat2Date("2021-07-08")));
     }
+    public static String getIncreaseRateCentForTwoPiont(Integer increase,Integer base){
+        BigDecimal result = null;
+        if(increase==null||base==null){
+            result =  new BigDecimal(0);
+            return getYuanByCent(result.intValue());
+        }
+        if(increase==0||base==0){
+            result =  new BigDecimal(0);
+            return getYuanByCent(result.intValue());
+        }
+        result = new BigDecimal(increase-base).multiply(new BigDecimal(10000)).divide(new BigDecimal(base), 0, RoundingMode.HALF_UP);
+        return getYuanByCent(result.intValue());
+    }
 }

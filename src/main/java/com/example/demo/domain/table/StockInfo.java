@@ -130,6 +130,40 @@ public class StockInfo implements Serializable {
     @Transient
     private String tomorrowCloseEarnings;
 
+    /**
+     * 明日开盘
+     */
+    @Transient
+    private String tomorrowOpen;
+    /**
+     * 明日收盘
+     */
+    @Transient
+    private String tomorrowClose;
+
+    public String getTomorrowOpen() {
+        if(StringUtils.isNotBlank(tomorrowOpen)){
+            return tomorrowOpen;
+        }
+
+        return MyUtils.getIncreaseRateCentForTwoPiont(getTomorrowOpenPrice(),getTodayClosePrice());
+    }
+
+    public void setTomorrowOpen(String tomorrowOpen) {
+        this.tomorrowOpen = tomorrowOpen;
+    }
+
+    public String getTomorrowClose() {
+        if(StringUtils.isNotBlank(tomorrowClose)){
+            return tomorrowClose;
+        }
+        return MyUtils.getIncreaseRateCentForTwoPiont(getTomorrowClosePrice(),getTodayClosePrice());
+    }
+
+    public void setTomorrowClose(String tomorrowClose) {
+        this.tomorrowClose = tomorrowClose;
+    }
+
     public String getTodayCloseEarnings() {
         return MyUtils.getYuanByCent(getTodayCloseYield());
     }
@@ -174,6 +208,9 @@ public class StockInfo implements Serializable {
     }
 
     public String getTodayClose() {
+        if(StringUtils.isNotBlank(todayClose)){
+            return todayClose;
+        }
         return MyUtils.getIncreaseRate(getTodayClosePrice(),getYesterdayClosePrice()).toString();
     }
 

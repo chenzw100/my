@@ -83,6 +83,8 @@ public class StockUpController {
         up.setTodayOpenRate(day);
         String dayt = MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
         up.setTomorrowOpenEarnings(dayt);
+        up.setTodayCloseRate("是否跌停");
+        up.setTomorrowOpen("是否跌停");
         list.add(0,up);
         map.put("total",list.size());
         map.put("rows",list);
