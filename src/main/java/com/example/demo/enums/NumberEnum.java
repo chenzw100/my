@@ -49,7 +49,8 @@ public class NumberEnum {
         STOCK_LIMIT_UP_FIVE(50,"五版"),
         STOCK_CURRENT_FIVE(60,"五日实时"),
         STOCK_DAY_FIVE(70,"五日当天"),
-        STOCK_KPL(80,"聚焦"),
+        STOCK_KPL(80,"持仓"),
+        STOCK_BUY(81,"买入"),
         STOCK_NEARLY(90,"次新股"),
         STOCK_NEW(100,"新股"),
         ;

@@ -140,6 +140,19 @@ public class StockInfo implements Serializable {
      */
     @Transient
     private String tomorrowClose;
+    /**
+     * 明日收盘
+     */
+    @Transient
+    private String typeName;
+
+    public String getTypeName() {
+        return NumberEnum.StockType.getStockType(stockType);
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
     public String getTomorrowOpen() {
         if(StringUtils.isNotBlank(tomorrowOpen)){

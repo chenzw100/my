@@ -58,15 +58,17 @@ public class StopInfoController {
     }
     @RequestMapping("/optlist.action")
     @ResponseBody
-    public String list(Integer page, Integer rows, StockInfo obj){
+    public String list(StockInfo obj){
 
         String queryEnd = getQueryDate(obj.getDayFormat());
         Date endDate =  MyUtils.getFormatDate(queryEnd);
         ChineseWorkDay tenDay=new ChineseWorkDay(endDate);
         String startTen =MyUtils.getDayFormat(tenDay.preDaysWorkDay(9,endDate));
         List<StockInfo> ten4 =stockInfoService.optCodeNew4(startTen,queryEnd);
-        List<StockInfo> focus = stockInfoService.findByDayFormatAndStockTypeOrderByOpenBidRate(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
+        List<StockInfo> focus = stockInfoService.findByDayFormatAndStockTypeOrderByIdAsc(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
+        List<StockInfo> focus2 = stockInfoService.findByDayFormatAndStockTypeOrderByIdAsc(queryEnd, NumberEnum.StockType.STOCK_BUY.getCode());
         ten4.addAll(focus);
+        ten4.addAll(focus2);
         StockInfo up= new StockInfo();
         up.setStockType(10);
         String day = MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));

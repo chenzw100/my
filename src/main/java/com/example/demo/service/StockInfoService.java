@@ -131,6 +131,9 @@ public class StockInfoService {
     public List<StockInfo> findByDayFormatAndStockTypeOrderByOpenBidRate(String dayFormat,int type){
         return stockInfoRepository.findByDayFormatAndStockTypeOrderByOpenBidRate(dayFormat, type);
     }
+    public List<StockInfo> findByDayFormatAndStockTypeOrderByIdAsc(String dayFormat,int type){
+        return stockInfoRepository.findByDayFormatAndStockTypeOrderByIdAsc(dayFormat, type);
+    }
     public StockInfo findStockCurrentByCodeAndYesterdayFormat(String code){
         return stockInfoRepository.findByCodeAndDayFormatAndStockType(code,MyUtils.getYesterdayDayFormat(), NumberEnum.StockType.STOCK_CURRENT.getCode());
     }

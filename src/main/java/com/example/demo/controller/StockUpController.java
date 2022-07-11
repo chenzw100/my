@@ -146,9 +146,9 @@ public class StockUpController {
     }
 
 
-    @RequestMapping("/add/{type}/{code}")
+    @RequestMapping("/add/{type}/{hot}/{code}")
     @ResponseBody
-    public String add(@PathVariable("type")Integer type,@PathVariable("code")String code) {
+    public String add(@PathVariable("type")Integer type,@PathVariable("hot")Integer hot,@PathVariable("code")String code) {
         if ("1".equals(code)) {
             return "success";
         }
@@ -188,6 +188,8 @@ public class StockUpController {
             myStock.setContinuous(0);
             myStock.setLimitUp(0);
         }
+        myStock.setHotSeven(hot);
+        myStock.setHotValue(hot);
         stockInfoService.save(myStock);
         return myStock.toString();
     }
