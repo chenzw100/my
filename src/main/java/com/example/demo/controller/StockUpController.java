@@ -5,6 +5,7 @@ import com.example.demo.dao.StockLimitUpRepository;
 import com.example.demo.dao.StockPlateStaRepository;
 import com.example.demo.dao.StockTemperatureRepository;
 import com.example.demo.domain.table.*;
+import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockUpService;
 import com.example.demo.service.qt.QtService;
@@ -19,10 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/up")
@@ -199,6 +197,48 @@ public class StockUpController {
     public String doUp() {
         xgbService.limitUp();
         return "success";
+    }
+
+    @RequestMapping("/optlist.html")
+    public String optlist(ModelMap modelMap){
+        modelMap.put("title","涨停操作标的");
+        return "up/optlist";
+    }
+    @RequestMapping("/optlist.action")
+    @ResponseBody
+    public String optlist(StockInfo obj){
+
+        String queryEnd = getQueryDate(obj.getDayFormat());
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        ChineseWorkDay tenDay=new ChineseWorkDay(endDate);
+        String startTen =MyUtils.getDayFormat(tenDay.preDaysWorkDay(9,endDate));
+        List<StockInfo> ten4 =stockInfoService.optCodeNew4(startTen,queryEnd);
+        List<StockInfo> focus = stockInfoService.findByDayFormatAndStockTypeOrderByIdAsc(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
+        List<StockInfo> focus2 = stockInfoService.findByDayFormatAndStockTypeOrderByIdAsc(queryEnd, NumberEnum.StockType.STOCK_BUY.getCode());
+        ten4.addAll(focus);
+        ten4.addAll(focus2);
+        StockInfo up= new StockInfo();
+        up.setStockType(10);
+        String day = MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        up.setDayFormat(queryEnd);
+        up.setCode(queryEnd);
+        up.setName("观察日");
+        up.setPlateName("观察日");
+        up.setTodayOpenRate(queryEnd);
+        up.setTodayClose("是否跌停");
+        up.setTomorrowOpen("是否跌停");
+        up.setTomorrowOpenEarnings(day);
+        ten4.add(0,up);
+        Map map = new HashMap<>();
+        List<StockInfo> ups = new ArrayList<>();
+        for(StockInfo s:ten4){
+            if(s.getContinuous()>0){
+                ups.add(s);
+            }
+        }
+        map.put("total",ups.size());
+        map.put("rows",ups);
+        return JSON.toJSONString(map);
     }
 
 }

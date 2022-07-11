@@ -407,6 +407,9 @@ public class StockInfo implements Serializable {
 
 
     public Integer getContinuous() {
+        if(continuous==null){
+            return 0;
+        }
         return continuous;
     }
 

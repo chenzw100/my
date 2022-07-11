@@ -5,34 +5,34 @@
 <div th:include="menu :: menu"></div>
 <div>
     <div style="padding:5px 0;">
-        &nbsp;<a target="_blank" href="/up/doUp" class="easyui-linkbutton" >更新</a>
-        &nbsp;<a target="_blank" href="/up/optlist.html" class="easyui-linkbutton" >up-opt</a>
-        &nbsp;<a target="_blank" href="/stop/optlist.html" class="easyui-linkbutton" >stop-opt</a>
-        &nbsp;<a target="_blank" href="/uphot.html" class="easyui-linkbutton" >uphot</a>
+        &nbsp;<a target="_blank" href="/up/list.html" class="easyui-linkbutton" >up</a>
+        &nbsp;<a target="_blank" href="/stop/tlist.html" class="easyui-linkbutton" >stop-tem</a>
+        &nbsp;<a target="_blank" href="/stop/clist.html" class="easyui-linkbutton" >current</a>
         &nbsp;<a target="_blank" href="/hot.html" class="easyui-linkbutton" >hot</a>
         &nbsp;<a target="_blank" href="/tgb/list.html" class="easyui-linkbutton" >tgb</a>
-        &nbsp;<a target="_blank" href="/nbyyb/list.html" class="easyui-linkbutton" >yyb</a>
-        &nbsp;<a target="_blank" href="/review.html" class="easyui-linkbutton" >查看历史</a>
+        &nbsp;<a target="_blank" href="/add2/1" class="easyui-linkbutton" >添加明天KPL</a>
+        &nbsp;<a target="_blank" href="/up/add/1/1/1" class="easyui-linkbutton" >添加灵魂/TYPE/HOT/CODE</a>
         <input type="text" name="dayFormat"  value="" id="dateEnd" onkeyup="onKeyUpEnter(event)">
 
     </div>
 
 </div>
-
-<table  id="dg" title="连扳梯队-下个交易日的观察数据"
+<table id="dg" title="操作标的，当日观察，重视跌停"
        toolbar="#toolbar" pagination="true" idField="id"
        rownumbers="true" fitColumns="true" singleSelect="true">
     <thead>
     <tr>
-        <th data-options="field:'continueBoardCount',align:'center'">连板</th>
+        <th data-options="field:'typeName',align:'center'">TYPE</th>
+        <th data-options="field:'hotSeven',align:'center'">人气</th>
         <th data-options="field:'dayFormat',align:'center'">日期</th>
-        <th data-options="field:'code',align:'center'">代码</th>
+        <th data-options="field:'continuous',align:'center'">连板</th>
+        <th data-options="field:'code',align:'center'">CODE</th>
         <th data-options="field:'name',align:'center'">名称</th>
         <th data-options="field:'yesterdayClose',align:'center'">昨日收盘价</th>
         <th data-options="field:'todayOpen',align:'center'">今日开盘价</th>
         <th data-options="field:'plateName',align:'center'">板块</th>
         <th data-options="field:'todayOpenRate',align:'center'">当日开盘</th>
-        <th data-options="field:'todayCloseRate',align:'center'">当日收盘</th>
+        <th data-options="field:'todayClose',align:'center'">当日收盘</th>
         <th data-options="field:'todayCloseEarnings',align:'center'">当日竞价收益</th>
         <th data-options="field:'tomorrowOpenEarnings',align:'center'">隔日开盘收益</th>
         <th data-options="field:'tomorrowOpen',align:'center'">隔日开盘</th>
@@ -48,7 +48,7 @@
         $('#dg').edatagrid({
             pageSize:10,
             pageList:[10,20],
-            url:'/up/list.action',
+            url:'/up/optlist.action',
             /*queryParams:{
                 code: $("#code").val(),
                 stockType: $("#stockType").val()
@@ -81,8 +81,8 @@
     }
     function scan() {
         $('#dg').datagrid('load', {
-           /* code: $("#code").val(),
-            stockType: $("#stockType").val(),*/
+            /* code: $("#code").val(),
+             stockType: $("#stockType").val(),*/
             dayFormat:$("#dateEnd").val()
         });
     }
