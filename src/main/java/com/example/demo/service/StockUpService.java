@@ -2,7 +2,9 @@ package com.example.demo.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.dao.StockInfoRepository;
 import com.example.demo.dao.StockLimitUpRepository;
+import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockLimitUp;
 import com.example.demo.service.qt.QtService;
 import com.example.demo.utils.ChineseWorkDay;
@@ -25,6 +27,8 @@ public class StockUpService extends QtService {
     private static String history_url ="https://q.stock.sohu.com/hisHq?code=cn_";
     @Autowired
     StockLimitUpRepository stockLimitUpRepository;
+    @Autowired
+    StockInfoRepository stockInfoRepository;
 
 
     public List<StockLimitUp> findByDayFormat(String dayFormat){
@@ -159,4 +163,60 @@ public class StockUpService extends QtService {
             return map;
         }
 
+    public void doOpt(){
+            List<StockInfo> infos = stockInfoRepository.findByTomorrowCloseYieldIsNull();
+            for (StockInfo up:infos){
+                dealInfos(up);
+            }
+    }
+    public void dealInfos(StockInfo stockInfoRecord){
+        Date now = MyUtils.getFormatDate(stockInfoRecord.getDayFormat());
+        ChineseWorkDay todayWorkDay  = new ChineseWorkDay(now);
+        if(todayWorkDay.isHoliday()){
+            System.out.println("放假 isHoliday = [" + stockInfoRecord.getDayFormat() + "]");
+            return;
+        }
+
+        Date yesterdayDate = todayWorkDay.preWorkDay();
+
+        ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(now);
+        Date tomorrowDate = tomorrowWorkDay.nextWorkDay();
+
+        String start = MyUtils.getDayFormat(yesterdayDate);
+        String end = MyUtils.getDayFormat(tomorrowDate);
+        HashMap<String, JSONArray> map = getHistory(stockInfoRecord.getCode().substring(2,8),start,end);
+        if(map==null){
+            System.out.println("null = [" + stockInfoRecord.getDayFormat() + "]");
+            return;
+        }
+        JSONArray yesterday = map.get(MyUtils.getDayFormat(yesterdayDate));
+        JSONArray today = map.get(MyUtils.getDayFormat(now));
+        JSONArray tomorrow =map.get(MyUtils.getDayFormat(tomorrowDate));
+
+        if(yesterday!=null){
+            Integer yesterdayClosePrice =MyUtils.getCentByYuanStr(yesterday.getString(2));
+            if(stockInfoRecord.getYesterdayClosePrice().intValue() != yesterdayClosePrice){
+                System.out.println("yichang     =============== [" + stockInfoRecord.toString() + "]");
+            }
+            stockInfoRecord.setYesterdayClosePrice(yesterdayClosePrice);
+        }
+
+        if(today!=null){
+            Integer todayOpenPrice =MyUtils.getCentByYuanStr(today.getString(1));
+            stockInfoRecord.setTodayOpenPrice(todayOpenPrice);
+            Integer todayClosePrice=MyUtils.getCentByYuanStr(today.getString(2));
+            stockInfoRecord.setTodayClosePrice(todayClosePrice);
+        }
+
+        if(tomorrow!=null){
+            Integer tomorrowOpenPrice=MyUtils.getCentByYuanStr(tomorrow.getString(1));
+            stockInfoRecord.setTomorrowOpenPrice(tomorrowOpenPrice);
+            Integer tomorrowClosePrice=MyUtils.getCentByYuanStr(tomorrow.getString(2));
+            stockInfoRecord.setTomorrowClosePrice(tomorrowClosePrice);
+        }
+
+        stockInfoRepository.save(stockInfoRecord);
+        System.out.println("result = [" + stockInfoRecord.toString() + "]");
+
+    }
 }

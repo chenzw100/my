@@ -519,6 +519,7 @@ public class StockInfo implements Serializable {
     }
 
     public void setTomorrowClosePrice(Integer tomorrowClosePrice) {
+        this.tomorrowCloseYield= MyUtils.getIncreaseRateCent(tomorrowClosePrice,getTodayOpenPrice()).intValue();
         this.tomorrowClosePrice = tomorrowClosePrice;
     }
     public Integer getOpenBidRate() {

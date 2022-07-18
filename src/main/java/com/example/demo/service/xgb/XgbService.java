@@ -207,6 +207,7 @@ public class XgbService extends QtService {
                 }
                 xgbStock.setPlateName(plateName);
                 stockLimitUpRepository.save(xgbStock);
+                log.info(i+":zt==================save>"+xgbStock.getCode());
                 if (xgbStock.getContinueBoardCount() > spaceHeight) {
                     spaceHeightStock = xgbStock;
                     spaceHeight = xgbStock.getContinueBoardCount();

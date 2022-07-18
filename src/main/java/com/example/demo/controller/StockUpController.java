@@ -94,6 +94,12 @@ public class StockUpController {
         stockUpService.doLimitUp();
         return "success";
     }
+    @RequestMapping("/opt.action")
+    @ResponseBody
+    public String opt() {
+        stockUpService.doOpt();
+        return "success";
+    }
 
     @RequestMapping("/hot/{end}")
     @ResponseBody
@@ -144,15 +150,15 @@ public class StockUpController {
     }
 
 
-    @RequestMapping("/add/{type}/{hot}/{code}")
+    @RequestMapping("/add/{day}/{type}/{hot}/{code}")
     @ResponseBody
-    public String add(@PathVariable("type")Integer type,@PathVariable("hot")Integer hot,@PathVariable("code")String code) {
+    public String add(@PathVariable("day")String day,@PathVariable("type")Integer type,@PathVariable("hot")Integer hot,@PathVariable("code")String code) {
         if ("1".equals(code)) {
             return "success";
         }
         if (code.indexOf("6") == 0) {
             code = "sh" + code;
-        } else {
+        } else if (code.indexOf("0") == 0){
             code = "sz" + code;
         }
         StockInfo myStock = qtService.getInfo(code);
@@ -168,7 +174,15 @@ public class StockUpController {
         }else {
             myStock.setShowCount(1);
         }
-        List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myStock.getCode(),MyUtils.getDayFormat(MyUtils.getYesterdayDate()));
+        String dayFormat = MyUtils.getDayFormat(MyUtils.getYesterdayDate());
+        if(!day.equals("1")){
+            dayFormat=day;
+            Date yesterdayDate = MyUtils.getFormatDate(dayFormat);
+            ChineseWorkDay nowWorkDay = new ChineseWorkDay(yesterdayDate);
+            Date now = nowWorkDay.nextWorkDay();
+            myStock.setDayFormat(MyUtils.getDayFormat(now));
+        }
+        List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myStock.getCode(),dayFormat);
         if(xgbStocks!=null && xgbStocks.size()>0){
             StockLimitUp xgbStock =xgbStocks.get(0);
             myStock.setPlateName(xgbStock.getPlateName());
