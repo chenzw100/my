@@ -134,4 +134,49 @@ public class StopInfoController {
     }
 
 
+    @RequestMapping("/slist.html")
+    public String slist(ModelMap modelMap){
+        modelMap.put("title","简洁-操作标的");
+        return "stop/slist";
+    }
+    @RequestMapping("/slist.action")
+    @ResponseBody
+    public String slist(StockInfo obj){
+
+        String queryEnd = getQueryDate(obj.getDayFormat());
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        ChineseWorkDay tenDay=new ChineseWorkDay(endDate);
+        String startTen =MyUtils.getDayFormat(tenDay.preDaysWorkDay(9,endDate));
+        List<StockInfo> ten4 =stockInfoService.optCodeNew4(startTen,queryEnd);
+        List<StockInfo> focus = stockInfoService.findByDayFormatAndStockTypeOrderByIdAsc(queryEnd, NumberEnum.StockType.STOCK_KPL.getCode());
+        List<StockInfo> focus2 = stockInfoService.findByDayFormatAndStockTypeOrderByIdAsc(queryEnd, NumberEnum.StockType.STOCK_BUY.getCode());
+        focus.addAll(focus2);
+        focus.addAll(ten4);
+        StockInfo up= new StockInfo();
+        up.setStockType(10);
+        String day = MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        up.setDayFormat(queryEnd);
+        up.setCode(queryEnd);
+        up.setName("观察日");
+        up.setPlateName("观察日");
+        up.setTodayOpenRate(queryEnd);
+        up.setTodayClose("是否跌停");
+        up.setTomorrowOpen("是否跌停");
+        up.setTomorrowOpenEarnings(day);
+        List<StockInfo> ups = new ArrayList<>();
+        Map temp = new HashMap();
+        for(StockInfo s:focus){
+            if(temp.get(s.getCode())==null){
+                temp.put(s.getCode(),s.getName());
+                ups.add(s);
+            }
+        }
+        ups.add(0,up);
+        Map map = new HashMap<>();
+        map.put("total",ups.size());
+        map.put("rows",ups);
+        return JSON.toJSONString(map);
+    }
+
+
 }

@@ -7,8 +7,8 @@
     <div style="padding:5px 0;">
         &nbsp;<a target="_blank" href="/up/opt.action" class="easyui-linkbutton" >更新价格</a>
         &nbsp;<a target="_blank" href="/up/list.html" class="easyui-linkbutton" >up</a>
-        &nbsp;<a target="_blank" href="/stop/slist.html" class="easyui-linkbutton" >stop-s-opt</a>
-        &nbsp;<a target="_blank" href="/up/slist.html" class="easyui-linkbutton" >up-s-opt</a>
+        &nbsp;<a target="_blank" href="/up/optlist.html" class="easyui-linkbutton" >up-opt</a>
+        &nbsp;<a target="_blank" href="/stop/optlist.html" class="easyui-linkbutton" >stop-opt</a>
         &nbsp;<a target="_blank" href="/stop/tlist.html" class="easyui-linkbutton" >stop-tem</a>
         &nbsp;<a target="_blank" href="/stop/clist.html" class="easyui-linkbutton" >current</a>
         &nbsp;<a target="_blank" href="/hot.html" class="easyui-linkbutton" >hot</a>
@@ -20,7 +20,7 @@
     </div>
 
 </div>
-<table id="dg" title="操作标的，当日观察，重视跌停"
+<table id="dg" title="简洁-操作标的，当日观察，重视跌停"
        toolbar="#toolbar" pagination="true" idField="id"
        rownumbers="true" fitColumns="true" singleSelect="true">
     <thead>
@@ -51,7 +51,7 @@
         $('#dg').edatagrid({
             pageSize:10,
             pageList:[10,20],
-            url:'/stop/optlist.action',
+            url:'/stop/slist.action',
             /*queryParams:{
                 code: $("#code").val(),
                 stockType: $("#stockType").val()
