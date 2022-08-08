@@ -64,13 +64,13 @@ public class PanService {
     @Autowired
     StockOptService stockOptService;
     //营业部处理
-    /*@Scheduled(cron = closeTradeJobCron)
-   /* public void tradeJob(){
+    @Scheduled(cron = closeYybCron)
+   public void tradeJob(){
         //获取数据
         if(isWorkday()){
             dfcfPankService.getAllList();
         }
-    }*/
+    }
 
     //营业部处理NB
     @Scheduled(cron = closeYybJobCron)

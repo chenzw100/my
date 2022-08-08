@@ -9,13 +9,15 @@ import java.util.Date;
 /**
  * Created by chenzw on 2018/10/22.
  */
-@Entity(name="stock_temperature")
-public class StockTemperature {
+@Entity(name="stock_stop_temperature")
+public class StockStopTemperature {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
     @Column(nullable = false,columnDefinition="varchar(10)")
     private String dayFormat;
+    @Column(nullable = false,columnDefinition="varchar(10)")
+    private String nextDayFormat;
     @Column(nullable = false)
     private Date created;
     @Column(nullable = false)
@@ -70,6 +72,14 @@ public class StockTemperature {
     private String yesterdayShowText;
     @Transient
     private String brokenRatioText;
+
+    public String getNextDayFormat() {
+        return nextDayFormat;
+    }
+
+    public void setNextDayFormat(String nextDayFormat) {
+        this.nextDayFormat = nextDayFormat;
+    }
 
     public String getYesterdayShowText() {
         return MyUtils.getYuanByCent(getYesterdayShow());
@@ -175,9 +185,9 @@ public class StockTemperature {
         this.tradeVal = tradeVal;
     }
 
-    public StockTemperature(){
+    public StockStopTemperature(){
     }
-    public StockTemperature(int type){
+    public StockStopTemperature(int type){
         this.type = type;
         this.created = MyUtils.getCurrentDate();
         this.dayFormat= MyUtils.getDayFormat();

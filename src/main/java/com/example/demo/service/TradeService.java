@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dao.StockTradeValInfoJobRepository;
 import com.example.demo.dao.StockYybRepository;
+import com.example.demo.domain.MyDoTradeStock;
 import com.example.demo.domain.MyTradeStock;
 import com.example.demo.domain.StockTradeValInfoJob;
 import com.example.demo.domain.table.StockYyb;
@@ -123,6 +124,16 @@ public class TradeService {
         for(MyTradeStock m :all){
             System.out.println(m.getDayFormat());
         }
+        return all;
+    }
+
+    public List<StockTradeValInfoJob> dododo(String day,Integer num){
+        String start = MyUtils.getPreTwoMonthDayFormat();
+        List<StockTradeValInfoJob> all =stockTradeValInfoJobRepository.doMe(day,num);
+        return all;
+    }
+    public List<MyDoTradeStock> doMeSta(Integer rankType,String start,String end){
+        List<MyDoTradeStock> all =stockTradeValInfoJobRepository.doMeSta(rankType,start,end);
         return all;
     }
 }

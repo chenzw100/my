@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div th:include="head :: header"></div>
+<body>
+<div th:include="menu :: menu"></div>
+<h2>公司交易管理 --- 交易管理-【交易】</h2>
+<div>
+    <div style="padding:5px 0;">
+        <span>类型:</span>
+        <select class="easyui-combobox" id="rank" name="rank" style="width:70px;">
+            <option value="6" selected>666</option>
+            <option value="8">888</option>
+        </select>
+        日期:<input class="easyui-textbox" type="text"  name="dayFormat" id="dayFormat" >
+
+        &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
+        <a target="_blank" href="/rank" class="easyui-linkbutton" >更新数据</a>
+        &nbsp;<a target="_blank" href="/review.html" class="easyui-linkbutton" >查看历史</a>
+        &nbsp;<a target="_blank" href="/import" class="easyui-linkbutton" >导入数据</a>
+        &nbsp;<a target="_blank" href="/trade/list.html" class="easyui-linkbutton" >记录</a>
+        &nbsp;<a target="_blank" href="/trade/staMe.html" class="easyui-linkbutton" >DO</a>
+    </div>
+
+</div>
+<table id="dg" title="人才库"
+       toolbar="#toolbar" pagination="true" idField="id"
+       rownumbers="true" fitColumns="true" singleSelect="true">
+    <thead>
+    <tr >
+        <th data-options="field:'rank',align:'center'">排行</th>
+        <th data-options="field:'dayFormat',align:'center'">日期</th>
+        <th data-options="field:'code',align:'center'">代码</th>
+        <th data-options="field:'name',align:'center'">名称</th>
+        <th data-options="field:'yesterdayClosePrice',align:'center'">昨日价</th>
+        <th data-options="field:'yesterdayTurnover',align:'center'">成交额</th>
+        <th data-options="field:'tradeAmount',align:'center'">流通</th>
+        <th data-options="field:'plateName',align:'center'">板块</th>
+        <th data-options="field:'oneOpenRate',align:'center'">竞价开</th>
+        <th data-options="field:'oneCloseRate',align:'center'">竞价收</th>
+        <th data-options="field:'oneOpenIncomeRate',align:'center'">1开</th>
+        <th data-options="field:'oneCloseIncomeRate',align:'center'">1收</th>
+        <th data-options="field:'oneNextOpenIncomeRate',align:'center'">2开</th>
+        <th data-options="field:'oneNextCloseIncomeRate',align:'center'">2收</th>
+    </tr>
+    </thead>
+</table>
+
+<script type="text/javascript">
+    $(function(){
+        $('#dg').edatagrid({
+            pageSize:100,
+            pageList:[100,200],
+            url:'/trade/trade.action'
+
+        });
+    });
+    $("#query").click(function () {
+        $('#dg').datagrid('load', {
+            rankType: $("#rank").val(),
+            dayFormat: $("#dayFormat").val()
+        });
+    });
+    function getSelectedck(){
+        var row = $('#dg').datagrid('getSelected');
+        if(row==null){
+            $.messager.alert('Info', "请选择一个员工，进行接受任务");
+            return;
+        }
+        if (row){
+            window.open('/high/'+row.code);
+        }
+    }
+
+
+</script>
+
+</body>
+</html>

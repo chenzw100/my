@@ -54,6 +54,9 @@ public class ExcelController {
             }
             stockZy.setCode(stockZy.getCode().substring(0,6));
             stockZy.setYn(1);
+            if(stockZy.getCode().substring(0,3).equals("688")){
+                stockZy.setYn(-1);
+            }
             System.out.println(i+"《===============第，导入数据的电话【"+stockZy.getCode()+"】");
             String yesterdayVolumeStr =stockZy.getYesterdayVolumeStr();
             if(yesterdayVolumeStr.lastIndexOf("亿")>0){
@@ -74,6 +77,9 @@ public class ExcelController {
             String yesterdayTurnoverStr =stockZy.getYesterdayTurnoverStr();
             yesterdayTurnoverStr =yesterdayTurnoverStr.substring(0,yesterdayTurnoverStr.length()-4);
             stockZy.setYesterdayTurnover(Integer.parseInt(yesterdayTurnoverStr));
+            if(StringUtils.isNotBlank(stockZy.getPriceStr())){
+                stockZy.setYesterdayClosePrice(MyUtils.getCentByYuanStr(stockZy.getPriceStr()));
+            }
             try {
                 stockTradeValInfoJobRepository.save(stockZy);
             }catch (Exception e){

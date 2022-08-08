@@ -382,24 +382,9 @@ public class StockInfoService {
         List<StockInfo> result = new ArrayList<>();
         if(myTotalStocks.size()>0){
             for(MyOptStock s: myTotalStocks){
-                StockOpt stockPlateSta = new StockOpt();
-                stockPlateSta.setDayFormat(start+"-"+end);
-
-                stockPlateSta.setCode(s.getCode());
-                stockPlateSta.setName(s.getName());
-                stockPlateSta.setHotValue(s.getHotValue());
-                StockLimitUp xgbStock =stockLimitUpRepository.findTop1ByCodeAndPlateNameIsNotNullOrderByIdDesc(s.getCode());
-                if(xgbStock!=null){
-                    stockPlateSta.setPlateName(xgbStock.getPlateName());
-                }
                 MyTotalStock my =stockInfoRepository.hotByCode(startHot,end,s.getCode());
-                if(my==null){
-                    stockPlateSta.setHotType(0);
-                }else {
-                    stockPlateSta.setHotType(my.getHotValue());
-                    stockPlateSta.setToday(s.getToday());
-                    //result.add(stockPlateSta);
-                    StockInfo info =stockInfoRepository.findFirst1ByCodeAndDayFormat(s.getCode(),end);
+                if(my!=null){
+                    StockInfo info =stockInfoRepository.findByCodeAndDayFormatAndStockType(s.getCode(),end,NumberEnum.StockType.STOCK_DAY.getCode());
                     if(info!=null){
                         result.add(info);
                     }

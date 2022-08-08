@@ -84,9 +84,21 @@ public class HelloController {
     @Autowired
     StockOptService stockOptService;
     @Autowired
+    StopDayService stopDayService;
+    @Autowired
     private RestTemplate restTemplate;
     private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
     private static String c_cUrl ="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
+    @RequestMapping("/day")
+    public String day(){
+        stopDayService.doDay();
+        return "close success";
+    }
+    @RequestMapping("/op")
+    public String op(){
+        stopDayService.doOptDay();
+        return "close success";
+    }
     @RequestMapping("/opt")
     public String opt() {
         try {
@@ -178,6 +190,15 @@ public class HelloController {
             e.printStackTrace();
         }
         return "rank deal success";
+    }
+    @RequestMapping("/dome")
+    public String dome() {
+        try {
+            dfcfPankService.doMe();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "rank dome success";
     }
     @RequestMapping("/ths123")
     public String ths123() {

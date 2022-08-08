@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.example.demo.domain.MyDoTradeStock;
 import com.example.demo.domain.MyTradeStock;
 import com.example.demo.domain.StockTradeValCurrent;
 import com.example.demo.domain.StockTradeValInfoJob;
@@ -29,6 +30,49 @@ public class TradeController {
     TradeService tradeService;
     @Autowired
     StockTradeValCurrentService stockTradeValCurrentService;
+    @RequestMapping("/trade.html")
+    public String doTrade(ModelMap modelMap){
+        return "trade/trade";
+    }
+    @RequestMapping("/trade.action")
+    @ResponseBody
+    public String trade(StockTradeValInfoJob obj){
+        if(StringUtils.isBlank(obj.getDayFormat())){
+            obj.setDayFormat(MyUtils.getYesterdayDayFormat());
+        }
+        if(obj.getRank()==null){
+            obj.setRank(6);
+        }
+        List<StockTradeValInfoJob> scs =tradeService.dododo(obj.getDayFormat(),obj.getRank());
+        Map map = new HashMap<>();
+        map.put("total",scs.size());
+        map.put("rows",scs);
+        return JSON.toJSONString(map);
+    }
+
+    @RequestMapping("/staMe.html")
+    public String staMe(ModelMap modelMap){
+        return "trade/staMe";
+    }
+    @RequestMapping("/staMe.action")
+    @ResponseBody
+    public String staMe(StockTradeValInfoJob obj){
+        if(obj.getRankType()==null){
+            obj.setRankType(NumberEnum.StockTradeType.FIRST.getCode());
+        }
+        if(obj.getDayFormat()==null){
+            obj.setDayFormat(MyUtils.getPreMonthDayFormat());
+        }
+        if(obj.getCode()==null){
+            obj.setCode(MyUtils.getDayFormat());
+        }
+        List<MyDoTradeStock> list =tradeService.doMeSta(obj.getRankType(),obj.getDayFormat(),obj.getCode());
+        Map map = new HashMap<>();
+        map.put("total",list.size());
+        map.put("rows",list);
+        return JSON.toJSONString(map);
+    }
+
     @RequestMapping("/listUp.html")
     public String listLimit(ModelMap modelMap){
         return "trade/listUp";

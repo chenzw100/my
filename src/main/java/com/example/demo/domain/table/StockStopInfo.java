@@ -22,13 +22,15 @@ import java.io.Serializable;
  UPDATE stock_info SET today_open_price=1089,today_close_price=1201,day_format='20200407'
  WHERE  id=29855
  */
-@Entity(name="stock_info")
-public class StockInfo implements Serializable {
+@Entity(name="stock_stop_info")
+public class StockStopInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false,columnDefinition="varchar(10) COMMENT 'yyyymmdd'")
     private String dayFormat;
+    @Column(nullable = false,columnDefinition="varchar(10) COMMENT 'yyyymmdd'")
+    private String nextDayFormat;
     @Column(nullable = false,columnDefinition="varchar(8)")
     private String code;
     @Column(nullable = false,columnDefinition="varchar(8)")
@@ -104,6 +106,8 @@ public class StockInfo implements Serializable {
 
     @Transient
     private String todayClose;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '当日收盘是否跌停'")
+    private Integer downUp;
     /**
      * 昨日收盘价
      */
@@ -145,6 +149,14 @@ public class StockInfo implements Serializable {
      */
     @Transient
     private String typeName;
+
+    public String getNextDayFormat() {
+        return nextDayFormat;
+    }
+
+    public void setNextDayFormat(String nextDayFormat) {
+        this.nextDayFormat = nextDayFormat;
+    }
 
     public String getTypeName() {
         return NumberEnum.StockType.getStockType(stockType);
@@ -279,13 +291,13 @@ public class StockInfo implements Serializable {
         this.fiveLowYield = fiveLowYield;
     }
 
-    public StockInfo() {
+    public StockStopInfo() {
     }
-    public StockInfo(String name) {
+    public StockStopInfo(String name) {
         this.name = name;
     }
 
-    public StockInfo(String code, String name, Integer stockType){
+    public StockStopInfo(String code, String name, Integer stockType){
         this.code =code;
         this.name = name;
         this.stockType = stockType;
@@ -566,6 +578,17 @@ public class StockInfo implements Serializable {
         this.tomorrowCloseRate = tomorrowCloseRate;
     }
 
+    public Integer getDownUp() {
+        if(downUp!=null){
+            return downUp;
+        }
+        this.downUp= MyUtils.getIncreaseRate(getTodayClosePrice(),getYesterdayClosePrice()).intValue();
+        return downUp;
+    }
+
+    public void setDownUp(Integer downUp) {
+        this.downUp = downUp;
+    }
 
     public String toString(){
         if(code==null){

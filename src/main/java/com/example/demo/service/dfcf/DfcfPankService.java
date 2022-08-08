@@ -13,6 +13,7 @@ import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -95,8 +96,8 @@ public class DfcfPankService extends QtService {
         return plateName;
     }
     public void getAllList(){
-        //List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByOneNextCloseIncomeRateIsNull();
-        List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByOrderByDayFormatDesc();
+        List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByOneNextCloseIncomeRateIsNull();
+        //List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByOrderByDayFormatDesc();
         for(StockTradeValInfoJob s:list){
             dealJob(s);
         }
@@ -111,16 +112,16 @@ public class DfcfPankService extends QtService {
         }
     }
     public void dealJob(StockTradeValInfoJob stockYyb ){
-       /* Date yesterdayDate = MyUtils.getFormatDate(stockYyb.getDayFormat());
+        Date yesterdayDate = MyUtils.getFormatDate(stockYyb.getDayFormat());
         ChineseWorkDay nowWorkDay = new ChineseWorkDay(yesterdayDate);
         Date now = nowWorkDay.nextWorkDay();
         ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(now);
         Date tomorrowDate = tomorrowWorkDay.nextWorkDay();
         ChineseWorkDay threeWorkDay = new ChineseWorkDay(tomorrowDate);
-        Date threeDate = threeWorkDay.nextWorkDay();*/
+        Date threeDate = threeWorkDay.nextWorkDay();
 
 
-        Date now = MyUtils.getFormatDate(stockYyb.getDayFormat());
+       /* Date now = MyUtils.getFormatDate(stockYyb.getDayFormat());
         ChineseWorkDay yesterdayWorkDay = new ChineseWorkDay(now);
         if(yesterdayWorkDay.isHoliday()){
                 log.info("------------ h 休息日"+stockYyb.getDayFormat());
@@ -130,7 +131,7 @@ public class DfcfPankService extends QtService {
         ChineseWorkDay tomorrowWorkDay = new ChineseWorkDay(now);
         Date tomorrowDate = tomorrowWorkDay.nextWorkDay();
         ChineseWorkDay threeWorkDay = new ChineseWorkDay(tomorrowDate);
-        Date threeDate = threeWorkDay.nextWorkDay();
+        Date threeDate = threeWorkDay.nextWorkDay();*/
 
 
         String start = MyUtils.getDayFormat(yesterdayDate);
@@ -225,7 +226,7 @@ public class DfcfPankService extends QtService {
 
             stockYyb.toString();
             stockTradeValInfoJobRepository.save(stockYyb);
-            log.info("总更新竞价数据,"+stockYyb.getTwoOpenRate());
+            log.info(stockYyb.getDayFormat()+"  总更新竞价数据,"+stockYyb.getTwoOpenRate());
         } catch (Exception e) {
             System.out.println("总更新竞价数据 error -------------"+stockYyb.getDayFormat()+",code="+stockYyb.getCode());
             e.getMessage();
@@ -310,6 +311,41 @@ public class DfcfPankService extends QtService {
             }catch (Exception e){
                 log.error("code"+code+"=再日开盘价"+s.getTomorrowOpenPrice()+e.getMessage(),e);
             }
+        }
+    }
+
+    public void doMe(){
+        //String start = "20210809";20220808
+        String start = "20220801";
+        while (true){
+            if(start.equals("20220808")){
+                return;
+            }
+            if(start.equals("20220808")){
+                return;
+            }
+            List<StockTradeValInfoJob> job6s = stockTradeValInfoJobRepository.doMe(start,6);
+            for(StockTradeValInfoJob job :job6s){
+                StockTradeValInfoJob job6 = new StockTradeValInfoJob();
+                BeanUtils.copyProperties(job,job6);
+                job6.setId(null);
+                job6.setRankType(16);
+                stockTradeValInfoJobRepository.save(job6);
+            }
+
+            List<StockTradeValInfoJob> job8s = stockTradeValInfoJobRepository.doMe(start,8);
+            for(StockTradeValInfoJob job :job8s){
+                StockTradeValInfoJob job8 = new StockTradeValInfoJob();
+                BeanUtils.copyProperties(job,job8);
+                job8.setId(null);
+                job8.setRankType(18);
+                stockTradeValInfoJobRepository.save(job8);
+            }
+            Date yesterdayDate = MyUtils.getFormatDate(start);
+            ChineseWorkDay nowWorkDay = new ChineseWorkDay(yesterdayDate);
+            Date now = nowWorkDay.nextWorkDay();
+            start = MyUtils.getDayFormat(now);
+            log.info("start"+start);
         }
     }
 }

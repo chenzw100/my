@@ -47,4 +47,9 @@ public interface StockTemperatureRepository extends JpaRepository<StockTemperatu
     public List<StockTemperature> ice(Integer type);
     @Query(value="SELECT * FROM stock_temperature s WHERE s.type=?1 and s.raise>3000 ORDER BY s.created DESC LIMIT 10", nativeQuery = true)
     public List<StockTemperature> hot(Integer type);
+
+    @Query(value="SELECT * FROM stock_temperature WHERE type = 2 AND ( continue_val > 5 OR raise > 3700 OR yesterday_show > 500 OR broken_ratio < 2001 ) ORDER BY day_format DESC", nativeQuery = true)
+    public List<StockTemperature> hotDay();
+    @Query(value="SELECT * FROM stock_temperature WHERE type=2 and strong_downs>9 and continue_val>-0.5 ORDER BY day_format desc", nativeQuery = true)
+    public List<StockTemperature> iceDay();
 }
