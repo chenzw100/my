@@ -191,10 +191,17 @@ public class HelloController {
         }
         return "rank deal success";
     }
-    @RequestMapping("/dome")
-    public String dome() {
+    @RequestMapping("/dome/{start}/{end}")
+    public String dome(@PathVariable("start")String start,@PathVariable("end")String end) {
         try {
-            dfcfPankService.doMe();
+            if("1".equals(end)){
+                return "1";
+            }
+            if("2".equals(end)){
+                start=MyUtils.getDayFormat();
+                end=MyUtils.getTomorrowDayFormat();
+            }
+            dfcfPankService.doMe(start,end);
         } catch (Exception e) {
             e.printStackTrace();
         }

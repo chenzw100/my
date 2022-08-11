@@ -314,14 +314,11 @@ public class DfcfPankService extends QtService {
         }
     }
 
-    public void doMe(){
-        //String start = "20210809";20220808
-        String start = "20220801";
+    public void doMe(String start,String end){
+        //String start = "20220809"
+        //String start = start;
         while (true){
-            if(start.equals("20220808")){
-                return;
-            }
-            if(start.equals("20220808")){
+            if(start.equals(end)){
                 return;
             }
             List<StockTradeValInfoJob> job6s = stockTradeValInfoJobRepository.doMe(start,6);
@@ -345,7 +342,7 @@ public class DfcfPankService extends QtService {
             ChineseWorkDay nowWorkDay = new ChineseWorkDay(yesterdayDate);
             Date now = nowWorkDay.nextWorkDay();
             start = MyUtils.getDayFormat(now);
-            log.info("start"+start);
+            log.info(job6s.size()+"=size6 start"+start+job8s.size());
         }
     }
 }
