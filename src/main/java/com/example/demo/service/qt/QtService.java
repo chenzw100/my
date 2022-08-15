@@ -1,6 +1,7 @@
 package com.example.demo.service.qt;
 
 import cn.hutool.core.date.DateTime;
+import com.example.demo.domain.QtStock;
 import com.example.demo.domain.table.StockInfo;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.base.BaseService;
@@ -28,7 +29,8 @@ import java.util.HashMap;
  */
 @Component
 public class QtService extends BaseService{
-
+    //http://qt.gtimg.cn/q=sz000858
+    static String url_info ="http://qt.gtimg.cn/q=";
     static String url ="http://qt.gtimg.cn/q=s_";
     public String getCurrentPrice(String code){
         DateTime dateTime = new DateTime();
@@ -105,6 +107,17 @@ public class QtService extends BaseService{
         String[] stockObj = str.split("~");
         return stockObj;
     }
+    private String[] getStockInfo(String code) {
+        if (code.indexOf("6") == 0) {
+            code = "sh" + code;
+        } else {
+            code = "sz" + code;
+        }
+        Object response = getRequest(url_info+code);
+        String str = response.toString();
+        String[] stockObj = str.split("~");
+        return stockObj;
+    }
     public StockInfo getInfo(String code){
         String[] stockObj = getStock(code);
         if(stockObj.length<3){
@@ -113,6 +126,32 @@ public class QtService extends BaseService{
         StockInfo info = new StockInfo(code, stockObj[1], NumberEnum.StockType.STOCK_KPL.getCode());
         String price = stockObj[3];
         info.setYesterdayClosePrice(MyUtils.getCentByYuanStr(price));
+        return info;
+    }
+
+    /**
+     *     //http://qt.gtimg.cn/q=sz000858
+     *  1: 名字
+     *  2: 代码
+     *  3: 当前价格
+     *  4: 昨收
+     *  5: 今开
+     *  47: 涨停价
+     * 48: 跌停价
+     */
+    public QtStock getQtInfo(String code){
+        String[] stockObj = getStockInfo(code);
+        if(stockObj.length<3){
+            return null;
+        }
+        QtStock info = new QtStock();
+        info.setName(stockObj[1]);
+        info.setCode(stockObj[2]);
+        info.setCurrentPrice(stockObj[3]);
+        info.setYesterdayClosePrice(stockObj[4]);
+        info.setTodayOpenPrice(stockObj[5]);
+        info.setUpPrice(stockObj[47]);
+        info.setDownPrice(stockObj[48]);
         return info;
     }
 }

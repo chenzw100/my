@@ -13,6 +13,7 @@ import com.example.demo.service.tgb.TgbService;
 import com.example.demo.service.ths.StockTradeValCurrentService;
 import com.example.demo.service.xgb.XgbCurrentService;
 import com.example.demo.service.xgb.XgbService;
+import com.example.demo.trade.StockTradeTaskService;
 import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
@@ -44,6 +45,8 @@ public class PanService {
     private static final String temperatureCron6="10 08 11,13,14 ? * MON-FRI";
     private static final String temperatureCron7="10 54 14 ? * MON-FRI";
     private static final String temperatureOpenCron="39 25 9 ? * MON-FRI";
+    private static final String tenCron = "30 10 10 ? * MON-FRI";
+    private static final String twoCron = "30 10 14 ? * MON-FRI";
     @Autowired
     DealPanDataService dealPanDataService;
     @Autowired
@@ -63,6 +66,24 @@ public class PanService {
 
     @Autowired
     StockOptService stockOptService;
+    @Autowired
+    StockTradeTaskService stockTradeTaskService;
+    //营业部处理
+    @Scheduled(cron = tenCron)
+    public void tradeJobTen(){
+        //获取数据
+        if(isWorkday()){
+            stockTradeTaskService.jobDoTen();
+        }
+    }
+    //营业部处理
+    @Scheduled(cron = twoCron)
+    public void tradeJobTwo(){
+        //获取数据
+        if(isWorkday()){
+            stockTradeTaskService.jobDoTwo();
+        }
+    }
     //营业部处理
     @Scheduled(cron = closeYybCron)
    public void tradeJob(){

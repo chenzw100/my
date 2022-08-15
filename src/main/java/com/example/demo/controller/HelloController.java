@@ -1,14 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.dao.*;
-import com.example.demo.domain.MyTotalStock;
-import com.example.demo.domain.SinaTinyInfoStock;
-import com.example.demo.domain.StaStockPlate;
-import com.example.demo.domain.StaStockPlateImpl;
+import com.example.demo.domain.*;
 import com.example.demo.domain.table.*;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.*;
 import com.example.demo.service.dfcf.*;
+import com.example.demo.service.qt.QtService;
 import com.example.demo.service.sina.SinaService;
 import com.example.demo.service.sohu.StockHistoryService;
 import com.example.demo.service.tgb.TgbDealService;
@@ -17,6 +15,7 @@ import com.example.demo.service.ths.StockTradeValCurrentService;
 import com.example.demo.service.xgb.XgbCurrentService;
 import com.example.demo.service.xgb.XgbService;
 import com.example.demo.task.PanService;
+import com.example.demo.trade.StockTradeTaskService;
 import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
@@ -86,9 +85,28 @@ public class HelloController {
     @Autowired
     StopDayService stopDayService;
     @Autowired
+    StockTradeTaskService stockTradeTaskService;
+    @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    QtService qtService;
     private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
     private static String c_cUrl ="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
+    @RequestMapping("/t/{code}")
+    public String code(@PathVariable("code")String code){
+        QtStock qtStock = qtService.getQtInfo(code);
+        return "close success"+qtStock.toString();
+    }
+    @RequestMapping("/ten")
+    public String ten(){
+        stockTradeTaskService.jobDoTen();
+        return "close success";
+    }
+    @RequestMapping("/two")
+    public String two(){
+        stockTradeTaskService.jobDoTwo();
+        return "close success";
+    }
     @RequestMapping("/day")
     public String day(){
         stopDayService.doDay();

@@ -96,7 +96,7 @@ public class DfcfPankService extends QtService {
         return plateName;
     }
     public void getAllList(){
-        List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByOneNextCloseIncomeRateIsNull();
+        List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByThreeClosePriceIsNull();
         //List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByOrderByDayFormatDesc();
         for(StockTradeValInfoJob s:list){
             dealJob(s);
@@ -142,6 +142,7 @@ public class DfcfPankService extends QtService {
         if(map==null){
             return;
         }
+
         JSONArray three = map.get(MyUtils.getDayFormat(threeDate));
         JSONArray yesterday = map.get(MyUtils.getDayFormat(yesterdayDate));
         JSONArray today = map.get(MyUtils.getDayFormat(now));
@@ -162,7 +163,8 @@ public class DfcfPankService extends QtService {
             stockYyb.setYesterdayVolume(yesterday.getInteger(7));
 
             if(today==null){
-                log.info(stockYyb.toInfo()+"没有今日数据,"+stockYyb.getYesterdayClosePrice());
+                String url = history_url+stockYyb.getCode()+"&start="+start+"&end="+end;
+                log.info(stockYyb.toInfo()+"没有今日数据,昨日收盘价"+stockYyb.getYesterdayClosePrice()+",today url="+url);
                 stockTradeValInfoJobRepository.save(stockYyb);
                 return;
             }
@@ -183,7 +185,8 @@ public class DfcfPankService extends QtService {
 
             if(tomorrow == null){
                 stockYyb.toOneDay();
-                log.info(stockYyb.toInfo()+"没有明日数据,"+stockYyb.getOneOpenRate());
+                String url = history_url+stockYyb.getCode()+"&start="+start+"&end="+end;
+                log.info(stockYyb.toInfo()+"没有明日数据,OneOpenRate:"+stockYyb.getOneOpenRate()+",tomorrow url="+url);
                 stockTradeValInfoJobRepository.save(stockYyb);
                 return;
             }
@@ -205,7 +208,8 @@ public class DfcfPankService extends QtService {
             if(three==null){
                 stockYyb.toOneDay();
                 stockYyb.toOneIncome();
-                log.info(stockYyb.toInfo()+"更新明日竞价数据,"+stockYyb.getTwoOpenRate());
+                String url = history_url+stockYyb.getCode()+"&start="+start+"&end="+end;
+                log.info(stockYyb.toInfo()+"更新明日竞价数据,"+stockYyb.getTwoOpenRate()+",three url"+url);
                 stockTradeValInfoJobRepository.save(stockYyb);
                 return;
             }
@@ -235,6 +239,7 @@ public class DfcfPankService extends QtService {
 
     public HashMap<String,JSONArray> getHistory(String code,String start,String end){
         String url = history_url+code+"&start="+start+"&end="+end;
+        //log.error("url记录："+url);
         Object result = getRequest(url);
         if(result.toString().length()<5){
             log.error("失败1："+url);

@@ -1,6 +1,7 @@
 package com.example.demo.service.pan;
 
 import com.example.demo.dao.*;
+import com.example.demo.domain.QtStock;
 import com.example.demo.domain.SinaTinyInfoStock;
 import com.example.demo.domain.table.*;
 import com.example.demo.service.StockInfoService;
@@ -94,8 +95,10 @@ public class DealPanDataService extends QtService {
         List<StockInfo> todayStocks = stockInfoService.findStockInfosByTodayFormat();
         if(todayStocks!=null){
             for(StockInfo myStock :todayStocks){
-                myStock.setTodayClosePrice(getIntCurrentPrice(myStock.getCode()));
+                QtStock qtStock = getQtInfo(myStock.getCode());
+                myStock.setTodayClosePrice(MyUtils.getCentByYuanStr(qtStock.getCurrentPrice()));
                 myStock.getTodayCloseYield();
+                myStock.setTodayState(qtStock.getTodayState());
                 stockInfoService.save(myStock);
             }
         }

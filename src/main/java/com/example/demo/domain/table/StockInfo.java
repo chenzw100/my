@@ -102,6 +102,9 @@ public class StockInfo implements Serializable {
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '五日最低收益'")
     private Integer fiveLowYield;
 
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '当日涨跌停-1，0，1情况'")
+    private Integer todayState;
+
     @Transient
     private String todayClose;
     /**
@@ -145,6 +148,14 @@ public class StockInfo implements Serializable {
      */
     @Transient
     private String typeName;
+
+    public Integer getTodayState() {
+        return todayState;
+    }
+
+    public void setTodayState(Integer todayState) {
+        this.todayState = todayState;
+    }
 
     public String getTypeName() {
         return NumberEnum.StockType.getStockType(stockType);

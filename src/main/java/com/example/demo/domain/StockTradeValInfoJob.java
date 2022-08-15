@@ -11,10 +11,10 @@ import java.io.Serializable;
  *
 
  */
-@Entity(name="stock_trade_val_job")
+@Entity(name="mystock_trade_val_job")
 public class StockTradeValInfoJob implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Excel(name = "排名类型", orderNum = "1")
@@ -154,7 +154,102 @@ public class StockTradeValInfoJob implements Serializable {
 
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '688'")
     private Integer yn;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '今日10点收盘'")
+    private Integer tomorrowTenPrice;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '今日2点收盘'")
+    private Integer tomorrowTwoPrice;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第三日10点收盘'")
+    private Integer threeTenPrice;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第三日2点收盘'")
+    private Integer threeTwoPrice;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第一次次10点日收盘盘收益'")
+    private Integer oneTenIncomeRate;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第二次次日10点收盘收益'")
+    private Integer twoTenIncomeRate;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第一次次日2点收盘盘收益'")
+    private Integer oneTwoIncomeRate;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第二次次日2点收盘收益'")
+    private Integer twoTwoIncomeRate;
 
+    @Transient
+    private String codeStr;
+
+    public String getCodeStr() {
+
+        return codeStr;
+    }
+
+    public void setCodeStr(String codeStr) {
+        this.codeStr = codeStr;
+    }
+
+    public Integer getTomorrowTenPrice() {
+        return tomorrowTenPrice;
+    }
+
+    public void setTomorrowTenPrice(Integer tomorrowTenPrice) {
+        this.tomorrowTenPrice = tomorrowTenPrice;
+        this.oneTenIncomeRate = MyUtils.getIncreaseRateCent(this.tomorrowTenPrice,this.todayOpenPrice).intValue();
+    }
+
+    public Integer getTomorrowTwoPrice() {
+        return tomorrowTwoPrice;
+    }
+
+    public void setTomorrowTwoPrice(Integer tomorrowTwoPrice) {
+        this.tomorrowTwoPrice = tomorrowTwoPrice;
+        this.oneTwoIncomeRate = MyUtils.getIncreaseRateCent(this.tomorrowTwoPrice,this.todayOpenPrice).intValue();
+    }
+
+    public Integer getThreeTenPrice() {
+        return threeTenPrice;
+    }
+
+    public void setThreeTenPrice(Integer threeTenPrice) {
+        this.threeTenPrice = threeTenPrice;
+        this.twoTenIncomeRate = MyUtils.getIncreaseRateCent(this.threeTenPrice,this.tomorrowOpenPrice).intValue();
+    }
+
+    public Integer getThreeTwoPrice() {
+        return threeTwoPrice;
+    }
+
+    public void setThreeTwoPrice(Integer threeTwoPrice) {
+        this.threeTwoPrice = threeTwoPrice;
+        this.twoTwoIncomeRate = MyUtils.getIncreaseRateCent(this.threeTwoPrice,this.tomorrowOpenPrice).intValue();
+    }
+
+    public Integer getOneTenIncomeRate() {
+        return oneTenIncomeRate;
+    }
+
+    public void setOneTenIncomeRate(Integer oneTenIncomeRate) {
+        this.oneTenIncomeRate = oneTenIncomeRate;
+    }
+
+    public Integer getTwoTenIncomeRate() {
+        return twoTenIncomeRate;
+    }
+
+    public void setTwoTenIncomeRate(Integer twoTenIncomeRate) {
+        this.twoTenIncomeRate = twoTenIncomeRate;
+    }
+
+    public Integer getOneTwoIncomeRate() {
+        return oneTwoIncomeRate;
+    }
+
+    public void setOneTwoIncomeRate(Integer oneTwoIncomeRate) {
+        this.oneTwoIncomeRate = oneTwoIncomeRate;
+    }
+
+    public Integer getTwoTwoIncomeRate() {
+        return twoTwoIncomeRate;
+    }
+
+    public void setTwoTwoIncomeRate(Integer twoTwoIncomeRate) {
+        this.twoTwoIncomeRate = twoTwoIncomeRate;
+    }
     public Integer getRankType() {
         return rankType;
     }
@@ -646,5 +741,18 @@ public class StockTradeValInfoJob implements Serializable {
 
     public void setPriceStr(String priceStr) {
         this.priceStr = priceStr;
+    }
+
+    public String toInfoTen() {
+        return
+                "[id=" + id +
+                        "dayFormat=" + dayFormat +
+                        "name=" + name + "code=" + code +
+                        ",oneTenIncomeRate=" + oneTenIncomeRate +
+                        ",tomorrowTenPrice=" + tomorrowTenPrice+
+                        ",twoTenIncomeRate=" + twoTenIncomeRate +
+                        ",threeTenPrice=" + threeTenPrice
+
+                ;
     }
 }
