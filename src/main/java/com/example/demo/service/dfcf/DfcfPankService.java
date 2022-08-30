@@ -326,6 +326,14 @@ public class DfcfPankService extends QtService {
             if(start.equals(end)){
                 return;
             }
+            List<StockTradeValInfoJob> jobBigs =stockTradeValInfoJobRepository.doBigMe(start);
+            for(StockTradeValInfoJob job :jobBigs){
+                StockTradeValInfoJob jobBig = new StockTradeValInfoJob();
+                BeanUtils.copyProperties(job,jobBig);
+                jobBig.setId(null);
+                jobBig.setRankType(800);
+                stockTradeValInfoJobRepository.save(jobBig);
+            }
             List<StockTradeValInfoJob> job6s = stockTradeValInfoJobRepository.doMe(start,6);
             for(StockTradeValInfoJob job :job6s){
                 StockTradeValInfoJob job6 = new StockTradeValInfoJob();
@@ -348,6 +356,29 @@ public class DfcfPankService extends QtService {
             Date now = nowWorkDay.nextWorkDay();
             start = MyUtils.getDayFormat(now);
             log.info(job6s.size()+"=size6 start"+start+job8s.size());
+        }
+    }
+    public void do88Me(String start){
+
+        List<StockTradeValInfoJob> jobBigs =stockTradeValInfoJobRepository.doBig88Me(start);
+        log.info("jobBigs start "+start+jobBigs.size());
+        for(StockTradeValInfoJob job :jobBigs){
+            StockTradeValInfoJob jobBig = new StockTradeValInfoJob();
+            BeanUtils.copyProperties(job,jobBig);
+            jobBig.setId(null);
+            jobBig.setRankType(880);
+            stockTradeValInfoJobRepository.save(jobBig);
+        }
+
+    }
+
+    public void getAllRankType(Integer type){
+        List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByRankType(type);
+        for(StockTradeValInfoJob s:list){
+            s.getTodayIncomeRate();
+            s.getTomorrowIncomeRate();
+            s.toInfo();
+            stockTradeValInfoJobRepository.save(s);
         }
     }
 }

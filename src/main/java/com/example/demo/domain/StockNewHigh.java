@@ -11,8 +11,8 @@ import java.io.Serializable;
  *
 
  */
-@Entity(name="mystock_trade_val_job")
-public class StockTradeValInfoJob implements Serializable {
+@Entity(name="stock_new_high")
+public class StockNewHigh implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,15 +39,15 @@ public class StockTradeValInfoJob implements Serializable {
     @Excel(name = "成交额(元)", orderNum = "6")
     @Transient
     private String yesterdayTurnoverStr;
-    @Excel(name = "成交量(股)", orderNum = "7")
+    @Excel(name = "成交量(股)", orderNum = "18")
     @Transient
     private String yesterdayVolumeStr;
 
-    @Excel(name = "涨停原因类别", orderNum = "16")
+    @Excel(name = "涨停原因类别", orderNum = "11")
     @Column(nullable = true,columnDefinition="varchar(200) COMMENT '板块'")
     private String plateName;
 
-    @Excel(name = "a股流通市值(元)", orderNum = "8")
+    @Excel(name = "a股流通市值(元)", orderNum = "19")
     @Transient
     private String tradeAmountStr;
 

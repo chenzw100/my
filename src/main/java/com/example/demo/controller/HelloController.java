@@ -17,6 +17,7 @@ import com.example.demo.service.xgb.XgbService;
 import com.example.demo.task.PanService;
 import com.example.demo.trade.StockTradeTaskService;
 import com.example.demo.utils.ChineseWorkDay;
+import com.example.demo.utils.HttpClientUtil;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -92,7 +93,19 @@ public class HelloController {
     QtService qtService;
     private static String current_Continue="http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=BK08161&sty=FDPBPFB&token=7bc05d0d4c3c22ef9fca8c2a912d779c";
     private static String c_cUrl ="http://push2.eastmoney.com/api/qt/stock/get?secid=90.BK0816&ut=bd1d9ddb04089700cf9c27f6f7426281&fields=f170";
-    @RequestMapping("/t/{code}")
+
+    @RequestMapping("/to/1")
+    public String to1(){
+        HttpClientUtil.deal();
+        return "close success";
+    }
+
+    @RequestMapping("/t/{type}")
+    public String code(@PathVariable("type")Integer type){
+        dfcfPankService.getAllRankType(type);
+        return "close success";
+    }
+    @RequestMapping("/c/{code}")
     public String code(@PathVariable("code")String code){
         QtStock qtStock = qtService.getQtInfo(code);
         return "close success"+qtStock.toString();
@@ -220,6 +233,21 @@ public class HelloController {
                 end=MyUtils.getTomorrowDayFormat();
             }
             dfcfPankService.doMe(start,end);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "rank dome success";
+    }
+    @RequestMapping("/doBig88me/{start}/{end}")
+    public String doBig88me(@PathVariable("start")String start) {
+        try {
+            if("1".equals(start)){
+                return "1";
+            }
+            if("2".equals(start)){
+                start=MyUtils.getYesterdayDayFormat();
+            }
+            dfcfPankService.do88Me(start);
         } catch (Exception e) {
             e.printStackTrace();
         }

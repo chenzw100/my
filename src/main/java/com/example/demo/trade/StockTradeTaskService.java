@@ -1,6 +1,7 @@
 package com.example.demo.trade;
 
 import com.example.demo.dao.StockTradeValInfoJobRepository;
+import com.example.demo.domain.QtStock;
 import com.example.demo.domain.StockTradeValInfoJob;
 import com.example.demo.service.qt.QtService;
 import com.example.demo.utils.ChineseWorkDay;
@@ -36,7 +37,8 @@ public class StockTradeTaskService {
 
         List<StockTradeValInfoJob> list =stockTradeValInfoJobRepository.findByDayFormat(MyUtils.getDayFormat(yesterdayDate2));
         for(StockTradeValInfoJob s:list){
-            s.setTomorrowTenPrice(qtService.getIntCurrentPriceNotSys(s.getCode()));
+            QtStock qtStock = qtService.getQtInfo(s.getCode());
+            s.setTomorrowTenPrice(MyUtils.getCentByYuanStr(qtStock.getCurrentPrice()));
             stockTradeValInfoJobRepository.save(s);
             log.info("ten1 size " +s.toInfoTen());
 

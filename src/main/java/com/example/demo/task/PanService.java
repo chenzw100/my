@@ -90,6 +90,7 @@ public class PanService {
         //获取数据
         if(isWorkday()){
             dfcfPankService.getAllList();
+            dfcfPankService.do88Me(MyUtils.getYesterdayDayFormat());
         }
     }
 

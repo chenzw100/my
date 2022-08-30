@@ -110,7 +110,11 @@ public class QtService extends BaseService{
     private String[] getStockInfo(String code) {
         if (code.indexOf("6") == 0) {
             code = "sh" + code;
-        } else {
+        }
+        if (code.indexOf("00") == 0)  {
+            code = "sz" + code;
+        }
+        if (code.indexOf("300") == 0)  {
             code = "sz" + code;
         }
         Object response = getRequest(url_info+code);
