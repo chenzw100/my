@@ -8,7 +8,20 @@
     <form id="ff" action="/importExcel.action" method="post" enctype="multipart/form-data">
         <table>
             <tr>
-                <td>File:</td>
+                <td>xlsx:</td>
+                <td><input name="file" class="f1 easyui-filebox"></input></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input  type="submit" value="导入"></input></td>
+            </tr>
+        </table>
+    </form>
+    <hr>
+    <form id="ff" action="/importCsv.action" method="post" enctype="multipart/form-data">
+        <table>
+            <tr>
+                <td>Csv:</td>
                 <td><input name="file" class="f1 easyui-filebox"></input></td>
             </tr>
             <tr>

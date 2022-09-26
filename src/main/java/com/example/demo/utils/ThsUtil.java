@@ -1,7 +1,5 @@
 package com.example.demo.utils;
 
-import cn.hutool.core.date.DateTime;
-import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import jodd.datetime.JDateTime;
@@ -21,8 +19,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
+import java.util.TreeMap;
 //import org.apache.commons.httpclient.*;
 
 /**
@@ -31,10 +31,13 @@ import java.util.*;
  * 非st 非退市 非科创  涨停后高开收阳 成交额10亿以上 成交额排序
  * 非st 非退市 非科创  涨停破板后高开收阳 成交额10亿以上 成交额排序
  */
-public class HttpClientUtil {
-    public Log log = LogFactory.getLog(HttpClientUtil.class);
+public class ThsUtil {
+    public Log log = LogFactory.getLog(ThsUtil.class);
     static String cookiesStr = "etrade_robot_session=sihMXw6k9d40veXAhE2EA72jKIMGQFymkX6BHLxf; v=A8HbhgCDRhz626oo1zdVLv6w0Abe7jXgX2LZ9CMWvUgnCu94az5FsO-y6cCw";
 
+    static String stocks_url ="http://backtest.10jqka.com.cn/backtestonce/historydetail?sort_by=desc&id=20183f27f0950619e5fdb3f724337e1c&start_date=2021-01-01&end_date=2021-02-01&period=1";
+    static String back_url="http://backtest.10jqka.com.cn/backtestonce/backtest";
+    static String key_back="{\"query\":\"前2天涨跌幅小于-2%；跳空高开；振幅小于2%；缩量；今日收盘价大于前两日最高价\",\"period\":\"1\",\"start_date\":\"2021-01-01\",\"end_date\":\"2021-02-01\",\"benchmark\":\"399300\"}";
     static String url = "http://backtest.10jqka.com.cn/tradebacktest/mebacktest";
     static String keys88="{\"query\":\"非停牌 非st 非退市 昨日跌<-7% 今日锤子 成交额排序 \",\"period\":\"2\",\"start_date\":\"2019-01-01\",\"end_date\":\"2019-03-31\",\"stock_hold\":\"2\",\"day_buy_stock_num\":\"1\",\"upper_income\":\"9\",\"lower_income\":\"5\",\"fall_income\":\"1\",\"bear_market_upper_income\":\"9\",\"bear_market_lower_income\":\"5\",\"bear_market_fall_income\":\"1\",\"buy_position\":\"0\",\"menv\":\"macd1,macd2,macd3,kdj1,jx1,jx2,bbi1,bbi2,bbi3,asi1,asi2,asi3,asi4,dpo1,dpo2,dpo3,dpo4,dma1,dma2,dma3\",\"capital\":\"100000\"}";
 

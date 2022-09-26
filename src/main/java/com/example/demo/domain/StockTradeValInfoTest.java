@@ -11,47 +11,41 @@ import java.io.Serializable;
  *
 
  */
-@Entity(name="mystock_trade_val_job")
-public class StockTradeValInfoJob implements Serializable {
+@Entity(name="stock_trade_val_test")
+public class StockTradeValInfoTest implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Excel(name = "排名类型", orderNum = "1")
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '排名类型'")
     private Integer rankType;
 
-    @Excel(name = "排名", orderNum = "0")
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '排名'")
     private Integer rank;
 
     @Column(nullable = false,columnDefinition="varchar(10) COMMENT 'yyyymmdd'")
-    @Excel(name = "日期", orderNum = "5")
+    @Excel(name = "日期", orderNum = "2")
     private String dayFormat;
 
-    @Excel(name = "股票代码", orderNum = "2")
+    @Excel(name = "股票代码", orderNum = "0")
     @Column(nullable = false,columnDefinition="varchar(8)")
     private String code;
-    @Excel(name = "股票简称", orderNum = "3")
+    @Excel(name = "股票简称", orderNum = "1")
     @Column(nullable = false,columnDefinition="varchar(8)")
     private String name;
 
-    @Excel(name = "成交额(元)", orderNum = "6")
     @Transient
     private String yesterdayTurnoverStr;
-    @Excel(name = "成交量(股)", orderNum = "7")
     @Transient
     private String yesterdayVolumeStr;
 
-    @Excel(name = "涨停原因类别", orderNum = "9")
     @Column(nullable = true,columnDefinition="varchar(200) COMMENT '板块'")
     private String plateName;
 
-    @Excel(name = "a股流通市值(元)", orderNum = "8")
     @Transient
     private String tradeAmountStr;
 
-    @Excel(name = "现价(元)", orderNum = "4")
+    @Excel(name = "起始价", orderNum = "4")
     @Transient
     private String priceStr;
 

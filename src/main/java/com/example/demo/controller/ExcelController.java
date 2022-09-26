@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.dao.StockTradeValInfoJobRepository;
+import com.example.demo.dao.StockTradeValInfoTestRepository;
 import com.example.demo.domain.StockTradeValInfoJob;
+import com.example.demo.domain.StockTradeValInfoTest;
 import com.example.demo.exception.NormalException;
+import com.example.demo.utils.CsvUtils;
 import com.example.demo.utils.FileExcelUtil;
 import com.example.demo.utils.MyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +26,9 @@ public class ExcelController {
     public Log log = LogFactory.getLog(ExcelController.class);
     @Autowired
     StockTradeValInfoJobRepository stockTradeValInfoJobRepository;
+    @Autowired
+    StockTradeValInfoTestRepository stockTradeValInfoTestRepository;
+
     @RequestMapping("import")
     public String export(ModelMap modelMap)  {
         return "export";
@@ -88,6 +95,32 @@ public class ExcelController {
         }
         //TODO 保存数据库
         return "导入数据一共【"+personList.size()+"】行";
+    }
+
+
+
+    @ResponseBody
+    @RequestMapping("importCsv.action")
+    public String importCsv(@RequestPart("file")MultipartFile file){
+        try {
+
+            List<StockTradeValInfoTest> infos = CsvUtils.importCsv(file, StockTradeValInfoTest.class);
+            for(StockTradeValInfoTest infoTest :infos){
+                infoTest.setCode(infoTest.getCode().substring(1,7));
+                infoTest.setYn(1);
+                if(StringUtils.isNotBlank(infoTest.getPriceStr())){
+                    infoTest.setYesterdayClosePrice(MyUtils.getCentByYuanStr(infoTest.getPriceStr()));
+                }
+                try {
+                    stockTradeValInfoTestRepository.save(infoTest);
+                }catch (Exception e){
+                    log.error("失败，可能重复"+e.getMessage(),e);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "success";
     }
 
 

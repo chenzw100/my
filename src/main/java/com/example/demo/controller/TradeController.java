@@ -52,6 +52,7 @@ public class TradeController {
 
     @RequestMapping("/staMe.html")
     public String staMe(ModelMap modelMap){
+        modelMap.put("title","低吸统计");
         return "trade/staMe";
     }
     @RequestMapping("/staMe.action")
@@ -60,10 +61,10 @@ public class TradeController {
         if(obj.getRankType()==null){
             obj.setRankType(NumberEnum.StockTradeType.FIRST.getCode());
         }
-        if(obj.getDayFormat()==null){
+        if(StringUtils.isBlank(obj.getDayFormat())){
             obj.setDayFormat(MyUtils.getPreMonthDayFormat());
         }
-        if(obj.getCode()==null){
+        if(StringUtils.isBlank(obj.getCode())){
             obj.setCode(MyUtils.getDayFormat());
         }
         List<MyDoTradeStock> list =tradeService.doMeSta(obj.getRankType(),obj.getDayFormat(),obj.getCode());
@@ -95,6 +96,7 @@ public class TradeController {
     }
     @RequestMapping("/list.html")
     public String index(ModelMap modelMap){
+        modelMap.put("title","数据记录");
         return "trade/list";
     }
     @RequestMapping("/list.action")

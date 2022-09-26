@@ -133,7 +133,10 @@ public class TradeService {
         return all;
     }
     public List<MyDoTradeStock> doMeSta(Integer rankType,String start,String end){
-        List<MyDoTradeStock> all =stockTradeValInfoJobRepository.doMeSta(rankType,start,end);
+
+        List<MyDoTradeStock> details =stockTradeValInfoJobRepository.doMeStaDetail(rankType,start,end);
+        List<MyDoTradeStock> all=stockTradeValInfoJobRepository.doMeSta(rankType,start,end);
+        all.addAll(details);
         return all;
     }
 }
