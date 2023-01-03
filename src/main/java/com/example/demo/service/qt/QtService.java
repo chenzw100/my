@@ -3,6 +3,7 @@ package com.example.demo.service.qt;
 import cn.hutool.core.date.DateTime;
 import com.example.demo.domain.QtStock;
 import com.example.demo.domain.table.StockInfo;
+import com.example.demo.domain.table.StockRank;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.base.BaseService;
 import com.example.demo.utils.MyUtils;
@@ -128,6 +129,18 @@ public class QtService extends BaseService{
             return null;
         }
         StockInfo info = new StockInfo(code, stockObj[1], NumberEnum.StockType.STOCK_KPL.getCode());
+        String price = stockObj[3];
+        info.setYesterdayClosePrice(MyUtils.getCentByYuanStr(price));
+        return info;
+    }
+    public StockRank getRankInfo(String code){
+        String[] stockObj = getStock(code);
+        if(stockObj.length<3){
+            return null;
+        }
+        StockRank info = new StockRank();
+        info.setCode(code);
+        info.setName(stockObj[1]);
         String price = stockObj[3];
         info.setYesterdayClosePrice(MyUtils.getCentByYuanStr(price));
         return info;

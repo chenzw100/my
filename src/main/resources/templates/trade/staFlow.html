@@ -3,12 +3,12 @@
 <div th:include="head :: header"></div>
 <body>
 <div th:include="menu :: menu"></div>
-<h2>避免单笔重仓</h2>
+<h2>避免单笔重仓,高潮，冰点，指数【17:02:59】</h2>
 <div>
     <div style="padding:5px 0;">
         <span>类型:</span>
         <select class="easyui-combobox" id="rankType" name="rankType" style="width:70px;">
-            <option value="1">1</option>
+            <option value="1">首板</option>
             <option value="16">666</option>
             <option value="5">成交前5</option>
             <option value="9">同花顺</option>
@@ -19,12 +19,15 @@
         &nbsp;<span>结束日期:</span> <input class="easyui-textbox" type="text"  name="code" id="code" >
 
         &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
-        &nbsp;<a target="_blank" href="/trade/list.html" class="easyui-linkbutton" >记录</a>
-        <a target="_blank" href="/rank" class="easyui-linkbutton" >更新数据</a>
+        &nbsp;<a target="_blank" href="/trade/list.html" class="easyui-linkbutton" >Trade记录</a>
         &nbsp;<a target="_blank" href="/tgb/list.html" class="easyui-linkbutton" >tgbList</a>
+        &nbsp;<a target="_blank" href="/stop/slist.html" class="easyui-linkbutton" >tgbOPT</a>
+        &nbsp;<a target="_blank" href="/stop/tlist.html" class="easyui-linkbutton" >T-M</a>
+        <a target="_blank" href="/rank" class="easyui-linkbutton" >Trade更新数据</a>
         &nbsp;<a target="_blank" href="/import" class="easyui-linkbutton" >导入数据</a>
         &nbsp;<a target="_blank" href="/trade/trade.html" class="easyui-linkbutton" >DOList</a>
         <a target="_blank" href="/dome/1/1" class="easyui-linkbutton" >do666</a>
+        &nbsp;<a target="_blank" href="/close" class="easyui-linkbutton" >CLOSE</a>
     </div>
 
 </div>
@@ -35,6 +38,8 @@
     <tr >
         <th data-options="field:'dayFormat',align:'center'">起始日期</th>
         <th data-options="field:'countNum',align:'center'">数量</th>
+        <th data-options="field:'oneOpenRate',align:'center'">竞价开</th>
+        <th data-options="field:'oneCloseRate',align:'center'">竞价收</th>
         <th data-options="field:'oneOpenIncomeRate',align:'center'">1开</th>
         <th data-options="field:'oneCloseIncomeRate',align:'center'">1收</th>
         <th data-options="field:'oneNextOpenIncomeRate',align:'center'">再开</th>
@@ -50,7 +55,7 @@
         $('#dg').edatagrid({
             pageSize:100,
             pageList:[100,200],
-            url:'/trade/staMe.action'
+            url:'/trade/staFlow.action'
 
         });
     });

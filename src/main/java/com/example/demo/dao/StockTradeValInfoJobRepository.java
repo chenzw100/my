@@ -23,14 +23,15 @@ public interface StockTradeValInfoJobRepository extends JpaRepository<StockTrade
     @Query(value="SELECT * from stock_trade_val_info_job WHERE day_format BETWEEN ?1 AND ?2", nativeQuery = true)
     public List<StockTradeValInfoJob> threeStatistic(String start, String end);
     public List<StockTradeValInfoJob> findByDayFormatAndRankType(String start,Integer rankType);
+    public List<StockTradeValInfoJob> findByDayFormatAndRankTypeOrderByRankAsc(String dayFormat,Integer rankType);
     public List<StockTradeValInfoJob> findByOneNextCloseIncomeRateIsNull();
     public List<StockTradeValInfoJob> findByThreeClosePriceIsNull();
     public List<StockTradeValInfoJob> findByOneOpenIncomeRateIsNullAndTodayClosePriceIsNotNull();
     public List<StockTradeValInfoJob> findByOneOpenRateIsNull();
     public List<StockTradeValInfoJob> findByOneNextOpenIncomeRateIsNullAndTomorrowClosePriceIsNotNull();
-    Page<StockTradeValInfoJob> findTop200ByRankTypeAndPlateNameContainingOrderByDayFormatDesc(Integer rankType,String plateName, Pageable pageable);
-    Page<StockTradeValInfoJob> findTop200ByRankType(Integer rankType, Pageable pageable);
-    Page<StockTradeValInfoJob> findTop200ByRankTypeAndRankLessThanEqual(Integer rankType, Integer rank, Pageable pageable);
+    Page<StockTradeValInfoJob> findTop100ByRankTypeAndPlateNameContainingOrderByDayFormatDesc(Integer rankType,String plateName, Pageable pageable);
+    Page<StockTradeValInfoJob> findTop100ByRankType(Integer rankType, Pageable pageable);
+    Page<StockTradeValInfoJob> findTop100ByRankTypeAndRankLessThanEqual(Integer rankType, Integer rank, Pageable pageable);
     Page<StockTradeValInfoJob> findByRankTypeAndOneOpenRateLessThan(Integer rankType,Integer oneOpenRate, Pageable pageable);
     Page<StockTradeValInfoJob> findByRankTypeAndOneOpenRateGreaterThan(Integer rankType,Integer oneOpenRate, Pageable pageable);
 
@@ -59,10 +60,13 @@ public interface StockTradeValInfoJobRepository extends JpaRepository<StockTrade
     @Query(value="SELECT s.day_format 'dayFormat',count(s.day_format)'countNum',sum(s.one_open_income_rate)'oneOpenIncomeRate',sum(s.one_close_income_rate)'oneCloseIncomeRate',sum(s.one_next_open_income_rate)'oneNextOpenIncomeRate',sum(s.one_next_close_income_rate)'oneNextCloseIncomeRate', sum(s.two_open_income_rate)'twoOpenIncomeRate',sum(s.two_close_income_rate)'twoCloseIncomeRate' FROM mystock_trade_val_job s WHERE s.yn=1 and s.rank_type =?1 and s.two_open_rate < 960 and s.day_format BETWEEN ?2 and ?3  GROUP BY s.day_format ORDER BY s.day_format desc ", nativeQuery = true)
     public List<MyDoTradeStock> doMeStaDetail(Integer rankType,String start, String end );
 
-    @Query(value="SELECT * FROM stock_trade_val_job s WHERE s.yn=1 and s.yesterday_close_price >2000 and s.rank_type =1 and s.yesterday_turnover<110 and s.trade_amount BETWEEN 900 and 2000 and s.day_format=?1 ORDER BY s.yesterday_turnover", nativeQuery = true)
+    @Query(value="SELECT * FROM mystock_trade_val_job s WHERE s.yn=1 and s.yesterday_close_price >2000 and s.rank_type =1 and s.yesterday_turnover<110 and s.trade_amount BETWEEN 900 and 2000 and s.day_format=?1 ORDER BY s.yesterday_turnover", nativeQuery = true)
     public List<StockTradeValInfoJob> doBigMe(String day);
     @Query(value="SELECT * FROM stock_trade_val_job s WHERE s.yn=1 and s.rank_type =800 and s.today_gains <600 and s.one_close_rate BETWEEN -900 and 600 and s.day_format=?1 ORDER BY s.yesterday_turnover", nativeQuery = true)
     public List<StockTradeValInfoJob> doBig88Me(String day);
+
+    @Query(value="SELECT s.day_format 'dayFormat',count(s.day_format)'countNum',sum(s.one_open_rate)'oneOpenRate',sum(s.one_close_rate)'oneCloseRate',sum(s.one_open_income_rate)'oneOpenIncomeRate',sum(s.one_close_income_rate)'oneCloseIncomeRate',sum(s.one_next_open_income_rate)'oneNextOpenIncomeRate',sum(s.one_next_close_income_rate)'oneNextCloseIncomeRate', sum(s.two_open_income_rate)'twoOpenIncomeRate',sum(s.two_close_income_rate)'twoCloseIncomeRate' FROM mystock_trade_val_job s WHERE s.yn=1 and s.rank_type =?1  and s.day_format BETWEEN ?2 and ?3  GROUP BY s.day_format ORDER BY s.day_format desc ", nativeQuery = true)
+    public List<MyDoTradeStock> doStaFlow(Integer rankType,String start, String end );
 
 
 }

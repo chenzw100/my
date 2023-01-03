@@ -27,6 +27,8 @@ public class StockInfoRecord implements Serializable {
     private String name;
     @Column(nullable = true,columnDefinition="varchar(200) COMMENT '板块'")
     private String plateName;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '热门排序'")
+    private Integer hotSort;
 
     @Column(nullable = false,columnDefinition="int(11) DEFAULT 0 COMMENT '第一次开盘竞价'")
     private Integer oneOpenRate;
@@ -85,8 +87,25 @@ public class StockInfoRecord implements Serializable {
 
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '688'")
     private Integer yn;
+    @Column(nullable = false,columnDefinition="int(11) DEFAULT 0 COMMENT '第一次收盘'")
+    private Integer firstCloseRate;
+    @Column(nullable = false,columnDefinition="int(11) DEFAULT 0 COMMENT '第二次开盘'")
+    private Integer secondOpenRate;
+    @Column(nullable = false,columnDefinition="int(11) DEFAULT 0 COMMENT '第二次收盘'")
+    private Integer secondCloseRate;
+    @Column(nullable = false,columnDefinition="int(11) DEFAULT 0 COMMENT '第三次开盘'")
+    private Integer thirdOpenRate;
+    @Column(nullable = false,columnDefinition="int(11) DEFAULT 0 COMMENT '第三次收盘'")
+    private Integer thirdCloseRate;
 
 
+    public Integer getHotSort() {
+        return hotSort;
+    }
+
+    public void setHotSort(Integer hotSort) {
+        this.hotSort = hotSort;
+    }
 
     public Integer getTomorrowHighPrice() {
         return tomorrowHighPrice;
@@ -330,6 +349,12 @@ public class StockInfoRecord implements Serializable {
     @Override
     public String toString() {
         this.oneOpenRate = MyUtils.getIncreaseRateCent(this.todayOpenPrice,this.yesterdayClosePrice).intValue();
+        this.firstCloseRate = MyUtils.getIncreaseRateCent(this.todayClosePrice,this.yesterdayClosePrice).intValue();
+        this.secondOpenRate = MyUtils.getIncreaseRateCent(this.tomorrowOpenPrice,this.yesterdayClosePrice).intValue();
+        this.secondCloseRate = MyUtils.getIncreaseRateCent(this.tomorrowClosePrice,this.yesterdayClosePrice).intValue();
+        this.thirdOpenRate = MyUtils.getIncreaseRateCent(this.threeOpenPrice,this.yesterdayClosePrice).intValue();
+        this.thirdCloseRate = MyUtils.getIncreaseRateCent(this.threeClosePrice,this.yesterdayClosePrice).intValue();
+
         this.twoOpenRate = MyUtils.getIncreaseRateCent(this.tomorrowOpenPrice,this.todayClosePrice).intValue();
 
         this.oneCloseRate = MyUtils.getIncreaseRateCent(this.todayClosePrice,this.todayOpenPrice).intValue();
@@ -355,5 +380,45 @@ public class StockInfoRecord implements Serializable {
                 ", oneNextOpenIncomeRate=" + oneNextOpenIncomeRate +
                 ", oneNextCloseIncomeRate=" + oneNextCloseIncomeRate +
                 '}';
+    }
+
+    public Integer getFirstCloseRate() {
+        return firstCloseRate;
+    }
+
+    public void setFirstCloseRate(Integer firstCloseRate) {
+        this.firstCloseRate = firstCloseRate;
+    }
+
+    public Integer getSecondOpenRate() {
+        return secondOpenRate;
+    }
+
+    public void setSecondOpenRate(Integer secondOpenRate) {
+        this.secondOpenRate = secondOpenRate;
+    }
+
+    public Integer getSecondCloseRate() {
+        return secondCloseRate;
+    }
+
+    public void setSecondCloseRate(Integer secondCloseRate) {
+        this.secondCloseRate = secondCloseRate;
+    }
+
+    public Integer getThirdOpenRate() {
+        return thirdOpenRate;
+    }
+
+    public void setThirdOpenRate(Integer thirdOpenRate) {
+        this.thirdOpenRate = thirdOpenRate;
+    }
+
+    public Integer getThirdCloseRate() {
+        return thirdCloseRate;
+    }
+
+    public void setThirdCloseRate(Integer thirdCloseRate) {
+        this.thirdCloseRate = thirdCloseRate;
     }
 }

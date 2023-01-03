@@ -88,6 +88,10 @@ public class XgbCurrentService extends QtService {
         log.info("xgb===>end closePan");
     }
 
+    public void closeeTemp(){
+        temperature(NumberEnum.TemperatureType.CLOSE.getCode());
+        platesClose();
+    }
     public void temperature(int type)  {
         StockTemperature temperature = new StockTemperature(type);
         DecimalFormat decimalFormat=new DecimalFormat("0.00");

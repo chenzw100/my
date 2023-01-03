@@ -44,6 +44,9 @@ public class StockInfoService {
         List<StockInfo> result = stockInfoRepository.findFirst2ByDayFormatAndStockTypeOrderByTodayCloseYieldDesc(dayFormat, NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
         return result;
     }
+    public List<StockInfo> findByDayFormatOrderByStockType(String dayFormat){
+        return stockInfoRepository.findByDayFormatOrderByStockType(dayFormat);
+    }
 
     public List<StockInfo> fupan(String dayFormat){
         Date endDate =  MyUtils.getFormatDate(dayFormat);

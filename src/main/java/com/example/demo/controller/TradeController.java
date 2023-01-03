@@ -103,7 +103,7 @@ public class TradeController {
     @ResponseBody
     public String list(Integer page, Integer rows, StockTradeValInfoJob obj){
         if(obj.getRankType()==null){
-            obj.setRankType(NumberEnum.StockTradeType.HARDEN.getCode());
+            obj.setRankType(NumberEnum.StockTradeType.FIRST.getCode());
             obj.setRank(5);
         }
         Map map = new HashMap<>();
@@ -161,6 +161,30 @@ public class TradeController {
         Map map = new HashMap<>();
         map.put("total",scs.size());
         map.put("rows",scs);
+        return JSON.toJSONString(map);
+    }
+
+    @RequestMapping("/staFlow.html")
+    public String staFlow(ModelMap modelMap){
+        modelMap.put("title","低吸统计趋势");
+        return "trade/staFlow";
+    }
+    @RequestMapping("/staFlow.action")
+    @ResponseBody
+    public String staFlow(StockTradeValInfoJob obj){
+        if(obj.getRankType()==null){
+            obj.setRankType(NumberEnum.StockTradeType.FIRST.getCode());
+        }
+        if(StringUtils.isBlank(obj.getDayFormat())){
+            obj.setDayFormat(MyUtils.getPreMonthDayFormat());
+        }
+        if(StringUtils.isBlank(obj.getCode())){
+            obj.setCode(MyUtils.getDayFormat());
+        }
+        List<MyDoTradeStock> list =tradeService.doStaFlow(obj.getRankType(),obj.getDayFormat(),obj.getCode());
+        Map map = new HashMap<>();
+        map.put("total",list.size());
+        map.put("rows",list);
         return JSON.toJSONString(map);
     }
 

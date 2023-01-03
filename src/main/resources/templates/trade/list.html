@@ -10,10 +10,11 @@
         <select class="easyui-combobox" id="rankType" name="rankType" style="width:70px;">
             <option value="1" selected>首板</option>
             <option value="16" >666</option>
-            <option value="18">888</option>
-            <option value="10">10-涨停</option>
+ <!--           <option value="18">888</option>-->
+            <option value="800">BIG</option>
+            <option value="5">成交前5</option>
+            <option value="9">同花顺</option>
             <option value="50">前50</option>
-            <option value="5">5-20亿</option>
             <option value="4">下跌</option>
             <option value="3">创业</option>
         </select>
@@ -24,6 +25,7 @@
         &nbsp;<a target="_blank" href="/import" class="easyui-linkbutton" >导入数据</a>
         &nbsp;<a target="_blank" href="/trade/sta.html" class="easyui-linkbutton" >统计</a>
         &nbsp;<a target="_blank" href="/trade/staMe.html" class="easyui-linkbutton" >统计ME</a>
+        &nbsp;<a target="_blank" href="/trade/staFlow.html" class="easyui-linkbutton" >统计FLOW</a>
         &nbsp;<a target="_blank" href="/stop/optlist.html" class="easyui-linkbutton" >操作标的</a>
         <a target="_blank" href="/dome/1/1" class="easyui-linkbutton" >do666</a>
     </div>
@@ -38,11 +40,12 @@
         <th data-options="field:'dayFormat',align:'center'">日期</th>
         <th data-options="field:'code',align:'center'">代码</th>
         <th data-options="field:'name',align:'center'">名称</th>
-        <th data-options="field:'yesterdayClosePrice',align:'center'">昨日价</th>
+        <th data-options="field:'yesterdayCloseText',align:'center'">昨日价</th>
         <th data-options="field:'yesterdayTurnover',align:'center'">成交额</th>
         <th data-options="field:'tradeAmount',align:'center'">流通</th>
         <th data-options="field:'plateName',align:'center'">板块</th>
-        <th data-options="field:'twoCloseIncomeRate',align:'center'">收益</th>
+        <th data-options="field:'twoOpenIncomeRateText',align:'center'">早盘</th>
+        <th data-options="field:'twoCloseIncomeRateText',align:'center'">尾盘</th>
         <th data-options="field:'oneOpenRate',align:'center'">竞价开</th>
         <th data-options="field:'oneCloseRate',align:'center'">竞价收</th>
         <th data-options="field:'oneOpenIncomeRate',align:'center'">1开</th>

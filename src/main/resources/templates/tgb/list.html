@@ -20,7 +20,7 @@
         &nbsp;CODE:<input class="easyui-textbox" type="text"  name="code" id="code"  th:value="${code}">
         &nbsp;<span>板块:</span> <input class="easyui-textbox" type="text"  name="plateName" id="plateName" >
         &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
-        &nbsp;<a target="_blank" href="/uphot.html" class="easyui-linkbutton" >uphot</a>
+        &nbsp;<a target="_blank" href="/tgb3" class="easyui-linkbutton" >tgb统计处理</a>
         &nbsp;<a target="_blank" href="/up/list.html" class="easyui-linkbutton" >up</a>
         &nbsp;<a target="_blank" href="/hot.html" class="easyui-linkbutton" >hot</a>
         &nbsp;<a href="#" class="easyui-linkbutton" onclick="getSelectedck()">查看个股</a>
@@ -42,13 +42,13 @@
     <tr>
         <th data-options="field:'hotSort',align:'center'">排行</th>
         <th data-options="field:'hotValue',align:'center'">热搜</th>
-        <th data-options="field:'hotSeven',align:'center'">7日</th>
         <th data-options="field:'continuous',align:'center'">连板</th>
         <th data-options="field:'dayFormat',align:'center'">日期</th>
         <th data-options="field:'code',align:'center'">代码</th>
         <th data-options="field:'name',align:'center'">名称</th>
-        <th data-options="field:'yesterdayClosePrice',align:'center'">昨日价</th>
+        <th data-options="field:'yesterdayClosePriceText',align:'center'">昨日价</th>
         <th data-options="field:'plateName',align:'center'">板块</th>
+        <th data-options="field:'hotSeven',align:'center'">7日</th>
         <th data-options="field:'openBidRate',align:'center'">竞价开</th>
         <th data-options="field:'todayCloseYield',align:'center'">竞价收</th>
         <th data-options="field:'tomorrowOpenYield',align:'center'">隔日开</th>

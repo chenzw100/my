@@ -55,6 +55,10 @@ public class StockTradeValInfoJob implements Serializable {
     @Transient
     private String priceStr;
 
+    @Excel(name = "热搜值", orderNum = "10")
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '热搜值'")
+    private Integer hot;
+
 
 
 
@@ -178,6 +182,46 @@ public class StockTradeValInfoJob implements Serializable {
 
     @Transient
     private String codeStr;
+    /**
+     * 昨日收盘价
+     */
+    @Transient
+    private String yesterdayCloseText;
+    /**
+     * 二次收益
+     */
+    @Transient
+    private String twoCloseIncomeRateText;
+
+    /**
+     * 二次收益
+     */
+    @Transient
+    private String twoOpenIncomeRateText;
+
+    public String getTwoOpenIncomeRateText() {
+        return MyUtils.getYuanByCent(getTwoOpenIncomeRate());
+    }
+
+    public void setTwoOpenIncomeRateText(String twoOpenIncomeRateText) {
+        this.twoOpenIncomeRateText = twoOpenIncomeRateText;
+    }
+
+    public String getTwoCloseIncomeRateText() {
+        return MyUtils.getYuanByCent(getTwoCloseIncomeRate());
+    }
+
+    public void setTwoCloseIncomeRateText(String twoCloseIncomeRateText) {
+        this.twoCloseIncomeRateText = twoCloseIncomeRateText;
+    }
+
+    public String getYesterdayCloseText() {
+        return MyUtils.getYuanByCent(getYesterdayClosePrice());
+    }
+
+    public void setYesterdayCloseText(String yesterdayCloseText) {
+        this.yesterdayCloseText = yesterdayCloseText;
+    }
 
     public String getCodeStr() {
 
@@ -766,6 +810,14 @@ public class StockTradeValInfoJob implements Serializable {
 
     public void setPriceStr(String priceStr) {
         this.priceStr = priceStr;
+    }
+
+    public Integer getHot() {
+        return hot;
+    }
+
+    public void setHot(Integer hot) {
+        this.hot = hot;
     }
 
     public String toInfoTen() {

@@ -51,6 +51,8 @@ public class NumberEnum {
         STOCK_DAY_FIVE(70,"五日当天"),
         STOCK_KPL(80,"持仓"),
         STOCK_BUY(81,"买入"),
+        STOCK_WAN(82,"顽主"),
+        STOCK_TRADE(83,"成交额"),
         STOCK_NEARLY(90,"次新股"),
         STOCK_NEW(100,"新股"),
         ;
@@ -196,6 +198,8 @@ public class NumberEnum {
         FIFTY(50,"全排名"),//2020年12月31日  成交额从大到小排名前50 流通值大于10 同花顺行业
         FIRST(1,"首板"),//2022年8月5日 涨停 成交额从大到小排名前50 非连板 成交额大于10亿
         CYB(3,"创业板"),//2021年08月6日 涨停  成交额从大到小排名前50  成交额大于1亿 创业板
+        THS(20,"同花顺"),
+        TRADE(30,"成交前十"),
         ;
 
         private StockTradeType(int code, String desc) {

@@ -727,6 +727,11 @@ public class HelloController {
         panService.closePan();
         return "close success";
     }
+    @RequestMapping("/closeTep")
+    public String closeTep(){
+        xgbCurrentService.closeeTemp();
+        return "close success";
+    }
 
     @RequestMapping("/chance/{end}")
     String chance(@PathVariable("end")String end) {

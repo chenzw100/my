@@ -186,4 +186,5 @@ public class MyUtils {
         result = new BigDecimal(increase-base).multiply(new BigDecimal(10000)).divide(new BigDecimal(base), 0, RoundingMode.HALF_UP);
         return getYuanByCent(result.intValue());
     }
+
 }

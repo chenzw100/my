@@ -32,6 +32,38 @@ public class StopInfoController {
     StockPlateStaRepository stockPlateStaRepository;
     @Autowired
     StockTemperatureRepository stockTemperatureRepository;
+
+
+    @RequestMapping("/alllist.html")
+    public String alllist(ModelMap modelMap){
+        modelMap.put("title","所有类型操作标的");
+        return "stop/alllist";
+    }
+    @RequestMapping("/alllist.action")
+    @ResponseBody
+    public String alllist(StockInfo obj){
+        String queryEnd = getQueryDate(obj.getDayFormat());
+        List<StockInfo> infos =stockInfoService.findByDayFormatOrderByStockType(queryEnd);
+        Date endDate =  MyUtils.getFormatDate(queryEnd);
+        StockInfo up= new StockInfo();
+        up.setStockType(10);
+        String day = MyUtils.getDayFormat(MyChineseWorkDay.nextWorkDay(endDate));
+        up.setDayFormat(queryEnd);
+        up.setCode(queryEnd);
+        up.setName("观察日");
+        up.setPlateName("观察日");
+        up.setTodayOpenRate(queryEnd);
+        up.setTodayClose("是否跌停");
+        up.setTomorrowOpen("是否跌停");
+        up.setTomorrowOpenEarnings(day);
+        infos.add(0,up);
+        Map map = new HashMap<>();
+        map.put("total",infos.size());
+        map.put("rows",infos);
+        return JSON.toJSONString(map);
+    }
+
+
     private String getQueryDate(String end) {
         String queryEnd = end;
         if (end==null) {

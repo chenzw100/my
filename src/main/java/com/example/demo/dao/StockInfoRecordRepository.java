@@ -12,7 +12,4 @@ public interface StockInfoRecordRepository extends JpaRepository<StockInfoRecord
     StockInfoRecord findTop1ByCodeAndDayFormat(String code, String dayFormat);
 
 
-
-
-
 }

@@ -73,9 +73,9 @@ public class TradeService {
         Example<StockTradeValInfoJob> example = Example.of(stockYyb/*,matcher*/);
         Page<StockTradeValInfoJob> all =null;
         if(stockYyb.getRankType()==4){
-            all=stockTradeValInfoJobRepository.findTop200ByRankTypeAndRankLessThanEqual(stockYyb.getRankType(),stockYyb.getRank(),pageable);
+            all=stockTradeValInfoJobRepository.findTop100ByRankTypeAndRankLessThanEqual(stockYyb.getRankType(),stockYyb.getRank(),pageable);
         }else {
-            all = stockTradeValInfoJobRepository.findTop200ByRankType(stockYyb.getRankType(),pageable);
+            all = stockTradeValInfoJobRepository.findTop100ByRankType(stockYyb.getRankType(),pageable);
         }
         return all;
     }
@@ -102,7 +102,7 @@ public class TradeService {
          */
         Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
 
-        Page<StockTradeValInfoJob> all = stockTradeValInfoJobRepository.findTop200ByRankTypeAndPlateNameContainingOrderByDayFormatDesc(stockYyb.getRankType(),stockYyb.getPlateName(),pageable);
+        Page<StockTradeValInfoJob> all = stockTradeValInfoJobRepository.findTop100ByRankTypeAndPlateNameContainingOrderByDayFormatDesc(stockYyb.getRankType(),stockYyb.getPlateName(),pageable);
         return all;
     }
     public List<StockTradeValInfoJob> statisticsList(Integer num){
@@ -138,5 +138,10 @@ public class TradeService {
         List<MyDoTradeStock> all=stockTradeValInfoJobRepository.doMeSta(rankType,start,end);
         all.addAll(details);
         return all;
+    }
+
+    public List<MyDoTradeStock> doStaFlow(Integer rankType,String start,String end){
+        List<MyDoTradeStock> details =stockTradeValInfoJobRepository.doStaFlow(rankType,start,end);
+        return details;
     }
 }

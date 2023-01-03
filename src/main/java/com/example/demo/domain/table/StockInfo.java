@@ -149,6 +149,20 @@ public class StockInfo implements Serializable {
     @Transient
     private String typeName;
 
+    /**
+     * 昨日收盘价
+     */
+    @Transient
+    private String yesterdayClosePriceText;
+
+    public String getYesterdayClosePriceText() {
+        return MyUtils.getYuanByCent(this.yesterdayClosePrice);
+    }
+
+    public void setYesterdayClosePriceText(String yesterdayClosePriceText) {
+        this.yesterdayClosePriceText = yesterdayClosePriceText;
+    }
+
     public Integer getTodayState() {
         return todayState;
     }

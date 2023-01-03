@@ -35,6 +35,7 @@ public class TgbDealService extends QtService {
     StockLimitUpRepository stockLimitUpRepository;
     //获取24小时的热搜数据
     public void dayDate() throws Exception {
+        stockInfoRecordRepository.deleteAll();
         List<StockInfo> infos = stockInfoRepository.findByStockTypeOrderByDayFormatDesc(NumberEnum.StockType.STOCK_DAY.getCode());
         for (StockInfo s:infos){
             StockInfoRecord stockInfoRecord = new StockInfoRecord();
@@ -51,6 +52,7 @@ public class TgbDealService extends QtService {
             if (stockYyb1 != null ) {
                 stockInfoRecord = stockYyb1;
             }
+            stockInfoRecord.setHotSort(s.getHotSort());
             if (stockInfoRecord.getCode().startsWith("688")) {
                 stockInfoRecord.setYn(-1);
             } else if (stockInfoRecord.getCode().startsWith("900")) {

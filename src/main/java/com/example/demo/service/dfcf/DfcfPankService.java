@@ -343,19 +343,19 @@ public class DfcfPankService extends QtService {
                 stockTradeValInfoJobRepository.save(job6);
             }
 
-            List<StockTradeValInfoJob> job8s = stockTradeValInfoJobRepository.doMe(start,8);
+           /* List<StockTradeValInfoJob> job8s = stockTradeValInfoJobRepository.doMe(start,8);
             for(StockTradeValInfoJob job :job8s){
                 StockTradeValInfoJob job8 = new StockTradeValInfoJob();
                 BeanUtils.copyProperties(job,job8);
                 job8.setId(null);
                 job8.setRankType(18);
                 stockTradeValInfoJobRepository.save(job8);
-            }
+            }*/
             Date yesterdayDate = MyUtils.getFormatDate(start);
             ChineseWorkDay nowWorkDay = new ChineseWorkDay(yesterdayDate);
             Date now = nowWorkDay.nextWorkDay();
             start = MyUtils.getDayFormat(now);
-            log.info(job6s.size()+"=size6 start"+start+job8s.size());
+            log.info(job6s.size()+"=size6 start"+start+job6s.size());
         }
     }
     public void do88Me(String start){

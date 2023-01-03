@@ -3,44 +3,45 @@
 <div th:include="head :: header"></div>
 <body>
 <div th:include="menu :: menu"></div>
-<h2>避免单笔重仓</h2>
+<h2>避免单笔重仓,高潮，冰点，指数【17:02:59】</h2>
 <div>
     <div style="padding:5px 0;">
         <span>类型:</span>
         <select class="easyui-combobox" id="rankType" name="rankType" style="width:70px;">
-            <option value="1">1</option>
-            <option value="16">666</option>
-            <option value="5">成交前5</option>
-            <option value="9">同花顺</option>
-            <option value="18">888</option>
+            <option value="10">淘股吧</option>
+            <option value="20">同花顺</option>
+            <option value="30">成交前十</option>
         </select>
 
         起始日期:<input class="easyui-textbox" type="text"  name="dayFormat" id="dayFormat" >
         &nbsp;<span>结束日期:</span> <input class="easyui-textbox" type="text"  name="code" id="code" >
 
         &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
-        &nbsp;<a target="_blank" href="/trade/list.html" class="easyui-linkbutton" >记录</a>
-        <a target="_blank" href="/rank" class="easyui-linkbutton" >更新数据</a>
+        &nbsp;<a target="_blank" href="/trade/list.html" class="easyui-linkbutton" >Trade记录</a>
         &nbsp;<a target="_blank" href="/tgb/list.html" class="easyui-linkbutton" >tgbList</a>
+        &nbsp;<a target="_blank" href="/rank/alllist.html" class="easyui-linkbutton" >RankAll</a>
+        &nbsp;<a target="_blank" href="/stop/tlist.html" class="easyui-linkbutton" >T-M</a>
+        <a target="_blank" href="/rank" class="easyui-linkbutton" >Trade更新数据</a>
         &nbsp;<a target="_blank" href="/import" class="easyui-linkbutton" >导入数据</a>
         &nbsp;<a target="_blank" href="/trade/trade.html" class="easyui-linkbutton" >DOList</a>
         <a target="_blank" href="/dome/1/1" class="easyui-linkbutton" >do666</a>
+        &nbsp;<a target="_blank" href="/close" class="easyui-linkbutton" >CLOSE</a>
     </div>
 
 </div>
-<table id="dg" title="低吸处理"
+<table id="dg" title="数据趋势"
        toolbar="#toolbar" pagination="true" idField="id"
        rownumbers="true" fitColumns="true" singleSelect="true">
     <thead>
     <tr >
         <th data-options="field:'dayFormat',align:'center'">起始日期</th>
         <th data-options="field:'countNum',align:'center'">数量</th>
-        <th data-options="field:'oneOpenIncomeRate',align:'center'">1开</th>
-        <th data-options="field:'oneCloseIncomeRate',align:'center'">1收</th>
-        <th data-options="field:'oneNextOpenIncomeRate',align:'center'">再开</th>
-        <th data-options="field:'oneNextCloseIncomeRate',align:'center'">再收</th>
-        <th data-options="field:'twoOpenIncomeRate',align:'center'">低吸开</th>
-        <th data-options="field:'twoCloseIncomeRate',align:'center'">低吸收</th>
+        <th data-options="field:'firstOpenRate',align:'center'">当日开</th>
+        <th data-options="field:'firstCloseRate',align:'center'">当日收</th>
+        <th data-options="field:'secondOpenRate',align:'center'">第二天开</th>
+        <th data-options="field:'secondCloseRate',align:'center'">第二天收</th>
+        <th data-options="field:'thirdOpenRate',align:'center'">第三天开</th>
+        <th data-options="field:'thirdCloseRate',align:'center'">第三天收</th>
     </tr>
     </thead>
 </table>
@@ -50,7 +51,7 @@
         $('#dg').edatagrid({
             pageSize:100,
             pageList:[100,200],
-            url:'/trade/staMe.action'
+            url:'/rank/staFlow.action'
 
         });
     });

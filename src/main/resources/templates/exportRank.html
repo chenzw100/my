@@ -3,10 +3,10 @@
 <div th:include="head :: header"></div>
 <body>
 <div th:include="menu :: menu"></div>
-<h2>导入数据  ---重复手机号不会导入</h2>
+<h2>导入排行数据</h2>
 <div class="easyui-panel" title="Ajax Form" style="width:300px;padding:10px;">
     <span>当天的处理</span>
-    <form id="ff" action="/importExcel.action" method="post" enctype="multipart/form-data">
+    <form id="ff" action="/importExcelRankT.action" method="post" enctype="multipart/form-data">
         <table>
             <tr>
                 <td>xlsx:</td>
@@ -19,21 +19,9 @@
         </table>
     </form>
     <hr>
-    <form id="ff" action="/importCsv.action" method="post" enctype="multipart/form-data">
-        <table>
-            <tr>
-                <td>Csv:</td>
-                <td><input name="file" class="f1 easyui-filebox"></input></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input  type="submit" value="导入"></input></td>
-            </tr>
-        </table>
-    </form>
     <hr>
     <span>上一天的处理</span>
-    <form id="ff" action="/importExcel2.action" method="post" enctype="multipart/form-data">
+    <form id="ff" action="/importExcelRankY.action" method="post" enctype="multipart/form-data">
         <table>
             <tr>
                 <td>xlsx:</td>

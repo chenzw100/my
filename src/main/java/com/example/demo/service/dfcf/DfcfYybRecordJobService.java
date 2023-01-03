@@ -138,6 +138,9 @@ public class DfcfYybRecordJobService extends BaseService {
     }
 
     public boolean dealInfo(Object result) {
+        if(result==null){
+            return false;
+        }
         String str = result.toString();
         if (str.length() < 700) {
             log.info("结果:"+str);

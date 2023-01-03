@@ -9,6 +9,7 @@ import com.example.demo.service.dfcf.DfcfPankService;
 import com.example.demo.service.dfcf.DfcfService;
 import com.example.demo.service.dfcf.DfcfYybRecordJobService;
 import com.example.demo.service.pan.DealPanDataService;
+import com.example.demo.service.rank.StockRankService;
 import com.example.demo.service.tgb.TgbService;
 import com.example.demo.service.ths.StockTradeValCurrentService;
 import com.example.demo.service.xgb.XgbCurrentService;
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Component;
 public class PanService {
     Log log = LogFactory.getLog(PanService.class);
     private static final String tgbCron = "58 10  8 ? * MON-FRI";
+    private static final String rankCron = "58 20  8 ? * MON-FRI";
     private static final String openCron = "30 25 9 ? * MON-FRI";
     private static final String closeCron ="58 2 15 ? * MON-FRI";
     private static final String closeYybCron ="5 2 17 ? * MON-FRI";
@@ -68,6 +70,26 @@ public class PanService {
     StockOptService stockOptService;
     @Autowired
     StockTradeTaskService stockTradeTaskService;
+    @Autowired
+    StockRankService stockRankService;
+    //营业部处理
+    @Scheduled(cron = rankCron)
+    public void rankJob(){
+        //获取数据
+        if(isWorkday()){
+            stockRankService.dealRank();
+        }
+    }
+    //更新数据处理
+    @Scheduled(cron = closeYybCron)
+    public void tradeJob(){
+        //获取数据
+        if(isWorkday()){
+            stockRankService.dealSis();
+            dfcfPankService.getAllList();
+            dfcfPankService.do88Me(MyUtils.getYesterdayDayFormat());
+        }
+    }
     //营业部处理
     @Scheduled(cron = tenCron)
     public void tradeJobTen(){
@@ -84,15 +106,7 @@ public class PanService {
             stockTradeTaskService.jobDoTwo();
         }
     }
-    //营业部处理
-    @Scheduled(cron = closeYybCron)
-   public void tradeJob(){
-        //获取数据
-        if(isWorkday()){
-            dfcfPankService.getAllList();
-            dfcfPankService.do88Me(MyUtils.getYesterdayDayFormat());
-        }
-    }
+
 
     //营业部处理NB
     @Scheduled(cron = closeYybJobCron)
@@ -157,6 +171,7 @@ public class PanService {
             xgbService.closePan();
             xgbCurrentService.closeNewAndNearly();
             //stockTradeValCurrentService.jobDo();
+            log.info("closePan-end data");
         }
     }
     //盘中每小时处理数据

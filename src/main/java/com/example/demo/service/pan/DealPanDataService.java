@@ -96,10 +96,12 @@ public class DealPanDataService extends QtService {
         if(todayStocks!=null){
             for(StockInfo myStock :todayStocks){
                 QtStock qtStock = getQtInfo(myStock.getCode());
-                myStock.setTodayClosePrice(MyUtils.getCentByYuanStr(qtStock.getCurrentPrice()));
-                myStock.getTodayCloseYield();
-                myStock.setTodayState(qtStock.getTodayState());
-                stockInfoService.save(myStock);
+                if(qtStock!=null){
+                    myStock.setTodayClosePrice(MyUtils.getCentByYuanStr(qtStock.getCurrentPrice()));
+                    myStock.getTodayCloseYield();
+                    myStock.setTodayState(qtStock.getTodayState());
+                    stockInfoService.save(myStock);
+                }
             }
         }
         List<StockInfo> yesterdayStocks = stockInfoService.findStockInfosByYesterdayFormat();

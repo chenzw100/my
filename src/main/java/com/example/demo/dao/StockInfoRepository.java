@@ -25,6 +25,7 @@ import java.util.List;
  */
 public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
     List<StockInfo> findAll();
+    List<StockInfo> findByDayFormatOrderByStockType(String dayFormat);
     Page<StockInfo> findByStockTypeAndDayFormatOrderByHotSort(Integer stockType,String dayFormat, Pageable pageable);
     Page<StockInfo> findByStockTypeAndCodeOrderByDayFormatDesc(Integer stockType,String code, Pageable pageable);
     Page<StockInfo> findFirst10ByStockTypeAndHotSortOrderByDayFormatDesc(Integer stockType,Integer hotSort, Pageable pageable);
@@ -56,7 +57,7 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,Long> {
 
     List<StockInfo> findFirst3ByDayFormatOrderByFiveHighYieldDesc(String dayFormat);
 
-
+    List<StockInfo> findByDayFormatAndStockTypeOrderByHotSortAsc(String dayFormat,Integer stockType);
     List<StockInfo> findByDayFormatAndStockTypeOrderByTodayCloseYieldDesc(String dayFormat,Integer stockType);
     List<StockInfo> findByDayFormatAndStockTypeOrderByTomorrowOpenYieldDesc(String dayFormat,Integer stockType);
     List<StockInfo> findByDayFormatAndOpenBidRateLessThanOrderByOpenBidRateDesc(String dayFormat,int max);
