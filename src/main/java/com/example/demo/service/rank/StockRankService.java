@@ -91,11 +91,8 @@ public class StockRankService extends QtService{
         myStock.setCode(info.getCode());
         myStock.setName(info.getName());
         myStock.setRankType(info.getRankType());
-        if(info.getRankType().intValue()==RankTypeEnum.THS.getCode()){
-            myStock.setHotValue(info.getHot());
-        }else {
-            myStock.setHotValue(info.getTradeAmount());
-        }
+        myStock.setHotValue(info.getHot());
+
         myStock.setYesterdayClosePrice(info.getYesterdayClosePrice());
 
         List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myStock.getCode(),MyUtils.getYesterdayDayFormat());

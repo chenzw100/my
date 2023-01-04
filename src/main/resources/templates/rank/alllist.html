@@ -5,9 +5,9 @@
 <div th:include="menu :: menu"></div>
 <div>
     <div style="padding:5px 0;">
-        &nbsp;<a target="_blank" href="/rank/staFlow.html" class="easyui-linkbutton" >排行Flow</a>
         &nbsp;<a target="_blank" href="/rank/dealRank.action" class="easyui-linkbutton" >更新排行数据</a>
         &nbsp;<a target="_blank" href="/rank/dealThsRank.action" class="easyui-linkbutton" >更新THS排行数据</a>
+        &nbsp;<a target="_blank" href="/rank/staFlow.html" class="easyui-linkbutton" >排行Flow</a>
         &nbsp;<a target="_blank" href="/up/list.html" class="easyui-linkbutton" >up</a>
         &nbsp;<a target="_blank" href="/stop/tlist.html" class="easyui-linkbutton" >stop-tem</a>
         &nbsp;<a target="_blank" href="/tgb/list.html" class="easyui-linkbutton" >tgb</a>
@@ -33,6 +33,12 @@
         <th data-options="field:'yesterdayClosePriceText',align:'center'">昨日价</th>
         <th data-options="field:'plateName',align:'center'">板块</th>
         <th data-options="field:'firstOpenRate',align:'center'">竞价开</th>
+        <th data-options="field:'todayOpenPriceText',align:'center'">当日开盘价</th>
+        <th data-options="field:'todayClosePriceText',align:'center'">当日收盘价</th>
+        <th data-options="field:'tomorrowOpenPriceText',align:'center'">第二日开盘价</th>
+        <th data-options="field:'tomorrowClosePriceText',align:'center'">第二日收盘价</th>
+        <th data-options="field:'threeOpenPriceText',align:'center'">第三日开盘价</th>
+        <th data-options="field:'threeClosePriceText',align:'center'">第三日收盘价</th>
 
     </tr>
     </thead>

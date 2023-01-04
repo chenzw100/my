@@ -89,6 +89,7 @@ public class ExcelController {
             }
             myStock.setRankType(stockZy.getRankType());
             myStock.setHotSort(stockZy.getHotSort());
+            myStock.setHotValue(stockZy.getHotValue());
             myStock.setYn(1);
             if(stockZy.getCode().substring(0,3).equals("688")){
                 myStock.setYn(-1);
@@ -113,6 +114,7 @@ public class ExcelController {
 
             try {
                 stockRankRepository.save(myStock);
+
             }catch (Exception e){
                 log.error("失败，可能重复"+e.getMessage(),e);
             }
@@ -147,10 +149,6 @@ public class ExcelController {
                 }
             }
             stockZy.setCode(stockZy.getCode().substring(0,6));
-            if(StringUtils.isBlank(stockZy.getDayFormat())){
-                stockZy.setDayFormat(MyUtils.getDayFormat());
-            }
-
 
             String code = stockZy.getCode();
             if (code.indexOf("6") == 0) {
@@ -167,6 +165,7 @@ public class ExcelController {
             }
             myStock.setRankType(stockZy.getRankType());
             myStock.setHotSort(stockZy.getHotSort());
+            myStock.setHotValue(stockZy.getHotValue());
             myStock.setYn(1);
             if(stockZy.getCode().substring(0,3).equals("688")){
                 myStock.setYn(-1);
@@ -190,6 +189,24 @@ public class ExcelController {
 
             try {
                 stockRankRepository.save(myStock);
+                try {
+                    StockTradeValInfoJob job = new StockTradeValInfoJob();
+                    job.setRankType(myStock.getRankType());
+                    job.setRank(myStock.getHotSort());
+                    job.setCode(stockZy.getCode());
+                    job.setHot(myStock.getHotValue());
+                    job.setName(myStock.getName());
+                    job.setYesterdayClosePrice(myStock.getYesterdayClosePrice());
+                    job.setYn(1);
+                    job.setPlateName(myStock.getPlateName());
+                    job.setDayFormat(MyUtils.getYesterdayDayFormat());
+                    job.setYesterdayVolume(1);
+                    job.setTradeAmount(1);
+                    stockTradeValInfoJobRepository.save(job);
+                }catch (Exception e){
+                    log.error("交易的导入"+e.getMessage(),e);
+                }
+
             }catch (Exception e){
                 log.error("失败，可能重复"+e.getMessage(),e);
             }
@@ -240,9 +257,7 @@ public class ExcelController {
             if(stockZy.getRankType()==null || stockZy.getRankType()==0){
                 stockZy.setRankType(1);
             }
-            if(stockZy.getHot()==null || stockZy.getHot()==0){
-                stockZy.setHot(stockZy.getRank());
-            }
+
             stockZy.setYn(1);
             if(stockZy.getCode().substring(0,3).equals("688")){
                 stockZy.setYn(-1);
@@ -267,6 +282,9 @@ public class ExcelController {
             String yesterdayTurnoverStr =stockZy.getYesterdayTurnoverStr();
             yesterdayTurnoverStr =yesterdayTurnoverStr.substring(0,yesterdayTurnoverStr.length()-4);
             stockZy.setYesterdayTurnover(Integer.parseInt(yesterdayTurnoverStr));
+            if(stockZy.getHot()==null || stockZy.getHot()==0){
+                stockZy.setHot(stockZy.getYesterdayTurnover());
+            }
             if(StringUtils.isNotBlank(stockZy.getPriceStr())){
                 stockZy.setYesterdayClosePrice(MyUtils.getCentByYuanStr(stockZy.getPriceStr()));
             }

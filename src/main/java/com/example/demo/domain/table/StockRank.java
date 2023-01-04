@@ -26,7 +26,7 @@ public class StockRank implements Serializable {
     @Excel(name = "代码", orderNum = "2")
     @Column(nullable = false,columnDefinition="varchar(8)")
     private String code;
-
+    @Excel(name = "热搜值", orderNum = "3")
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '热搜值'")
     private Integer hotValue;
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '连板'")
@@ -82,15 +82,35 @@ public class StockRank implements Serializable {
     public String getYesterdayClosePriceText() {
         return MyUtils.getYuanByCent(this.yesterdayClosePrice);
     }
+
+    public String getTodayOpenPriceText() {
+        return MyUtils.getYuanByCent(this.todayOpenPrice);
+    }
+    public String getTodayClosePriceText() {
+        return MyUtils.getYuanByCent(this.todayClosePrice);
+    }
+
+    public String getTomorrowOpenPriceText() {
+        return MyUtils.getYuanByCent(this.tomorrowOpenPrice);
+    }
+    public String getTomorrowClosePriceText() {
+        return MyUtils.getYuanByCent(this.tomorrowClosePrice);
+    }
+
+    public String getThreeOpenPriceText() {
+        return MyUtils.getYuanByCent(this.threeOpenPrice);
+    }
+    public String getThreeClosePriceText() {
+        return MyUtils.getYuanByCent(this.threeClosePrice);
+    }
+
     public String getRankTypeName(){
         if(this.rankType==null){
             return "--";
         }
         return RankTypeEnum.getStockType(this.rankType);
     }
-    public String getTodayOpenPriceText() {
-        return MyUtils.getYuanByCent(this.todayOpenPrice);
-    }
+
 
 
 
