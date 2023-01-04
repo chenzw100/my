@@ -87,6 +87,7 @@ public class ExcelController {
                 log.error("导入失败，可能重复"+code);
                 continue;
             }
+            myStock.setCode(stockZy.getCode());
             myStock.setRankType(stockZy.getRankType());
             myStock.setHotSort(stockZy.getHotSort());
             myStock.setHotValue(stockZy.getHotValue());
@@ -163,6 +164,7 @@ public class ExcelController {
                 log.error("导入失败，可能重复"+code);
                 continue;
             }
+            myStock.setCode(stockZy.getCode());
             myStock.setRankType(stockZy.getRankType());
             myStock.setHotSort(stockZy.getHotSort());
             myStock.setHotValue(stockZy.getHotValue());

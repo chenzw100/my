@@ -44,7 +44,7 @@ public class StopRankController {
 
     @RequestMapping("/alllist.html")
     public String alllist(ModelMap modelMap){
-        modelMap.put("title","所有类型操作标的");
+        modelMap.put("title","所有排行标的");
         return "rank/alllist";
     }
     @RequestMapping("/alllist.action")

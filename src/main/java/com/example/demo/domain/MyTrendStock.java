@@ -5,6 +5,7 @@ package com.example.demo.domain;
  */
 public interface MyTrendStock {
     public String getDayFormat();
+    public String getHot();
     public Integer getFirstOpenRate();
     public Integer getFirstCloseRate();
     public Integer getSecondOpenRate();

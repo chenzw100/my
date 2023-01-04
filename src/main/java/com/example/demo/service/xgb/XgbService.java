@@ -219,7 +219,10 @@ public class XgbService extends QtService {
             }
         }
         if(spaceHeightStock!=null){
-            spaceHeight(spaceHeightStock);
+            List<StockLimitUp> limitUps = stockLimitUpRepository.findByDayFormatAndContinueBoardCount(spaceHeightStock.getDayFormat(),spaceHeightStock.getContinueBoardCount());
+            for (StockLimitUp height:limitUps){
+                spaceHeight(height);
+            }
         }
     }
     void spaceHeight(StockLimitUp hstock) {
