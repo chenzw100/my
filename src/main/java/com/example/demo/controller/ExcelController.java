@@ -98,7 +98,7 @@ public class ExcelController {
             myStock.setDayFormat(MyUtils.getTomorrowDayFormat());
 
             log.info(i+"《===============第，导入数据的code【"+stockZy.getCode()+"】");
-            List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myStock.getCode(),MyUtils.getDayFormat());
+            List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(code,MyUtils.getDayFormat());
             if(xgbStocks!=null && xgbStocks.size()>0){
                 StockLimitUp xgbStock =xgbStocks.get(0);
                 myStock.setPlateName(xgbStock.getPlateName());
@@ -174,7 +174,7 @@ public class ExcelController {
             }
             myStock.setDayFormat(MyUtils.getDayFormat());
             log.info(i+"《===============第，导入数据的code【"+stockZy.getCode()+"】");
-            List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myStock.getCode(),MyUtils.getYesterdayDayFormat());
+            List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(code,MyUtils.getYesterdayDayFormat());
             if(xgbStocks!=null && xgbStocks.size()>0){
                 StockLimitUp xgbStock =xgbStocks.get(0);
                 myStock.setPlateName(xgbStock.getPlateName());

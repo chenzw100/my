@@ -154,7 +154,7 @@ public class StockUpController {
     @ResponseBody
     public String add(@PathVariable("day")String day,@PathVariable("type")Integer type,@PathVariable("hot")Integer hot,@PathVariable("code")String code) {
         if ("1".equals(code)) {
-            return "success";
+            return "success 同花顺-11 顽主-82 持仓-80 买入-81  DAY/TYPE/HOT/CODE";
         }
         if (code.indexOf("6") == 0) {
             code = "sh" + code;
