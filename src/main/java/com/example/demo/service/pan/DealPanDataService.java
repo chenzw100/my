@@ -100,6 +100,7 @@ public class DealPanDataService extends QtService {
                     myStock.setTodayClosePrice(MyUtils.getCentByYuanStr(qtStock.getCurrentPrice()));
                     myStock.getTodayCloseYield();
                     myStock.setTodayState(qtStock.getTodayState());
+                    myStock.getFirstCloseRate();
                     stockInfoService.save(myStock);
                 }
             }

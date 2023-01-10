@@ -104,6 +104,8 @@ public class StockInfo implements Serializable {
 
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '当日涨跌停-1，0，1情况'")
     private Integer todayState;
+    @Column(nullable = false,columnDefinition="int(11) DEFAULT 0 COMMENT '第一次收盘'")
+    private Integer firstCloseRate;
 
     @Transient
     private String todayClose;
@@ -260,6 +262,14 @@ public class StockInfo implements Serializable {
         //(todayClosePrice-todayPrice)/todayPrice
         todayCloseYield =MyUtils.getIncreaseRateCent(getTodayClosePrice(),getTodayOpenPrice()).intValue();
         return todayCloseYield;
+    }
+
+    public Integer getFirstCloseRate() {
+        return firstCloseRate = MyUtils.getIncreaseRateCent(this.todayClosePrice,this.yesterdayClosePrice).intValue();
+    }
+
+    public void setFirstCloseRate(Integer firstCloseRate) {
+        this.firstCloseRate = firstCloseRate;
     }
 
     public void setTodayCloseYield(Integer todayCloseYield) {

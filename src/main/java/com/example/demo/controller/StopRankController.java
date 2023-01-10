@@ -14,6 +14,7 @@ import com.example.demo.enums.RankTypeEnum;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.StockUpService;
 import com.example.demo.service.rank.StockRankService;
+import com.example.demo.service.tgb.TgbDealService;
 import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
@@ -40,6 +41,8 @@ public class StopRankController {
     StockTemperatureRepository stockTemperatureRepository;
     @Autowired
     StockRankService stockRankService;
+    @Autowired
+    TgbDealService tgbDealService;
 
 
     @RequestMapping("/alllist.html")
@@ -126,7 +129,16 @@ public class StopRankController {
         return JSON.toJSONString(map);
     }
 
-
+    @RequestMapping("/tgb7")
+    @ResponseBody
+    public String tgb7() {
+        try {
+            tgbDealService.day7Date();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "day7Date deal success";
+    }
 
 
 }
