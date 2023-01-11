@@ -137,7 +137,7 @@ public class TgbService extends QtService {
         for(MyTotalStock myTotalStock : totalStocks){
             StockInfo dayDb =stockInfoService.findStockDayByCodeTodayFormat(myTotalStock.getCode());
             if(dayDb==null){
-                log.info(start+"-"+end+",TgbService dayFive not exist:"+myTotalStock.getCode());
+                log.info(start+"-"+end+",TgbService dayFive not exist 非当日的结束:"+myTotalStock.getCode()+","+myTotalStock.getName());
                 continue;
             }
             StockInfo fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_DAY_FIVE.getCode());
@@ -172,16 +172,8 @@ public class TgbService extends QtService {
                 fiveTgbStock.setShowCount(1);
             }
             stockInfoService.save(fiveTgbStock);
-            log.info("TgbService dayFive end code:"+fiveTgbStock.getCode());
-            StockInfo dayInfo =stockInfoService.findStockDayByCodeTodayFormat(fiveTgbStock.getCode());
-            if(dayInfo!=null){
-                StockInfo dayFive = new StockInfo();
-                dayInfo.setId(null);
-                BeanUtils.copyProperties(dayInfo,dayFive);
-                dayFive.setStockType(NumberEnum.StockType.STOCK_DAY_FIVE5.getCode());
-                stockInfoService.save(dayInfo);
-            }
-            log.info("TgbService dayFive end size:"+totalStocks.size());
+            log.info("TgbService dayFive end code 当日的保存:"+fiveTgbStock.getCode()+","+fiveTgbStock.getName());
+
         }
     }
     public void dayThree(){
@@ -192,7 +184,7 @@ public class TgbService extends QtService {
         for(MyTotalStock myTotalStock : totalStocks){
             StockInfo dayDb =stockInfoService.findStockDayByCodeTodayFormat(myTotalStock.getCode());
             if(dayDb==null){
-                log.info(start+"-"+end+",dayThree not exist:"+myTotalStock.getCode());
+                log.info(start+"-"+end+",dayThree not exist 非当日的结束:"+myTotalStock.getCode());
                 continue;
             }
             StockInfo fiveTgbStock = new StockInfo(myTotalStock.getCode(),myTotalStock.getName(), NumberEnum.StockType.STOCK_DAY_THREE.getCode());
@@ -227,16 +219,8 @@ public class TgbService extends QtService {
                 fiveTgbStock.setShowCount(1);
             }
             stockInfoService.save(fiveTgbStock);
-            log.info("TgbService dayThree end code:"+fiveTgbStock.getCode());
-            StockInfo dayInfo =stockInfoService.findStockDayByCodeTodayFormat(fiveTgbStock.getCode());
-            if(dayInfo!=null){
-                StockInfo dayFive = new StockInfo();
-                dayInfo.setId(null);
-                BeanUtils.copyProperties(dayInfo,dayFive);
-                dayFive.setStockType(NumberEnum.StockType.STOCK_DAY_THREE3.getCode());
-                stockInfoService.save(dayInfo);
-            }
-            log.info("dayThree end size:"+totalStocks.size());
+            log.info("TgbService dayThree end 当日的保存:"+fiveTgbStock.getCode()+","+fiveTgbStock.getName());
+
         }
     }
 

@@ -52,7 +52,7 @@ public class XgbService extends QtService {
     @Autowired
     StockPlateStaRepository stockPlateStaRepository;
     public void closePan(){
-        log.info("xgb==>start closePan");
+        log.info("XgbService xgb==>start closePan");
         limitUp();
         //superStockBefore();
         //limitUpBrokenAfter();
@@ -176,7 +176,7 @@ public class XgbService extends QtService {
         int spaceHeight = 1;
         Object response = getRequest(limit_up);
         JSONArray array = JSONObject.parseObject(response.toString()).getJSONArray("data");
-        log.info(":zt==================>"+array.size());
+        log.info("XgbService zt==================>"+array.size());
         for(int i=0;i<array.size();i++){
             JSONObject jsonStock =  array.getJSONObject(i);
             String name = jsonStock.getString("stock_chi_name");
@@ -207,7 +207,7 @@ public class XgbService extends QtService {
                 }
                 xgbStock.setPlateName(plateName);
                 stockLimitUpRepository.save(xgbStock);
-                log.info(i+":zt==================save>"+xgbStock.getCode());
+                log.info(i+"XgbService zt==================save>"+xgbStock.getCode());
                 if (xgbStock.getContinueBoardCount() > spaceHeight) {
                     spaceHeightStock = xgbStock;
                     spaceHeight = xgbStock.getContinueBoardCount();
@@ -226,15 +226,15 @@ public class XgbService extends QtService {
         }
     }
     void spaceHeight(StockLimitUp hstock) {
-        log.info("space_height code:"+hstock.getCode()+",height:"+ hstock.getContinueBoardCount());
-        StockInfo spaceHeight = new StockInfo(hstock.getCode(),hstock.getName(), NumberEnum.StockType.STOCK_SPACE_HEIGHT.getCode());
+        log.info("XgbService space_height code:"+hstock.getCode()+",height:"+ hstock.getContinueBoardCount());
+        StockInfo spaceHeight = new StockInfo(hstock.getCode(),hstock.getName(), NumberEnum.StockType.STOCK_SPACE_HEIGHTS.getCode());
         spaceHeight.setOneFlag(hstock.getOpenCount());
         spaceHeight.setContinuous(hstock.getContinueBoardCount());
         spaceHeight.setPlateName(hstock.getPlateName());
         spaceHeight.setYesterdayClosePrice(hstock.getYesterdayClosePrice());
         StockInfo stockTemp =stockInfoService.findStockSpaceHeightByCodeAndYesterdayFormat(spaceHeight.getCode());
         if(stockTemp!=null){
-            log.info("yesterday_space_height:"+spaceHeight.toString());
+            log.info("XgbService yesterday_space_height:"+spaceHeight.toString());
             spaceHeight.setShowCount(stockTemp.getShowCount() + 1);
         }else {
             spaceHeight.setShowCount(1);
@@ -245,7 +245,7 @@ public class XgbService extends QtService {
         // 先强势，后炸板
         Object response = getRequest(limit_up_broken);
         JSONArray array = JSONObject.parseObject(response.toString()).getJSONArray("data");
-        log.info("-broken---->" + array.size());
+        log.info("XgbService -broken---->" + array.size());
         for(int i=0;i<array.size();i++){
             JSONObject jsonStock =  array.getJSONObject(i);
             String name = jsonStock.getString("stock_chi_name");

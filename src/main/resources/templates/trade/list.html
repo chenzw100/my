@@ -3,7 +3,7 @@
 <div th:include="head :: header"></div>
 <body>
 <div th:include="menu :: menu"></div>
-<h2>公司交易管理 --- 交易管理-【交易记录】</h2>
+<h2>THS --- 交易管理-【交易记录】</h2>
 <div>
     <div style="padding:5px 0;">
         <span>类型:</span>
@@ -22,13 +22,15 @@
         </select>
         &nbsp;<span>板块:</span> <input class="easyui-textbox" type="text"  name="plateName" id="plateName" >
         &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
+        &nbsp;<a target="_blank" href="/import" class="easyui-linkbutton" >导入数据</a>
+        &nbsp;<a target="_blank" href="/stop/alllist.html" class="easyui-linkbutton" >类型ALL</a>
+        &nbsp;<a target="_blank" href="/rank/alllist.html" class="easyui-linkbutton" >排行ALL</a>
         &nbsp;<a href="#" class="easyui-linkbutton" onclick="getSelectedck()">查看个股</a>
         &nbsp;<a target="_blank" href="/review.html" class="easyui-linkbutton" >查看历史</a>
-        &nbsp;<a target="_blank" href="/import" class="easyui-linkbutton" >导入数据</a>
         &nbsp;<a target="_blank" href="/trade/sta.html" class="easyui-linkbutton" >统计</a>
         &nbsp;<a target="_blank" href="/trade/staMe.html" class="easyui-linkbutton" >统计ME</a>
         &nbsp;<a target="_blank" href="/trade/staFlow.html" class="easyui-linkbutton" >统计FLOW</a>
-        &nbsp;<a target="_blank" href="/stop/optlist.html" class="easyui-linkbutton" >操作标的</a>
+
         <a target="_blank" href="/dome/1/1" class="easyui-linkbutton" >do666</a>
     </div>
 

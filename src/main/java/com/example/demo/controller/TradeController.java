@@ -96,7 +96,7 @@ public class TradeController {
     }
     @RequestMapping("/list.html")
     public String index(ModelMap modelMap){
-        modelMap.put("title","数据记录");
+        modelMap.put("title","THS数据记录");
         return "trade/list";
     }
     @RequestMapping("/list.action")

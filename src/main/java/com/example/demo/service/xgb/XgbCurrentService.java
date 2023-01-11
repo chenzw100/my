@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.dao.StockLimitUpRepository;
 import com.example.demo.dao.StockTemperatureRepository;
+import com.example.demo.domain.QtStock;
 import com.example.demo.domain.SinaTinyInfoStock;
 import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockLimitUp;
@@ -330,7 +331,7 @@ public class XgbCurrentService extends QtService {
     public void nearlyStockBefore(){
         Object response = getRequest(nearly_stock);
         JSONArray array = JSONObject.parseObject(response.toString()).getJSONArray("data");
-        log.info("-->super"+array.size());
+        log.info("XgbCurrentService -->super"+array.size());
         for(int i=0;i<array.size();i++){
             JSONObject jsonStock =  array.getJSONObject(i);
             String changePercent = jsonStock.getString("change_percent");
@@ -357,22 +358,24 @@ public class XgbCurrentService extends QtService {
         } else {
             code = "sh" + code;
         }
-        SinaTinyInfoStock sinaStock = sinaService.getTiny(code);
+        QtStock sinaStock= getQtInfo(code);
+        //SinaTinyInfoStock sinaStock = sinaService.getTiny(code);
         if (sinaStock == null) {
             return ;
         }
         if(StringUtils.isBlank(sinaStock.getName())){
-            log.info("-->Code add name :"+sinaStock.getCode());
+            log.info("XgbCurrentService -->Code add name :"+sinaStock.getCode());
             sinaStock.setName("--");
             StockInfo temp =stockInfoService.findStockDaysByCodeYesterdayFormat(sinaStock.getCode());
             if(temp!=null){
                 sinaStock.setName(temp.getName());
             }
         }
+        log.info("XgbCurrentService -->Code add name :"+sinaStock.getCode());
         StockInfo myStock = new StockInfo(code, sinaStock.getName(), type);
-        myStock.setYesterdayClosePrice(sinaStock.getYesterdayPrice());
-        myStock.setTodayOpenPrice(sinaStock.getOpenPrice());
-        myStock.setTodayClosePrice(sinaStock.getCurrentPrice());
+        myStock.setYesterdayClosePrice(Integer.parseInt(sinaStock.getYesterdayClosePrice()));
+        myStock.setTodayOpenPrice(Integer.parseInt(sinaStock.getTodayOpenPrice()));
+        myStock.setTodayClosePrice(Integer.parseInt(sinaStock.getCurrentPrice()));
         myStock.getTodayCloseYield();
         myStock.setContinuous(1);
         myStock.setOpenCount(-1);
@@ -402,7 +405,7 @@ public class XgbCurrentService extends QtService {
             myStock.setContinuous(0);
             myStock.setLimitUp(0);
         }
-        log.info("-->Code add :"+myStock.getCode());
+        log.info("XgbCurrentService -->Code add :"+myStock.getCode());
         stockInfoService.save(myStock);
     }
 }

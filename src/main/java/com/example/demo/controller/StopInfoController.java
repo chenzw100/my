@@ -36,7 +36,7 @@ public class StopInfoController {
 
     @RequestMapping("/alllist.html")
     public String alllist(ModelMap modelMap){
-        modelMap.put("title","所有类型操作标的");
+        modelMap.put("title","类型ALL");
         return "stop/alllist";
     }
     @RequestMapping("/alllist.action")
