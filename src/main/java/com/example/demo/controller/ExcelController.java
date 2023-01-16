@@ -9,14 +9,18 @@ import com.example.demo.domain.StockTradeValInfoTest;
 import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockLimitUp;
 import com.example.demo.domain.table.StockRank;
+import com.example.demo.enums.NumberEnum;
 import com.example.demo.exception.NormalException;
+import com.example.demo.service.StockInfoService;
 import com.example.demo.service.qt.QtService;
+import com.example.demo.utils.ChineseWorkDay;
 import com.example.demo.utils.CsvUtils;
 import com.example.demo.utils.FileExcelUtil;
 import com.example.demo.utils.MyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -40,6 +45,8 @@ public class ExcelController {
     StockLimitUpRepository stockLimitUpRepository;
     @Autowired
     StockRankRepository stockRankRepository;
+    @Autowired
+    StockInfoService stockInfoService;
 
     @RequestMapping("importRank")
     public String importRank(ModelMap modelMap)  {
@@ -128,6 +135,7 @@ public class ExcelController {
     public String importExcelRankY(MultipartFile file) throws NormalException {
         List<StockRank> personList = FileExcelUtil.importExcel(file, StockRank.class);
         System.out.println("导入数据一共【"+personList.size()+"】行");
+        StockInfo stockInfo = new StockInfo();
         int i =0;
         for(StockRank stockZy :personList){
             i++;
@@ -191,6 +199,11 @@ public class ExcelController {
 
             try {
                 stockRankRepository.save(myStock);
+                if(stockZy.getHotSort()==1){
+                    BeanUtils.copyProperties(myStock,stockInfo);
+                    stockInfo.setStockType(NumberEnum.StockType.STOCK_THS4.getCode());
+                    stockInfo.setCode(code);
+                }
                 try {
                     StockTradeValInfoJob job = new StockTradeValInfoJob();
                     job.setRankType(myStock.getRankType());
@@ -213,13 +226,10 @@ public class ExcelController {
                 log.error("失败，可能重复"+e.getMessage(),e);
             }
         }
+        stockInfoService.save(stockInfo);
         //TODO 保存数据库
         return "导入数据一共【"+personList.size()+"】行";
     }
-
-
-
-
 
 
     @RequestMapping("import")
@@ -254,6 +264,8 @@ public class ExcelController {
             }
             stockZy.setCode(stockZy.getCode().substring(0,6));
             if(StringUtils.isBlank(stockZy.getDayFormat())){
+                stockZy.setDayFormat(MyUtils.getDayFormat());
+            }else if(stockZy.getDayFormat().length()<7){
                 stockZy.setDayFormat(MyUtils.getDayFormat());
             }
             if(stockZy.getRankType()==null || stockZy.getRankType()==0){

@@ -165,9 +165,7 @@ public class StockUpController {
         if (myStock == null) {
             return "fail";
         }
-        if(type>1){
-            myStock.setStockType(type);
-        }
+        myStock.setStockType(type);
         StockInfo fiveTgbStockTemp =stockInfoService.findStockKplByCodeAndYesterdayFormat(myStock.getCode());
         if(fiveTgbStockTemp!=null){
             myStock.setShowCount(fiveTgbStockTemp.getShowCount() + 1);

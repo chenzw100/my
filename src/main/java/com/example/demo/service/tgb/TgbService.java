@@ -42,6 +42,8 @@ public class TgbService extends QtService {
         try {
             Document doc = Jsoup.connect("https://www.taoguba.com.cn/search/hotPop").get();
             Elements elements = doc.getElementsByClass("tbleft");
+            StockInfo tgbHotSeven = null;
+            Integer hotSeven =100;
             for(int i=10;i<20;i++){
                 Element element = elements.get(i);
                 Element parent =element.parent();
@@ -59,7 +61,7 @@ public class TgbService extends QtService {
                 tgbStock.setHotSort(i - 9);
                 tgbStock.setHotValue(Integer.parseInt(tds.get(2).text()));
                 tgbStock.setHotSeven(Integer.parseInt(tds.get(3).text()));
-                log.info("==>WORKDAY:"+code);
+                log.info(i+"=sum==>WORKDAY:"+code);
                 List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(code,MyUtils.getDayFormat(MyUtils.getYesterdayDate()));
                 if(xgbStocks!=null && xgbStocks.size()>0){
                     StockLimitUp xgbStock =xgbStocks.get(0);
@@ -78,7 +80,7 @@ public class TgbService extends QtService {
                     tgbStock.setContinuous(0);
                     tgbStock.setLimitUp(0);
                 }
-                log.error("==>WORKDAY fail xinfo"+tgbStock.getCode());
+                log.error("==>WORKDAY dodo xinfo"+tgbStock.getCode());
                 StockInfo StockInfo = stockInfoService.findStockDaysByCodeYesterdayFormat(tgbStock.getCode());
                 if(StockInfo!=null){
                     tgbStock.setShowCount(StockInfo.getShowCount()+1);
@@ -86,7 +88,19 @@ public class TgbService extends QtService {
                     tgbStock.setShowCount(1);
                 }
                 stockInfoService.save(tgbStock);
+                if(tgbStock.getHotSeven()>hotSeven){
+                    tgbHotSeven=tgbStock;
+                    hotSeven=tgbHotSeven.getHotSeven();
+                }
 
+            }
+            if(tgbHotSeven!=null){
+                StockInfo tgbStock = new StockInfo();
+                tgbHotSeven.setId(null);
+                BeanUtils.copyProperties(tgbHotSeven,tgbStock);
+                tgbStock.setStockType(NumberEnum.StockType.STOCK_DAY_HOT.getCode());
+                log.error("==>WORKDAY dodo hot7"+tgbStock.getCode());
+                stockInfoService.save(tgbStock);
             }
         } catch (IOException e) {
             log.error("==>WORKDAY fail "+e.getMessage());
