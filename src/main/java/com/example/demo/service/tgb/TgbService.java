@@ -158,6 +158,7 @@ public class TgbService extends QtService {
             fiveTgbStock.setHotSort(myTotalStock.getTotalCount());
             fiveTgbStock.setHotValue(myTotalStock.getHotValue());
             fiveTgbStock.setHotSeven(myTotalStock.getHotSeven());
+            fiveTgbStock.setShowCount(dayDb.getShowCount());
             String currentPrice = getCurrentPrice(myTotalStock.getCode());
             fiveTgbStock.setYesterdayClosePrice(MyUtils.getCentBySinaPriceStr(currentPrice));
             List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myTotalStock.getCode(),MyUtils.getDayFormat(MyUtils.getYesterdayDate()));
@@ -205,6 +206,7 @@ public class TgbService extends QtService {
             fiveTgbStock.setHotSort(myTotalStock.getTotalCount());
             fiveTgbStock.setHotValue(myTotalStock.getHotValue());
             fiveTgbStock.setHotSeven(myTotalStock.getHotSeven());
+            fiveTgbStock.setShowCount(dayDb.getShowCount());
             String currentPrice = getCurrentPrice(myTotalStock.getCode());
             fiveTgbStock.setYesterdayClosePrice(MyUtils.getCentBySinaPriceStr(currentPrice));
             List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(myTotalStock.getCode(),MyUtils.getDayFormat(MyUtils.getYesterdayDate()));
