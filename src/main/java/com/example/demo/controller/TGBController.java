@@ -72,6 +72,9 @@ public class TGBController {
             }
         }
         Map map = new HashMap<>();
+        if(StringUtils.isNotBlank(obj.getDayFormat())){
+            PRE_END = obj.getDayFormat();
+        }
         Page<StockInfo> list =tgbRecordService.findALl(page,rows,obj);
         map.put("total",list.getTotalElements());
         map.put("rows",list.getContent());
