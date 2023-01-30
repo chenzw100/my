@@ -198,12 +198,18 @@ public class ExcelController {
             }
 
             try {
-                stockRankRepository.save(myStock);
+                BeanUtils.copyProperties(myStock,stockInfo);
                 if(stockZy.getHotSort()==1){
-                    BeanUtils.copyProperties(myStock,stockInfo);
                     stockInfo.setStockType(NumberEnum.StockType.STOCK_THS4.getCode());
                     stockInfo.setCode(code);
                 }
+                StockRank myStockY =stockRankRepository.findByDayFormatAndRankTypeAndCode(MyUtils.getYesterdayDayFormat(),myStock.getRankType(),myStock.getCode());
+                if(myStockY!=null){
+                    myStock.setShowCount(myStockY.getShowCount()+1);
+                }else {
+                    myStock.setShowCount(1);
+                }
+                stockRankRepository.save(myStock);
                 try {
                     StockTradeValInfoJob job = new StockTradeValInfoJob();
                     job.setRankType(myStock.getRankType());

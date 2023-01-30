@@ -31,7 +31,8 @@ public class StockRank implements Serializable {
     private Integer hotValue;
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '连板'")
     private Integer continuous;
-
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '出现次数'")
+    private Integer showCount;
 
     @Column(nullable = false,columnDefinition="varchar(10) COMMENT 'yyyymmdd'")
     private String dayFormat;
@@ -77,7 +78,13 @@ public class StockRank implements Serializable {
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第三次收盘'")
     private Integer thirdCloseRate;
 
+    public Integer getShowCount() {
+        return showCount;
+    }
 
+    public void setShowCount(Integer showCount) {
+        this.showCount = showCount;
+    }
 
     public String getYesterdayClosePriceText() {
         return MyUtils.getYuanByCent(this.yesterdayClosePrice);
