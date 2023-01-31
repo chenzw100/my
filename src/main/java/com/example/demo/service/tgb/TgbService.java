@@ -87,11 +87,11 @@ public class TgbService extends QtService {
                 }else {
                     tgbStock.setShowCount(1);
                 }
-                stockInfoService.save(tgbStock);
                 if(tgbStock.getHotSeven()>hotSeven){
                     tgbHotSeven=tgbStock;
                     hotSeven=tgbHotSeven.getHotSeven();
                 }
+                stockInfoService.save(tgbStock);
 
             }
             if(tgbHotSeven!=null){
