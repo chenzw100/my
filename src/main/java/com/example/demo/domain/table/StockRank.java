@@ -33,6 +33,8 @@ public class StockRank implements Serializable {
     private Integer continuous;
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '出现次数'")
     private Integer showCount;
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '当日涨跌停-1，0，1情况'")
+    private Integer todayState;
 
     @Column(nullable = false,columnDefinition="varchar(10) COMMENT 'yyyymmdd'")
     private String dayFormat;
@@ -77,6 +79,14 @@ public class StockRank implements Serializable {
     private Integer thirdOpenRate;
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '第三次收盘'")
     private Integer thirdCloseRate;
+
+    public Integer getTodayState() {
+        return todayState;
+    }
+
+    public void setTodayState(Integer todayState) {
+        this.todayState = todayState;
+    }
 
     public Integer getShowCount() {
         return showCount;

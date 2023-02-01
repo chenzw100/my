@@ -35,6 +35,9 @@ public class StockRankService extends QtService{
     StockInfoRepository stockInfoRepository;
     @Autowired
     StockTradeValInfoJobRepository stockTradeValInfoJobRepository;
+    public StockRank save(StockRank stockInfo){
+        return stockRankRepository.save(stockInfo);
+    }
     public List<StockRank> findByDayFormatOrderByStockType(String dayFormat){
         return stockRankRepository.findByDayFormatOrderByRankType(dayFormat);
     }
@@ -71,6 +74,7 @@ public class StockRankService extends QtService{
         myStock.setYesterdayClosePrice(info.getYesterdayClosePrice());
         myStock.setPlateName(info.getPlateName());
         myStock.setContinuous(info.getContinuous());
+        myStock.setShowCount(info.getShowCount());
         myStock.setYn(1);
         return myStock;
 

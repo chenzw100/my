@@ -6,6 +6,7 @@ import com.example.demo.domain.SinaTinyInfoStock;
 import com.example.demo.domain.table.*;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.qt.QtService;
+import com.example.demo.service.rank.StockRankService;
 import com.example.demo.service.sina.SinaService;
 import com.example.demo.utils.MyChineseWorkDay;
 import com.example.demo.utils.MyUtils;
@@ -27,6 +28,8 @@ public class DealPanDataService extends QtService {
 
     @Autowired
     SinaService sinaService;
+    @Autowired
+    StockRankService stockRankService;
 
     public void open(){
         PRICE_CACHE.clear();
@@ -105,12 +108,24 @@ public class DealPanDataService extends QtService {
                 }
             }
         }
+
         List<StockInfo> yesterdayStocks = stockInfoService.findStockInfosByYesterdayFormat();
         if(yesterdayStocks!=null){
             for(StockInfo myStock :yesterdayStocks){
                 myStock.setTomorrowClosePrice(getIntCurrentPrice(myStock.getCode()));
                 myStock.getTomorrowCloseYield();
                 stockInfoService.save(myStock);
+            }
+        }
+        List<StockRank> ranks = stockRankService.findByDayFormatOrderByStockType(MyUtils.getDayFormat());
+        if(ranks!=null){
+            for(StockRank rank :ranks){
+                QtStock qtStock = getQtInfo(rank.getCode());
+                if(qtStock!=null){
+                    rank.setTodayClosePrice(MyUtils.getCentByYuanStr(qtStock.getCurrentPrice()));
+                    rank.setTodayState(qtStock.getTodayState());
+                    stockRankService.save(rank);
+                }
             }
         }
     }
