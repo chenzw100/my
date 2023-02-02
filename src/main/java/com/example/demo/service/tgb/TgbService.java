@@ -96,8 +96,8 @@ public class TgbService extends QtService {
             }
             if(tgbHotSeven!=null){
                 StockInfo tgbStock = new StockInfo();
-                tgbHotSeven.setId(null);
                 BeanUtils.copyProperties(tgbHotSeven,tgbStock);
+                tgbStock.setId(null);
                 tgbStock.setStockType(NumberEnum.StockType.STOCK_DAY_HOT.getCode());
                 log.error("==>WORKDAY dodo hot7"+tgbStock.getCode());
                 stockInfoService.save(tgbStock);

@@ -233,6 +233,7 @@ public class ExcelController {
                 log.error("失败，可能重复"+e.getMessage(),e);
             }
         }
+        stockInfo.setId(null);
         stockInfoService.save(stockInfo);
         //TODO 保存数据库
         return "导入数据一共【"+personList.size()+"】行";

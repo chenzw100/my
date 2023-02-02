@@ -84,14 +84,14 @@ public class StockRankService extends QtService{
         StockRank myStock = new StockRank();
         myStock.setDayFormat(MyUtils.getDayFormat());
         myStock.setHotSort(info.getRank());
-        /*String code = info.getCode();
+        String code = info.getCode();
         if (code.indexOf("6") == 0) {
             code = "sh" + code;
         } else if (code.indexOf("0") == 0){
             code = "sz" + code;
         }else if (code.indexOf("3") == 0){
             code = "sz" + code;
-        }*/
+        }
         myStock.setCode(info.getCode());
         myStock.setName(info.getName());
         myStock.setRankType(info.getRankType());
@@ -105,7 +105,7 @@ public class StockRankService extends QtService{
             myStock.setPlateName(xgbStock.getPlateName());
             myStock.setContinuous(xgbStock.getContinueBoardCount());
         }else {
-            xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(myStock.getCode());
+            xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(code);
             if(xgbStocks!=null && xgbStocks.size()>0){
                 myStock.setPlateName(xgbStocks.get(0).getPlateName());
             }else {
@@ -114,6 +114,12 @@ public class StockRankService extends QtService{
             myStock.setContinuous(0);
         }
         myStock.setYn(1);
+        StockRank myStockY =stockRankRepository.findByDayFormatAndRankTypeAndCode(MyUtils.getYesterdayDayFormat(),myStock.getRankType(),myStock.getCode());
+        if(myStockY!=null){
+            myStock.setShowCount(myStockY.getShowCount()+1);
+        }else {
+            myStock.setShowCount(1);
+        }
         return myStock;
     }
     
