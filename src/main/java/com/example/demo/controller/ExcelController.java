@@ -188,7 +188,7 @@ public class ExcelController {
                 myStock.setPlateName(xgbStock.getPlateName());
                 myStock.setContinuous(xgbStock.getContinueBoardCount());
             }else {
-                xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(myStock.getCode());
+                xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(code);
                 if(xgbStocks!=null && xgbStocks.size()>0){
                     myStock.setPlateName(xgbStocks.get(0).getPlateName());
                 }else {

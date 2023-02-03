@@ -61,6 +61,12 @@ public class StockRankService extends QtService{
             stockRankRepository.save(getThsRank(info));
         }
     }
+    public void dealThsTradesRank(){
+        List<StockTradeValInfoJob> trades = stockTradeValInfoJobRepository.findByDayFormatAndRankType(MyUtils.getYesterdayDayFormat(), NumberEnum.StockTradeType.TRADE.getCode());
+        for (StockTradeValInfoJob info : trades){
+            stockRankRepository.save(getThsRank(info));
+        }
+    }
 
     public StockRank getRank(StockInfo info){
         String code =info.getCode().substring(2,8);
