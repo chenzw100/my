@@ -136,6 +136,8 @@ public class ExcelController {
         List<StockRank> personList = FileExcelUtil.importExcel(file, StockRank.class);
         System.out.println("导入数据一共【"+personList.size()+"】行");
         StockInfo stockInfo = new StockInfo();
+
+        int showCount=2;
         int i =0;
         for(StockRank stockZy :personList){
             i++;
@@ -201,6 +203,9 @@ public class ExcelController {
                 StockRank myStockY =stockRankRepository.findByDayFormatAndRankTypeAndCode(MyUtils.getYesterdayDayFormat(),myStock.getRankType(),myStock.getCode());
                 if(myStockY!=null){
                     myStock.setShowCount(myStockY.getShowCount()+1);
+                    if(myStock.getShowCount()>showCount){
+                        showCount=myStock.getShowCount();
+                    }
                 }else {
                     myStock.setShowCount(1);
                 }
@@ -235,6 +240,18 @@ public class ExcelController {
         }
         stockInfo.setId(null);
         stockInfoService.save(stockInfo);
+        if(showCount>2){
+            List<StockRank> ranks = stockRankRepository.findByDayFormatAndShowCount(MyUtils.getDayFormat(),showCount);
+            for(StockRank rank :ranks){
+                StockInfo stockNew = new StockInfo();
+                //先copay后setId(null)
+                BeanUtils.copyProperties(rank,stockNew);
+                stockInfo.setStockType(NumberEnum.StockType.STOCK_THS7.getCode());
+                stockNew.setId(null);
+                stockInfoService.save(stockNew);
+            }
+        }
+
         //TODO 保存数据库
         return "导入数据一共【"+personList.size()+"】行";
     }

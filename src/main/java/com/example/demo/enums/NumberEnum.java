@@ -46,6 +46,7 @@ public class NumberEnum {
         STOCK_THS4(4,"同花顺"),
         STOCK_DAY_HOT(5,"热7"),
         STOCK_SPACE_HEIGHTS(6,"空间"),
+        STOCK_THS7(7,"同连续"),
         STOCK_DAY(10,"当天"),
         STOCK_DAY_THREE3(13,"三日当天"),
         STOCK_DAY_FIVE5(15,"五日当天"),
