@@ -42,7 +42,7 @@ public class NumberEnum {
     public enum StockType{
         STOCK_KPL1(1,"持仓"),
         STOCK_BUY2(2,"买入"),
-        STOCK_WAN3(3,"顽主"),
+        STOCK_WAN3(3,"比赛"),
         STOCK_THS4(4,"同花顺"),
         STOCK_DAY_HOT(5,"热7"),
         STOCK_SPACE_HEIGHTS(6,"空间"),

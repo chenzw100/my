@@ -10,6 +10,7 @@ import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockLimitUp;
 import com.example.demo.domain.table.StockRank;
 import com.example.demo.enums.NumberEnum;
+import com.example.demo.enums.RankTypeEnum;
 import com.example.demo.exception.NormalException;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.qt.QtService;
@@ -239,16 +240,18 @@ public class ExcelController {
             }
         }
         stockInfo.setId(null);
+        log.info("导入数据ths榜一的code【"+stockInfo.getCode()+"】showCount:"+showCount);
         stockInfoService.save(stockInfo);
         if(showCount>2){
-            List<StockRank> ranks = stockRankRepository.findByDayFormatAndShowCount(MyUtils.getDayFormat(),showCount);
+            List<StockRank> ranks = stockRankRepository.findByDayFormatAndShowCountAndRankType(MyUtils.getDayFormat(),showCount, RankTypeEnum.THS.getCode());
             for(StockRank rank :ranks){
                 StockInfo stockNew = new StockInfo();
                 //先copay后setId(null)
                 BeanUtils.copyProperties(rank,stockNew);
-                stockInfo.setStockType(NumberEnum.StockType.STOCK_THS7.getCode());
+                stockNew.setStockType(NumberEnum.StockType.STOCK_THS7.getCode());
                 stockNew.setId(null);
                 stockInfoService.save(stockNew);
+                log.info("导入数据ths连续一的code【"+stockInfo.getCode()+"】showCount:"+showCount);
             }
         }
 

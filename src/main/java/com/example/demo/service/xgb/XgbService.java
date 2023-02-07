@@ -239,6 +239,8 @@ public class XgbService extends QtService {
         }else {
             spaceHeight.setShowCount(1);
         }
+        spaceHeight.setHotValue(100);
+        spaceHeight.setHotSeven(100);
         stockInfoService.save(spaceHeight);
     }
     public void limitUpBrokenAfter(){
