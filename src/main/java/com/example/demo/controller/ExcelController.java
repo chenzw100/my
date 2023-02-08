@@ -249,6 +249,7 @@ public class ExcelController {
                 //先copay后setId(null)
                 BeanUtils.copyProperties(rank,stockNew);
                 stockNew.setStockType(NumberEnum.StockType.STOCK_THS7.getCode());
+                stockNew.setHotSeven(rank.getHotValue());
                 stockNew.setId(null);
                 stockInfoService.save(stockNew);
                 log.info("导入数据ths连续一的code【"+stockInfo.getCode()+"】showCount:"+showCount);
