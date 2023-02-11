@@ -73,9 +73,9 @@ public class StockInfo implements Serializable {
     private Integer tomorrowOpenPrice;
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '明天收盘'")
     private Integer tomorrowClosePrice;
-    @Column(nullable = false,columnDefinition="int(11) DEFAULT 0 COMMENT '5日最高'")
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '5日最高'")
     private Integer fiveHighPrice;
-    @Column(nullable = false,columnDefinition="int(11) DEFAULT 0 COMMENT '5日最低'")
+    @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '5日最低'")
     private Integer fiveLowPrice;
 
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '出现次数'")
