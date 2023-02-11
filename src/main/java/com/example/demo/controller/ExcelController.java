@@ -288,6 +288,10 @@ public class ExcelController {
                     myStock.setPlateName(xgbStocks.get(0).getPlateName());
                 }else {
                     myStock.setPlateName("");
+                    StockRank myStockOld =stockRankRepository.findFirst1ByCodeAndPlateNameIsNotNullOrderByIdDesc(myStock.getCode());
+                    if(myStockOld!=null){
+                        myStock.setPlateName(myStockOld.getPlateName());
+                    }
                 }
                 myStock.setContinuous(0);
             }

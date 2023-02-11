@@ -2,10 +2,12 @@ package com.example.demo.service.tgb;
 
 import com.example.demo.dao.StockCurrentRepository;
 import com.example.demo.dao.StockLimitUpRepository;
+import com.example.demo.dao.StockRankRepository;
 import com.example.demo.domain.MyTotalStock;
 import com.example.demo.domain.table.StockCurrent;
 import com.example.demo.domain.table.StockInfo;
 import com.example.demo.domain.table.StockLimitUp;
+import com.example.demo.domain.table.StockRank;
 import com.example.demo.enums.NumberEnum;
 import com.example.demo.service.StockInfoService;
 import com.example.demo.service.qt.QtService;
@@ -35,6 +37,8 @@ public class TgbService extends QtService {
     StockCurrentRepository stockCurrentRepository;
     @Autowired
     StockLimitUpRepository stockLimitUpRepository;
+    @Autowired
+    StockRankRepository stockRankRepository;
 
 
     //获取24小时的热搜数据
@@ -75,6 +79,11 @@ public class TgbService extends QtService {
                         tgbStock.setPlateName(xgbStocks.get(0).getPlateName());
                     }else {
                         tgbStock.setPlateName("");
+                        String code2 = tgbStock.getCode().substring(2,8);
+                        StockRank myStockOld =stockRankRepository.findFirst1ByCodeAndPlateNameIsNotNullOrderByIdDesc(code2);
+                        if(myStockOld!=null){
+                            tgbStock.setPlateName(myStockOld.getPlateName());
+                        }
                     }
                     tgbStock.setOneFlag(1);
                     tgbStock.setContinuous(0);
