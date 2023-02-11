@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableScheduling
 public class DemoApplication {
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
