@@ -4,7 +4,9 @@ package com.example.demo.enums;
 public enum RankTypeEnum {
     TGB(10,"淘股吧"),
     THS(20,"同花顺"),
-    TRADE(30,"成交前十"),
+    HOLD(30,"持仓"),
+    WAN(40,"比赛"),
+    TRADE(100,"成交前十"),
             ;
 
     private RankTypeEnum(int code, String desc) {

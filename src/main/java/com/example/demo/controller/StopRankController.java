@@ -55,9 +55,10 @@ public class StopRankController {
     public String alllist(StockRank obj){
         String queryEnd = getQueryDate(obj.getDayFormat());
         List<StockRank> infos =null;
-        if(obj.getRankType()==null){
+        if(obj.getRankType()==null || obj.getRankType()==-1){
            infos =stockRankService.findByDayFormatOrderByStockType(queryEnd);
         }else {
+
             infos =stockRankService.findByDayFormatAndRankTypeOrderByShowCountDesc(queryEnd,obj.getRankType());
         }
         StockRank up= new StockRank();
@@ -147,4 +148,14 @@ public class StopRankController {
     }
 
 
+    @RequestMapping("/rankD")
+    @ResponseBody
+    public String stockRank() {
+        try {
+            stockRankService.dealSis();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "rankD deal success";
+    }
 }

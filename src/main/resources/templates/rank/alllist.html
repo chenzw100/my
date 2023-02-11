@@ -6,12 +6,13 @@
 <div>
     <div style="padding:5px 0;">
         <span>类型:</span>
-        <select class="easyui-combobox" id="stockType" name="stockType" style="width:70px;">
-            <option value="10"  th:selected="${stockType == 10} " >TGB</option>
-            <option value="20" th:selected="${stockType == 20} " >THS</option>
-            <option value="30" th:selected="${stockType == 30} " >CJL</option>
-            <option value="40" th:selected="${stockType == 40} " >WAN</option>
-            <option value="40" th:selected="${stockType == 50} " >HOLD</option>
+        <select class="easyui-combobox" id="rankType" name="rankType" style="width:70px;">
+            <option  value="-1">ALL</option>
+            <option value="10"  th:selected="${rankType == 10} " >TGB</option>
+            <option value="20" th:selected="${rankType == 20} " >THS</option>
+            <option value="30" th:selected="${rankType == 30} " >HOLD</option>
+            <option value="40" th:selected="${rankType == 40} " >WAN</option>
+            <option value="40" th:selected="${rankType == 50} " >TRADE</option>
         </select>
         &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
         &nbsp;<a target="_blank" href="/rank/dealRank.action" class="easyui-linkbutton" >更新排行数据</a>
@@ -94,8 +95,8 @@
     }
     function scan() {
         $('#dg').datagrid('load', {
-            /* code: $("#code").val(),
-             stockType: $("#stockType").val(),*/
+            /* code: $("#code").val(),*/
+            rankType: $("#rankType").val(),
             dayFormat:$("#dateEnd").val()
         });
     }
