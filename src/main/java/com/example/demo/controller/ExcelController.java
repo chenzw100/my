@@ -102,7 +102,6 @@ public class ExcelController {
             if(stockZy.getCode().substring(0,3).equals("688")){
                 myStock.setYn(-1);
             }
-            myStock.setDayFormat(MyUtils.getDayFormat());
             log.info(i+"《===============第，导入数据的code【"+stockZy.getCode()+"】");
             List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(code,MyUtils.getYesterdayDayFormat());
             if(xgbStocks!=null && xgbStocks.size()>0){
