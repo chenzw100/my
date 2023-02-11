@@ -89,7 +89,36 @@ public class ExcelController {
             }else if (code.indexOf("3") == 0){
                 code = "sz" + code;
             }
-            StockRank myStock = qtService.getRankInfo(code);
+            StockRank myStock = new StockRank();
+            List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(code,MyUtils.getYesterdayDayFormat());
+            if(xgbStocks!=null && xgbStocks.size()>0){
+                StockLimitUp xgbStock =xgbStocks.get(0);
+                myStock.setPlateName(xgbStock.getPlateName());
+                myStock.setContinuous(xgbStock.getContinueBoardCount());
+                myStock.setName(xgbStock.getName());
+            }else {
+                xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(code);
+                if(xgbStocks!=null && xgbStocks.size()>0){
+                    myStock.setPlateName(xgbStocks.get(0).getPlateName());
+                    myStock.setName(xgbStocks.get(0).getName());
+                }else {
+                    //没查询到
+                    myStock.setPlateName("");
+                    myStock = qtService.getRankInfo(code);
+                }
+                myStock.setContinuous(0);
+            }
+            Date nowDate = MyUtils.getFormatDate(stockZy.getDayFormat());
+            ChineseWorkDay nowWorkDay = new ChineseWorkDay(nowDate);
+            Date yesterday = nowWorkDay.preWorkDay();
+            StockRank myStockY =stockRankRepository.findByDayFormatAndRankTypeAndCode(MyUtils.getDayFormat(yesterday),myStock.getRankType(),myStock.getCode());
+            if(myStockY!=null){
+                myStock.setShowCount(myStockY.getShowCount()+1);
+            }else {
+                myStock.setShowCount(1);
+            }
+            myStock.setDayFormat(stockZy.getDayFormat());
+
             if (myStock == null) {
                 log.error("导入失败，可能重复"+code);
                 continue;
@@ -103,28 +132,10 @@ public class ExcelController {
                 myStock.setYn(-1);
             }
             log.info(i+"《===============第，导入数据的code【"+stockZy.getCode()+"】");
-            List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(code,MyUtils.getYesterdayDayFormat());
-            if(xgbStocks!=null && xgbStocks.size()>0){
-                StockLimitUp xgbStock =xgbStocks.get(0);
-                myStock.setPlateName(xgbStock.getPlateName());
-                myStock.setContinuous(xgbStock.getContinueBoardCount());
-            }else {
-                xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(code);
-                if(xgbStocks!=null && xgbStocks.size()>0){
-                    myStock.setPlateName(xgbStocks.get(0).getPlateName());
-                }else {
-                    myStock.setPlateName("");
-                }
-                myStock.setContinuous(0);
-            }
-            try {
-                StockRank myStockY =stockRankRepository.findByDayFormatAndRankTypeAndCode(MyUtils.getYesterdayDayFormat(),myStock.getRankType(),myStock.getCode());
-                if(myStockY!=null){
-                    myStock.setShowCount(myStockY.getShowCount()+1);
-                }else {
-                    myStock.setShowCount(1);
-                }
 
+            try {
+                myStock.setDayFormat(stockZy.getDayFormat());
+                myStock.setYesterdayClosePrice(10);
                 stockRankRepository.save(myStock);
 
             }catch (Exception e){
