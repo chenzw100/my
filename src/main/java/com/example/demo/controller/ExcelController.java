@@ -108,26 +108,25 @@ public class ExcelController {
                 }
                 myStock.setContinuous(0);
             }
-            Date nowDate = MyUtils.getFormatDate(stockZy.getDayFormat());
-            ChineseWorkDay nowWorkDay = new ChineseWorkDay(nowDate);
-            Date yesterday = nowWorkDay.preWorkDay();
-            StockRank myStockY =stockRankRepository.findByDayFormatAndRankTypeAndCode(MyUtils.getDayFormat(yesterday),myStock.getRankType(),myStock.getCode());
-            if(myStockY!=null){
-                myStock.setShowCount(myStockY.getShowCount()+1);
-            }else {
-                myStock.setShowCount(1);
-            }
             myStock.setDayFormat(stockZy.getDayFormat());
-
-            if (myStock == null) {
-                log.error("导入失败，可能重复"+code);
-                continue;
-            }
             myStock.setCode(stockZy.getCode());
             myStock.setRankType(stockZy.getRankType());
             myStock.setHotSort(stockZy.getHotSort());
             myStock.setHotValue(stockZy.getHotValue());
             myStock.setYn(1);
+
+            Date nowDate = MyUtils.getFormatDate(stockZy.getDayFormat());
+            ChineseWorkDay nowWorkDay = new ChineseWorkDay(nowDate);
+            Date yesterday = nowWorkDay.preWorkDay();
+            String yester=MyUtils.getDayFormat(yesterday);
+            log.info("今天"+stockZy.getDayFormat()+",昨天："+yester);
+            StockRank myStockY =stockRankRepository.findByDayFormatAndRankTypeAndCode(yester,myStock.getRankType(),myStock.getCode());
+            if(myStockY!=null){
+                myStock.setShowCount(myStockY.getShowCount()+1);
+            }else {
+                myStock.setShowCount(1);
+            }
+
             if(stockZy.getCode().substring(0,3).equals("688")){
                 myStock.setYn(-1);
             }
