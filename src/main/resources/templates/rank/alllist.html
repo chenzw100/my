@@ -10,9 +10,9 @@
             <option  value="-1">ALL</option>
             <option value="10"  th:selected="${rankType == 10} " >TGB</option>
             <option value="20" th:selected="${rankType == 20} " >THS</option>
-            <option value="30" th:selected="${rankType == 30} " >CJL</option>
+            <option value="30" th:selected="${rankType == 30} " >HOLD</option>
             <option value="40" th:selected="${rankType == 40} " >WAN</option>
-            <option value="40" th:selected="${rankType == 50} " >HOLD</option>
+            <option value="40" th:selected="${rankType == 50} " >TRADE</option>
         </select>
         &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
         &nbsp;<a target="_blank" href="/rank/dealRank.action" class="easyui-linkbutton" >更新排行数据</a>

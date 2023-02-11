@@ -80,8 +80,10 @@ public class ExcelController {
                     stockZy.setCode("0"+stockZy.getCode());
                 }
             }
+
             stockZy.setCode(stockZy.getCode().substring(0,6));
             String code = stockZy.getCode();
+            //stockZy.setCode(stockZy.getCode().substring(2,8));
             if (code.indexOf("6") == 0) {
                 code = "sh" + code;
             } else if (code.indexOf("0") == 0){
