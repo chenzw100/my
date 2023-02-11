@@ -21,7 +21,7 @@ import java.io.Serializable;
 
  UPDATE stock_info SET today_open_price=1089,today_close_price=1201,day_format='20200407'
  WHERE  id=29855
-
+ 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
  //先copay后setId(null)
  BeanUtils.copyProperties(stockDb,stockNew);
  stockNew.setId(null);
