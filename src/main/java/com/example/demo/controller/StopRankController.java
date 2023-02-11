@@ -148,4 +148,14 @@ public class StopRankController {
     }
 
 
+    @RequestMapping("/rankD")
+    @ResponseBody
+    public String stockRank() {
+        try {
+            stockRankService.dealSis();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "rankD deal success";
+    }
 }
