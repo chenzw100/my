@@ -58,7 +58,7 @@ public class StopRankController {
         if(obj.getRankType()==null){
            infos =stockRankService.findByDayFormatOrderByStockType(queryEnd);
         }else {
-            infos =stockRankService.findByDayFormatOrderAndStockType(queryEnd,obj.getRankType());
+            infos =stockRankService.findByDayFormatAndRankTypeOrderByShowCountDesc(queryEnd,obj.getRankType());
         }
         StockRank up= new StockRank();
         up.setDayFormat(queryEnd);

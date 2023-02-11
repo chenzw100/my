@@ -54,6 +54,87 @@ public class ExcelController {
         return "exportRank";
     }
     @ResponseBody
+    @RequestMapping("importExcelRankH.action")
+    public String importExcelRankH(MultipartFile file) throws NormalException {
+        List<StockRank> personList = FileExcelUtil.importExcel(file, StockRank.class);
+        System.out.println("importExcelRankH 导入数据一共【"+personList.size()+"】行");
+
+        int i =0;
+        for(StockRank stockZy :personList){
+            i++;
+
+            int temp= 6-stockZy.getCode().length();
+            if(temp>0){
+                if(temp==5){
+                    stockZy.setCode("00000"+stockZy.getCode());
+                }else if(temp==4){
+                    stockZy.setCode("0000"+stockZy.getCode());
+                }
+                else if(temp==3){
+                    stockZy.setCode("000"+stockZy.getCode());
+                }
+                else if(temp==2){
+                    stockZy.setCode("00"+stockZy.getCode());
+                }
+                else if(temp==1){
+                    stockZy.setCode("0"+stockZy.getCode());
+                }
+            }
+            stockZy.setCode(stockZy.getCode().substring(0,6));
+            String code = stockZy.getCode();
+            if (code.indexOf("6") == 0) {
+                code = "sh" + code;
+            } else if (code.indexOf("0") == 0){
+                code = "sz" + code;
+            }else if (code.indexOf("3") == 0){
+                code = "sz" + code;
+            }
+            StockRank myStock = qtService.getRankInfo(code);
+            if (myStock == null) {
+                log.error("导入失败，可能重复"+code);
+                continue;
+            }
+            myStock.setCode(stockZy.getCode());
+            myStock.setRankType(stockZy.getRankType());
+            myStock.setHotSort(stockZy.getHotSort());
+            myStock.setHotValue(stockZy.getHotValue());
+            myStock.setYn(1);
+            if(stockZy.getCode().substring(0,3).equals("688")){
+                myStock.setYn(-1);
+            }
+            myStock.setDayFormat(MyUtils.getDayFormat());
+            log.info(i+"《===============第，导入数据的code【"+stockZy.getCode()+"】");
+            List<StockLimitUp> xgbStocks = stockLimitUpRepository.findByCodeAndDayFormat(code,MyUtils.getYesterdayDayFormat());
+            if(xgbStocks!=null && xgbStocks.size()>0){
+                StockLimitUp xgbStock =xgbStocks.get(0);
+                myStock.setPlateName(xgbStock.getPlateName());
+                myStock.setContinuous(xgbStock.getContinueBoardCount());
+            }else {
+                xgbStocks =stockLimitUpRepository.findByCodeAndPlateNameIsNotNullOrderByIdDesc(code);
+                if(xgbStocks!=null && xgbStocks.size()>0){
+                    myStock.setPlateName(xgbStocks.get(0).getPlateName());
+                }else {
+                    myStock.setPlateName("");
+                }
+                myStock.setContinuous(0);
+            }
+            try {
+                StockRank myStockY =stockRankRepository.findByDayFormatAndRankTypeAndCode(MyUtils.getYesterdayDayFormat(),myStock.getRankType(),myStock.getCode());
+                if(myStockY!=null){
+                    myStock.setShowCount(myStockY.getShowCount()+1);
+                }else {
+                    myStock.setShowCount(1);
+                }
+
+                stockRankRepository.save(myStock);
+
+            }catch (Exception e){
+                log.error("失败，可能重复"+e.getMessage(),e);
+            }
+        }
+        return "导入数据一共【"+personList.size()+"】行";
+    }
+    @ResponseBody
     @RequestMapping("importExcelRankT.action")
     public String importExcelT(MultipartFile file) throws NormalException {
         List<StockRank> personList = FileExcelUtil.importExcel(file, StockRank.class);

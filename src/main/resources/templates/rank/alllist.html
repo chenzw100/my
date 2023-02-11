@@ -5,6 +5,15 @@
 <div th:include="menu :: menu"></div>
 <div>
     <div style="padding:5px 0;">
+        <span>类型:</span>
+        <select class="easyui-combobox" id="stockType" name="stockType" style="width:70px;">
+            <option value="10"  th:selected="${stockType == 10} " >TGB</option>
+            <option value="20" th:selected="${stockType == 20} " >THS</option>
+            <option value="30" th:selected="${stockType == 30} " >CJL</option>
+            <option value="40" th:selected="${stockType == 40} " >WAN</option>
+            <option value="40" th:selected="${stockType == 50} " >HOLD</option>
+        </select>
+        &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
         &nbsp;<a target="_blank" href="/rank/dealRank.action" class="easyui-linkbutton" >更新排行数据</a>
         &nbsp;<a target="_blank" href="/rank/dealThsRank.action" class="easyui-linkbutton" >更新THS排行数据</a>
         &nbsp;<a target="_blank" href="/importRank" class="easyui-linkbutton" >导入THS排行数据</a>
@@ -35,6 +44,7 @@
         <th data-options="field:'plateName',align:'center'">板块</th>
         <th data-options="field:'todayState',align:'center'">涨停状态</th>
         <th data-options="field:'firstOpenRate',align:'center'">竞价开</th>
+        <th data-options="field:'firstCloseRate',align:'center'">竞价收</th>
         <th data-options="field:'todayOpenPriceText',align:'center'">当日开盘价</th>
         <th data-options="field:'todayClosePriceText',align:'center'">当日收盘价</th>
         <th data-options="field:'tomorrowOpenPriceText',align:'center'">第二日开盘价</th>
