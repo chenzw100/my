@@ -15,7 +15,12 @@ import java.io.Serializable;
 @Entity(name="stock_rank")
 public class StockRank implements Serializable {
     @Id
-    @GeneratedValue
+    @TableGenerator(
+            name = "AppSeqStore",
+            initialValue = 1000,
+            allocationSize = 10 )
+    @GeneratedValue( strategy = GenerationType.TABLE, generator = "AppSeqStore" )
+    @Column( name = "id" )
     private Long id;
     @Excel(name = "排名类型", orderNum = "0")
     @Column(nullable = true,columnDefinition="int(11) DEFAULT 0 COMMENT '排名类型'")

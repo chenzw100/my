@@ -47,7 +47,13 @@ public class StockRankService extends QtService{
     public List<StockRank> findByDayFormatAndRankTypeOrderByShowCountDesc(String dayFormat,Integer rankType){
         return stockRankRepository.findByDayFormatAndRankTypeOrderByShowCountDesc(dayFormat,rankType);
     }
+    public void dealRankTGB(){
+        List<StockInfo> tgbs = stockInfoRepository.findByDayFormatAndStockTypeOrderByHotSortAsc(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DAY.getCode());
+        for (StockInfo info : tgbs){
+            stockRankRepository.save(getRank(info));
+        }
 
+    }
     public void dealRank(){
         List<StockInfo> tgbs = stockInfoRepository.findByDayFormatAndStockTypeOrderByHotSortAsc(MyUtils.getDayFormat(), NumberEnum.StockType.STOCK_DAY.getCode());
         for (StockInfo info : tgbs){

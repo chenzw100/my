@@ -111,6 +111,12 @@ public class StopRankController {
         stockRankService.dealThsTradesRank();
         return "dealThsRank success";
     }
+    @RequestMapping("/dealtgb.action")
+    @ResponseBody
+    public String dealtgb() {
+        stockRankService.dealRankTGB();
+        return "dealtgb success";
+    }
 
     @RequestMapping("/staFlow.html")
     public String staFlow(ModelMap modelMap){
