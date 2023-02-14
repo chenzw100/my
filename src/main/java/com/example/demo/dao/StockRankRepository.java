@@ -17,6 +17,7 @@ public interface StockRankRepository extends JpaRepository<StockRank,Long> {
     List<StockRank> findByDayFormatOrderByRankType(String dayFormat);
     List<StockRank> findByDayFormatAndRankType(String dayFormat,Integer rankType);
     List<StockRank> findByDayFormatAndRankTypeOrderByShowCountDesc(String dayFormat,Integer rankType);
+    List<StockRank> findByDayFormatAndShowCountGreaterThanOrderByShowCountDesc(String dayFormat, int min);
     StockRank findByDayFormatAndRankTypeAndCode(String dayFormat,Integer rankType,String code);
     StockRank findFirst1ByCodeAndPlateNameIsNotNullOrderByIdDesc(String code);
     List<StockRank> findByThreeClosePriceIsNull();

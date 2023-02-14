@@ -57,8 +57,9 @@ public class StopRankController {
         List<StockRank> infos =null;
         if(obj.getRankType()==null || obj.getRankType()==-1){
            infos =stockRankService.findByDayFormatOrderByStockType(queryEnd);
+        }else if(obj.getRankType()==-2){
+            infos =stockRankService.findByDayFormatAndShowCountGreaterThanOrderByShowCountDesc(queryEnd);
         }else {
-
             infos =stockRankService.findByDayFormatAndRankTypeOrderByShowCountDesc(queryEnd,obj.getRankType());
         }
         StockRank up= new StockRank();
@@ -76,7 +77,7 @@ public class StopRankController {
 
     private String getQueryDate(String end) {
         String queryEnd = end;
-        if (end==null) {
+        if (StringUtils.isBlank(end)) {
             if (MyChineseWorkDay.isWorkday()) {
                 queryEnd = MyUtils.getDayFormat();
             } else {
@@ -99,19 +100,19 @@ public class StopRankController {
         stockRankService.dealRank();
         return "dealRank success";
     }
-    @RequestMapping("/dealThsRank.action")
+    @RequestMapping("/r20.action")
     @ResponseBody
     public String dealThsRank() {
         stockRankService.dealThsRank();
         return "dealThsRank success";
     }
-    @RequestMapping("/dealThsTradesRank.action")
+    @RequestMapping("/r100.action")
     @ResponseBody
     public String dealThsTradesRank() {
         stockRankService.dealThsTradesRank();
         return "dealThsRank success";
     }
-    @RequestMapping("/dealtgb.action")
+    @RequestMapping("/r10.action")
     @ResponseBody
     public String dealtgb() {
         stockRankService.dealRankTGB();

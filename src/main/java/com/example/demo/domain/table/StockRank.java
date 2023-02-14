@@ -126,6 +126,13 @@ public class StockRank implements Serializable {
         return MyUtils.getYuanByCent(this.threeClosePrice);
     }
 
+    public String getFirstOpenRateText() {
+        return MyUtils.getYuanByCent(this.firstOpenRate);
+    }
+    public String getFirstCloseRateText() {
+        return MyUtils.getYuanByCent(this.firstCloseRate);
+    }
+
     public String getRankTypeName(){
         if(this.rankType==null){
             return "--";

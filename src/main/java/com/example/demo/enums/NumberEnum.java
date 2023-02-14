@@ -208,7 +208,8 @@ public class NumberEnum {
         FIRST(1,"首板"),//2022年8月5日 涨停 成交额从大到小排名前50 非连板 成交额大于10亿
         CYB(3,"创业板"),//2021年08月6日 涨停  成交额从大到小排名前50  成交额大于1亿 创业板
         THS(20,"同花顺"),
-        TRADE(30,"成交前十"),
+        //TRADE(30,"成交前十"),
+        TRADE(100,"成交前十"),
         ;
 
         private StockTradeType(int code, String desc) {

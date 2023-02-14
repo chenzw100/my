@@ -8,11 +8,12 @@
         <span>类型:</span>
         <select class="easyui-combobox" id="rankType" name="rankType" style="width:70px;">
             <option  value="-1">ALL</option>
+            <option  value="-2">RANK</option>
             <option value="10"  th:selected="${rankType == 10} " >TGB</option>
             <option value="20" th:selected="${rankType == 20} " >THS</option>
             <option value="30" th:selected="${rankType == 30} " >HOLD</option>
-            <option value="40" th:selected="${rankType == 40} " >WAN</option>
-            <option value="40" th:selected="${rankType == 50} " >TRADE</option>
+            <option value="40" th:selected="${rankType == 40} " >RACE</option>
+            <option value="100" th:selected="${rankType == 100} " >TRADE</option>
         </select>
         &nbsp;<a href="#" id="query" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
         &nbsp;<a target="_blank" href="/rank/dealRank.action" class="easyui-linkbutton" >更新排行数据</a>
@@ -44,8 +45,8 @@
         <th data-options="field:'yesterdayClosePriceText',align:'center'">昨日价</th>
         <th data-options="field:'plateName',align:'center'">板块</th>
         <th data-options="field:'todayState',align:'center'">涨停状态</th>
-        <th data-options="field:'firstOpenRate',align:'center'">竞价开</th>
-        <th data-options="field:'firstCloseRate',align:'center'">竞价收</th>
+        <th data-options="field:'firstOpenRateText',align:'center'">竞价开</th>
+        <th data-options="field:'firstCloseRateText',align:'center'">竞价收</th>
         <th data-options="field:'todayOpenPriceText',align:'center'">当日开盘价</th>
         <th data-options="field:'todayClosePriceText',align:'center'">当日收盘价</th>
         <th data-options="field:'tomorrowOpenPriceText',align:'center'">第二日开盘价</th>
@@ -71,11 +72,7 @@
         });
     });
     $("#query").click(function () {
-        $('#dg').datagrid('load', {
-            /*code: $("#code").val(),
-            stockType: $("#stockType").val(),*/
-            dayFormat: $("#dayFormat").val()
-        });
+        scan();
     });
 
 
